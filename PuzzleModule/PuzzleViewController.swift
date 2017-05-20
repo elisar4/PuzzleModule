@@ -3,7 +3,7 @@
 
 import UIKit
 
-public protocol PuzzleOutput: class
+@objc public protocol PuzzleOutput: class
 {
     func didCompletePuzzle()
 }
@@ -44,21 +44,6 @@ public class PuzzleViewController: UIViewController, BoardOutput, PuzzleInput
         return board
     }()
     
-    lazy var resetButton: UIButton = {
-        
-        let btn = UIButton(type: .custom)
-        btn.setTitle("Reset", for: .normal)
-        btn.addTarget(self, action: #selector(PuzzleViewController.didClickResetButton(sender:)), for: .touchUpInside)
-        btn.backgroundColor = UIColor.orange
-        
-        return btn
-    }()
-    
-    func didClickResetButton(sender: UIButton)
-    {
-        self.resetPuzzleRequest()
-    }
-    
     override public func viewDidLoad()
     {
         super.viewDidLoad()
@@ -71,14 +56,7 @@ public class PuzzleViewController: UIViewController, BoardOutput, PuzzleInput
         self.addChildViewController(self.paletteController)
         self.view.addSubview(self.paletteController.view)
         
-        self.view.addSubview(self.resetButton)
-        
-        self.resetButton.addWidthConstraint(toView: nil, relation: .equal, constant: 250)
-        self.resetButton.addHeightConstraint(toView: nil, relation: .equal, constant: 50)
-        self.resetButton.addCenterXConstraint(toView: self.view)
-        self.resetButton.addTopConstraint(toView: self.view, attribute: .top, relation: .equal, constant: 4)
-        
-        self.boardController.view.addTopConstraint(toView: self.resetButton, attribute: .bottom, relation: .equal, constant: 9)
+        self.boardController.view.addTopConstraint(toView: self.view, attribute: .top, relation: .equal, constant: 0)
         self.boardController.view.addLeftConstraint(toView: self.view)
         self.boardController.view.addRightConstraint(toView: self.view)
         self.boardController.view.addBottomConstraint(toView: self.paletteController.view, attribute: .top, relation: .equal, constant: 0.0)

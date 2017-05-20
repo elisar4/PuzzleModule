@@ -155,17 +155,17 @@ class Piece: UIView, PieceItemOutput
         self.isUserInteractionEnabled = true
         if !item.fixed
         {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(Piece.tap(sender:)))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(Piece.tap(_:)))
             self.addGestureRecognizer(tap)
         }
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(Piece.pan(sender:)))
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(Piece.pan(_:)))
         pan.cancelsTouchesInView = false
         pan.delegate = self
         self.addGestureRecognizer(pan)
     }
     
-    func tap(sender: UITapGestureRecognizer)
+    @objc func tap(_ sender: UITapGestureRecognizer)
     {
         if self.group?.isLocked ?? false
         {
@@ -193,7 +193,7 @@ class Piece: UIView, PieceItemOutput
         self.lastAction = Piece.getNextLastAction()
     }
     
-    func pan(sender: UIPanGestureRecognizer)
+    @objc func pan(_ sender: UIPanGestureRecognizer)
     {
         if self.group?.isLocked ?? false
         {

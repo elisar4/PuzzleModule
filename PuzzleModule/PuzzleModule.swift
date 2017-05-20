@@ -3,7 +3,21 @@
 
 import UIKit
 
-public class PuzzleModule
+//
+//preload proxys?
+//
+//bug with zLayout when drop from palette
+//
+//pick piece from palette bug: then drag last piece & contentSize changes
+//
+//add piece effects
+//
+//bug with board moving not linear
+//
+//feature: section navigation via zoom
+//
+
+@objc public class PuzzleModule: NSObject
 {
     public static func puzzle(atViewController: UIViewController,
                               withDelegate: PuzzleOutput,
@@ -11,7 +25,7 @@ public class PuzzleModule
                               puzzleRotationEnabled: Bool,
                               puzzleRows: Int,
                               puzzleColumns: Int,
-                              puzzlePieces: [[CGPath]],
+                              puzzlePieces: Array<Array<UIBezierPath>>,
                               puzzleSize: CGFloat,
                               puzzleInsets: UIEdgeInsets) -> PuzzleViewController
     {
@@ -26,9 +40,15 @@ public class PuzzleModule
                                             piecesRows: puzzleRows,
                                             rotationEnabled: puzzleRotationEnabled)
         
+        let pieces = puzzlePieces.map { (pp) -> [CGPath] in
+            return pp.map({ (p) -> CGPath in
+                return p.cgPath
+            })
+        }
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.01,
                                       execute: {
-            puzzle.configure(withPaths: puzzlePieces,
+            puzzle.configure(withPaths: pieces,
                              image: puzzleImage,
                              difficulty: difficulty,
                              originSize: puzzleSize)
