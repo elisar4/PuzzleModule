@@ -3,11 +3,6 @@
 
 import UIKit
 
-protocol BoardOutput: class
-{
-    
-}
-
 protocol BoardInput: class
 {
     func setBoardPosition(col: Int, row: Int, isColLast: Bool, isRowLast: Bool, puzzleW: Int, puzzleH: Int)
@@ -18,8 +13,6 @@ protocol BoardInput: class
 
 class BoardViewController: UIViewController, BoardInput
 {
-    weak var output: BoardOutput?
-    
     var board: EAPuzzleBoard?
     var originSize: CGFloat = 0.0
     
@@ -162,12 +155,6 @@ class BoardViewController: UIViewController, BoardInput
         
         self.col = col
         self.row = row
-    }
-    
-    func isLastCol(_ col: Int) -> Bool
-    {
-        
-        return false
     }
     
 }

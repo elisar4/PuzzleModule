@@ -6,20 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		E9DB64F01ED04E2F005CB95A /* Puzzle */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = E9DB64F31ED04E2F005CB95A /* Build configuration list for PBXAggregateTarget "Puzzle" */;
-			buildPhases = (
-				E9DB64F41ED04E45005CB95A /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = Puzzle;
-			productName = Puzzle;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		E957B5A91ECEE720000AABB3 /* PuzzleModule.h in Headers */ = {isa = PBXBuildFile; fileRef = E957B5A71ECEE720000AABB3 /* PuzzleModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E957B5BE1ECEE7AE000AABB3 /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5AF1ECEE7AE000AABB3 /* AnimationHelper.swift */; };
@@ -29,7 +15,6 @@
 		E957B5C21ECEE7AE000AABB3 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B31ECEE7AE000AABB3 /* Piece.swift */; };
 		E957B5C31ECEE7AE000AABB3 /* PieceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B41ECEE7AE000AABB3 /* PieceGroup.swift */; };
 		E957B5C41ECEE7AE000AABB3 /* PieceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B51ECEE7AE000AABB3 /* PieceItem.swift */; };
-		E957B5C51ECEE7AE000AABB3 /* PieceItemBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B61ECEE7AE000AABB3 /* PieceItemBuilder.swift */; };
 		E957B5C61ECEE7AE000AABB3 /* PieceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B71ECEE7AE000AABB3 /* PieceProxy.swift */; };
 		E957B5C71ECEE7AE000AABB3 /* PuzzleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B81ECEE7AE000AABB3 /* PuzzleDataSource.swift */; };
 		E957B5C81ECEE7AE000AABB3 /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B91ECEE7AE000AABB3 /* PuzzleViewController.swift */; };
@@ -51,7 +36,6 @@
 		E957B5B31ECEE7AE000AABB3 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
 		E957B5B41ECEE7AE000AABB3 /* PieceGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceGroup.swift; sourceTree = "<group>"; };
 		E957B5B51ECEE7AE000AABB3 /* PieceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceItem.swift; sourceTree = "<group>"; };
-		E957B5B61ECEE7AE000AABB3 /* PieceItemBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceItemBuilder.swift; sourceTree = "<group>"; };
 		E957B5B71ECEE7AE000AABB3 /* PieceProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceProxy.swift; sourceTree = "<group>"; };
 		E957B5B81ECEE7AE000AABB3 /* PuzzleDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleDataSource.swift; sourceTree = "<group>"; };
 		E957B5B91ECEE7AE000AABB3 /* PuzzleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
@@ -94,24 +78,47 @@
 			children = (
 				E957B5A71ECEE720000AABB3 /* PuzzleModule.h */,
 				E957B5CD1ECEE7E3000AABB3 /* PuzzleModule.swift */,
-				E957B5B91ECEE7AE000AABB3 /* PuzzleViewController.swift */,
-				E957B5B01ECEE7AE000AABB3 /* BoardViewController.swift */,
-				E957B5B11ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift */,
-				E957B5B21ECEE7AE000AABB3 /* PaletteViewController.swift */,
-				E957B5B31ECEE7AE000AABB3 /* Piece.swift */,
-				E957B5B41ECEE7AE000AABB3 /* PieceGroup.swift */,
-				E957B5B51ECEE7AE000AABB3 /* PieceItem.swift */,
-				E957B5B61ECEE7AE000AABB3 /* PieceItemBuilder.swift */,
-				E957B5B71ECEE7AE000AABB3 /* PieceProxy.swift */,
-				E957B5B81ECEE7AE000AABB3 /* PuzzleDataSource.swift */,
+				E9EA3F3A1ED1A3730075A390 /* Puzzle */,
+				E9EA3F3B1ED1A37D0075A390 /* Piece */,
+				E9EA3F391ED1A2EC0075A390 /* Extensions */,
+				E957B5A81ECEE720000AABB3 /* Info.plist */,
+			);
+			path = PuzzleModule;
+			sourceTree = "<group>";
+		};
+		E9EA3F391ED1A2EC0075A390 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
 				E957B5AF1ECEE7AE000AABB3 /* AnimationHelper.swift */,
 				E957B5BA1ECEE7AE000AABB3 /* UIImage+ResizedImage.swift */,
 				E957B5BB1ECEE7AE000AABB3 /* UIView+AnchorPoint.swift */,
 				E957B5BC1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift */,
 				E957B5BD1ECEE7AE000AABB3 /* UIView+EAGeom.swift */,
-				E957B5A81ECEE720000AABB3 /* Info.plist */,
 			);
-			path = PuzzleModule;
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		E9EA3F3A1ED1A3730075A390 /* Puzzle */ = {
+			isa = PBXGroup;
+			children = (
+				E957B5B91ECEE7AE000AABB3 /* PuzzleViewController.swift */,
+				E957B5B01ECEE7AE000AABB3 /* BoardViewController.swift */,
+				E957B5B21ECEE7AE000AABB3 /* PaletteViewController.swift */,
+				E957B5B11ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift */,
+				E957B5B81ECEE7AE000AABB3 /* PuzzleDataSource.swift */,
+			);
+			name = Puzzle;
+			sourceTree = "<group>";
+		};
+		E9EA3F3B1ED1A37D0075A390 /* Piece */ = {
+			isa = PBXGroup;
+			children = (
+				E957B5B31ECEE7AE000AABB3 /* Piece.swift */,
+				E957B5B41ECEE7AE000AABB3 /* PieceGroup.swift */,
+				E957B5B51ECEE7AE000AABB3 /* PieceItem.swift */,
+				E957B5B71ECEE7AE000AABB3 /* PieceProxy.swift */,
+			);
+			name = Piece;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,11 +168,6 @@
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
-					E9DB64F01ED04E2F005CB95A = {
-						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = A2V64Z853W;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = E957B59E1ECEE720000AABB3 /* Build configuration list for PBXProject "PuzzleModule" */;
@@ -181,7 +183,6 @@
 			projectRoot = "";
 			targets = (
 				E957B5A31ECEE720000AABB3 /* PuzzleModule */,
-				E9DB64F01ED04E2F005CB95A /* Puzzle */,
 			);
 		};
 /* End PBXProject section */
@@ -195,22 +196,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		E9DB64F41ED04E45005CB95A /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Merge Script\n\n# 1\n# Set bash script to exit immediately if any commands fail.\nset -e\n\n# 2\n# Setup some constants for use later on.\nFRAMEWORK_NAME=\"PuzzleModule\"\n\n# 3\n# If remnants from a previous build exist, delete them.\nif [ -d \"${SRCROOT}/build\" ]; then\nrm -rf \"${SRCROOT}/build\"\nfi\n\n# 4\n# Build the framework for device and for simulator (using\n# all needed architectures).\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration Release -arch arm64 -arch armv7 -arch armv7s only_active_arch=no defines_module=yes -sdk \"iphoneos\"\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration Release -arch x86_64 -arch i386 only_active_arch=no defines_module=yes -sdk \"iphonesimulator\"\n\n# 5\n# Remove .framework file if exists on Desktop from previous run.\nif [ -d \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\" ]; then\nrm -rf \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\"\nfi\n\n# 6\n# Copy the device version of framework to Desktop.\ncp -r \"${SRCROOT}/build/Release-iphoneos/${FRAMEWORK_NAME}.framework\" \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework\"\n\n# 7\n# Replace the framework executable within the framework with\n# a new version created by merging the device and simulator\n# frameworks' executables with lipo.\nlipo -create -output \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${SRCROOT}/build/Release-iphoneos/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${SRCROOT}/build/Release-iphonesimulator/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\"\n\n# 8\n# Copy the Swift module mappings for the simulator into the\n# framework.  The device mappings already exist from step 6.\ncp -r \"${SRCROOT}/build/Release-iphonesimulator/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule/\" \"${HOME}/Desktop/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule\"\n\n# 9\n# Delete the most recent build.\nif [ -d \"${SRCROOT}/build\" ]; then\nrm -rf \"${SRCROOT}/build\"\nfi";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E957B59F1ECEE720000AABB3 /* Sources */ = {
@@ -227,7 +212,6 @@
 				E957B5C31ECEE7AE000AABB3 /* PieceGroup.swift in Sources */,
 				E957B5C81ECEE7AE000AABB3 /* PuzzleViewController.swift in Sources */,
 				E957B5C21ECEE7AE000AABB3 /* Piece.swift in Sources */,
-				E957B5C51ECEE7AE000AABB3 /* PieceItemBuilder.swift in Sources */,
 				E957B5BF1ECEE7AE000AABB3 /* BoardViewController.swift in Sources */,
 				E957B5C01ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift in Sources */,
 				E957B5CE1ECEE7E3000AABB3 /* PuzzleModule.swift in Sources */,
@@ -390,22 +374,6 @@
 			};
 			name = Release;
 		};
-		E9DB64F11ED04E2F005CB95A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEVELOPMENT_TEAM = A2V64Z853W;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		E9DB64F21ED04E2F005CB95A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEVELOPMENT_TEAM = A2V64Z853W;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -423,15 +391,6 @@
 			buildConfigurations = (
 				E957B5AD1ECEE720000AABB3 /* Debug */,
 				E957B5AE1ECEE720000AABB3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E9DB64F31ED04E2F005CB95A /* Build configuration list for PBXAggregateTarget "Puzzle" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E9DB64F11ED04E2F005CB95A /* Debug */,
-				E9DB64F21ED04E2F005CB95A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

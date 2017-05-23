@@ -229,38 +229,6 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
-    func willReturnToPalette(_ piece: Piece, atPoint: CGPoint)
-    {
-       /* let ip = collectionView?.indexPathForItem(at: atPoint) ?? IndexPath(row: self.data.count, section: 0)
-        
-        print(ip.row, ip.section)
-        
-        self.data.insert(piece.item, at: ip.row)
-        self.collectionView?.insertItems(at: [ip])
-        //self.collectionView?.reloadData()
-        
-        DispatchQueue.main.async {
-            if let cell = self.collectionView?.cellForItem(at: ip)
-            {
-                //piece.center = (self.view.window?.convert(cell.contentView.center, from: cell.contentView)) ?? CGPoint.zero
-                piece.removeFromSuperview()
-                    self.collectionView?.reloadData()
-            }
-        }
-        UIView.animate(withDuration: 0.22, animations: {
-            
-            
-        }, completion: { (finished) in
-            if finished
-            {
-                print("completion")
-            }
-        })*/
-        
-//        self.collectionView?.performBatchUpdates({
-//        }, completion: nil)
-    }
-    
     func setDataItems(_ items: [PieceItem])
     {
         var maxSize: CGFloat = 1.0

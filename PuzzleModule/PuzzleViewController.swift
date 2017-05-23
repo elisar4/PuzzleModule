@@ -13,7 +13,7 @@ protocol PuzzleInput: class
     func configure(withPaths: [[CGPath]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat)
 }
 
-public class PuzzleViewController: UIViewController, BoardOutput, PuzzleInput
+public class PuzzleViewController: UIViewController, PuzzleInput
 {
     weak var output: PuzzleOutput?
     var pcs: [Piece] = []
@@ -158,7 +158,6 @@ public class PuzzleViewController: UIViewController, BoardOutput, PuzzleInput
     
     func setBoardPosition(_ col: Int, row: Int)
     {
-        
         let items = self.lastDataSource.getPieceItems(forBoardColumn: col, boardRow: row)
         self.paletteController.setDataItems(items)//items.shuffled())
         
