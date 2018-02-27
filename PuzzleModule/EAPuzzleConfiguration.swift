@@ -3,6 +3,126 @@
 
 import Foundation
 
+@objc public class PieceState: NSObject, NSCoding
+{
+    public var uid: String = ""
+    public var paletteIndex: Int = -1
+    public var curX: Int = 0
+    public var curY: Int = 0
+    public var rotation: Int = 0
+    
+    init(from: PieceItem, paletteIndex: Int = -1)
+    {
+        super.init()
+        
+        self.uid = from.uid
+        self.curX = from.gridX
+        self.curY = from.gridY
+        self.rotation = from.rotation.rawValue
+        self.paletteIndex = paletteIndex
+    }
+    
+    public func encode(with aCoder: NSCoder)
+    {
+        aCoder.encode(self.uid, forKey: "uid")
+        aCoder.encode(self.curX, forKey: "curX")
+        aCoder.encode(self.curY, forKey: "curY")
+        aCoder.encode(self.rotation, forKey: "rotation")
+        aCoder.encode(self.paletteIndex, forKey: "paletteIndex")
+    }
+    
+    public required init?(coder aDecoder: NSCoder)
+    {
+        super.init()
+        
+        self.uid = (aDecoder.decodeObject(forKey: "uid") as? String) ?? ""
+        self.curX = aDecoder.decodeInteger(forKey: "curX")
+        self.curY = aDecoder.decodeInteger(forKey: "curY")
+        self.rotation = aDecoder.decodeInteger(forKey: "rotation")
+        self.paletteIndex = aDecoder.decodeInteger(forKey: "paletteIndex")
+    }
+}
+
+@objc public class PuzzleState: NSObject, NSCoding
+{
+    @objc public var progress: CGFloat = 0.0
+    @objc public var difficulty: Int = 0
+    @objc public var rotationEnabled: Bool = false
+    //----------------------------------------
+    @objc public var boardPositionR: Int = 0
+    @objc public var boardPositionC: Int = 0
+    //----------------------------------------
+    @objc public var boardPieces: [PieceState] = []
+    @objc public var palettePieces: [PieceState] = []
+    
+    init(from: PuzzleViewController)
+    {
+        super.init()
+        
+        let inPlace = from.pcs.filter({ (p) -> Bool in
+            return p.item.dx == 0 && p.item.dy == 0
+        }).count
+        let all = from.lastDataSource.pcsItms.count
+        
+        let onBoard = from.pcs.count
+        
+        let onBP = CGFloat(onBoard) / CGFloat(all) * 0.15
+        
+        let p = CGFloat(inPlace) / CGFloat(all) * 0.91
+        
+        self.progress = p + onBP
+        if self.progress > 1.0
+        {
+            self.progress = 1.0
+        }
+        
+        self.difficulty = from.lastDifficulty.width
+        
+        self.rotationEnabled = from.lastDifficulty.rotation
+        
+        self.boardPositionR = from.boardController.row
+        
+        self.boardPositionC = from.boardController.col
+        
+        for p in from.pcs
+        {
+            self.boardPieces.append(PieceState(from: p.item))
+        }
+        
+        for i in 0..<from.paletteController.data.count
+        {
+            let pi = from.paletteController.data[i]
+            self.palettePieces.append(PieceState(from: pi, paletteIndex: i))
+        }
+    }
+    
+    @objc public func encode(with aCoder: NSCoder)
+    {
+        aCoder.encode(Float(self.progress), forKey: "progress")
+        aCoder.encode(self.difficulty, forKey: "difficulty")
+        aCoder.encode(self.rotationEnabled, forKey: "rotationEnabled")
+        aCoder.encode(self.boardPositionR, forKey: "boardPositionR")
+        aCoder.encode(self.boardPositionC, forKey: "boardPositionC")
+        aCoder.encode(self.boardPieces, forKey: "boardPieces")
+        aCoder.encode(self.palettePieces, forKey: "palettePieces")
+    }
+    
+    @objc public required init?(coder aDecoder: NSCoder)
+    {
+        super.init()
+        
+        self.progress = CGFloat(aDecoder.decodeFloat(forKey: "progress"))
+        self.difficulty = aDecoder.decodeInteger(forKey: "difficulty")
+        self.rotationEnabled = aDecoder.decodeBool(forKey: "rotationEnabled")
+        self.boardPositionR = aDecoder.decodeInteger(forKey: "boardPositionR")
+        self.boardPositionC = aDecoder.decodeInteger(forKey: "boardPositionC")
+        self.boardPieces = (aDecoder.decodeObject(forKey: "boardPieces") as? [PieceState]) ?? [PieceState]()
+        self.palettePieces = (aDecoder.decodeObject(forKey: "palettePieces") as? [PieceState]) ?? [PieceState]()
+        
+    }
+    
+}
+
 class EAPuzzle
 {
     public let config: EAPuzzleConfiguration
@@ -29,7 +149,7 @@ class EAPuzzleConfiguration
     }
 }
 
-class EAPuzzleDifficulty
+@objc class EAPuzzleDifficulty: NSObject
 {
     public let width: Int
     public let height: Int

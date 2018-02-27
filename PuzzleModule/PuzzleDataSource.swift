@@ -5,6 +5,17 @@ import UIKit
 
 class PuzzleDataSource
 {
+    func unsub()
+    {
+        self.proxys.forEach { (im) in
+            im.image = nil
+        }
+        
+        self.pcs.removeAll()
+        self.proxys.removeAll()
+        self.pcsItms.removeAll()
+    }
+    
     let difficulty: EAPuzzleDifficulty
     let boardSize: EAPuzzleBoard
     let puzzleImage: UIImage
@@ -89,6 +100,42 @@ class PuzzleDataSource
     func getPieces(forItems: [PieceItem]) -> [Piece]
     {
         return forItems.map({ self.getPiece(forItem: $0) })
+    }
+    
+    func getPieceItemsByPieceStates(_ states: [PieceState]) -> [PieceItem]
+    {
+        let ids = states.map { (ps) -> String in
+            return ps.uid
+        }
+        return self.getPieceItemsByIds(ids)
+    }
+    
+    func getPieceItemsByIds(_ ids: [String]) -> [PieceItem]
+    {
+        var data: [PieceItem] = []
+        for uid in ids
+        {
+            let item = self.pcsItms.filter({ (itm) -> Bool in
+                return itm.uid == uid
+            })
+            if let i = item.first
+            {
+                data.append(i)
+            }
+        }
+        return data
+    }
+    
+    func getPieceItemById(_ uid: String) -> PieceItem?
+    {
+        let item = self.pcsItms.filter({ (itm) -> Bool in
+            return itm.uid == uid
+        })
+        if let i = item.first
+        {
+            return i
+        }
+        return nil
     }
     
     func getPieceItems(forBoardColumn c: Int, boardRow r: Int) -> [PieceItem]

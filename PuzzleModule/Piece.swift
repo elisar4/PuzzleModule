@@ -39,6 +39,15 @@ protocol PieceOutput
 class Piece: UIView, PieceItemOutput
 {
     
+    public func unsub()
+    {
+        self.gestureRecognizers?.forEach({ (gr) in
+            self.removeGestureRecognizer(gr)
+        })
+        self.item.output = nil
+        self.removeFromSuperview()
+    }
+    
     static var nextLastAction: CGFloat = 50000.0
     static func getNextLastAction() -> CGFloat
     {
@@ -158,11 +167,6 @@ class Piece: UIView, PieceItemOutput
             let tap = UITapGestureRecognizer(target: self, action: #selector(Piece.tap(_:)))
             self.addGestureRecognizer(tap)
         }
-        
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(Piece.pan(_:)))
-        pan.cancelsTouchesInView = false
-        pan.delegate = self
-        self.addGestureRecognizer(pan)
     }
     
     @objc func tap(_ sender: UITapGestureRecognizer)
@@ -243,6 +247,8 @@ class Piece: UIView, PieceItemOutput
                 self.output?.didMoveSinglePiece(self)
             }
         } else if sender.state == .ended
+            || sender.state == .cancelled
+            || sender.state == .failed
         {
             if self.group == nil
             {
@@ -259,10 +265,7 @@ class Piece: UIView, PieceItemOutput
                 self.group?.didMovePiece(piece: self, by: translation)
             }, completion: { (finished) in
                 if finished {
-                    if let gr = self.group
-                    {
-                        gr.snapToGrid(piece: self)
-                    }
+                    self.group?.snapToGrid(piece: self)
                     self.snapToGrid()
                 }
             })
@@ -277,6 +280,16 @@ class Piece: UIView, PieceItemOutput
     func hideLockedEffect()
     {
         self.alpha = 1.0
+    }
+    
+    func setPosition(col: Int, row: Int, rotation: Int)
+    {
+        self.item.gridX = col
+        self.item.gridY = row
+        if let rot = PieceRotation(rawValue:rotation)
+        {
+            self.rotation = rot
+        }
     }
     
     func randomPosition(maxCol: Int, maxRow: Int)

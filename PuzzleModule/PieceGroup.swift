@@ -11,10 +11,16 @@ class PieceGroup
         didSet {
             self.pieces.forEach { (p) in
                 p.item.locked = self.isLocked
+                p.layer.zPosition = 0
             }
         }
     }
     var pieces: [Piece]
+    
+    func unsub()
+    {
+        self.pieces.removeAll()
+    }
     
     init(withPieces: [Piece])
     {
@@ -47,7 +53,7 @@ class PieceGroup
             maxLastAction = max(maxLastAction, p.lastAction)
         }
         
-        let s = maxLastAction - CGFloat(self.pieces.count * 500)
+        let s = self.isLocked ? 0 : maxLastAction - CGFloat(self.pieces.count * 500)
         for p in self.pieces
         {
             p.layer.zPosition = s

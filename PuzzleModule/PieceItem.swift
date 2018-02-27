@@ -98,6 +98,70 @@ class PieceItem
         self.gridY = self.row
     }
     
+    
+    func canGroup(withItem item: PieceItem, atRotation rotation: PieceRotation) -> Bool
+    {
+        let odx = self.col - item.col
+        let ody = self.row - item.row
+        
+        if odx > 1 || odx < -1 || ody > 1 || ody < -1
+        {
+            return false
+        }
+        
+        if (ody == 1 && odx == 1)
+            || (ody == -1 && odx == -1)
+        {
+            return false
+        }
+        
+        if (ody == -1 && odx == 1)
+            || (ody == 1 && odx == -1)
+        {
+            return false
+        }
+        
+        if rotation == .origin
+        {
+            if self.gridX - item.gridX == odx
+            {
+                if self.gridY - item.gridY == ody
+                {
+                    return true
+                }
+            }
+        } else if rotation == .upside
+        {
+            if self.gridX - item.gridX == odx * -1
+            {
+                if self.gridY - item.gridY == ody * -1
+                {
+                    return true
+                }
+            }
+        } else if rotation == .left
+        {
+            if self.gridX - item.gridX == ody * -1
+            {
+                if self.gridY - item.gridY == odx
+                {
+                    return true
+                }
+            }
+        } else if rotation == .right
+        {
+            if self.gridX - item.gridX == ody
+            {
+                if self.gridY - item.gridY == odx * -1
+                {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    /*
     func canGroup(withItem item: PieceItem, atRotation rotation: PieceRotation) -> Bool
     {
         let rdx = self.dx - item.dx
@@ -187,7 +251,7 @@ class PieceItem
         
         return false
     }
-    
+    */
     var anchor: CGPoint {
         return CGPoint(x: self.ax/self.ow, y: self.ay/self.oh)
     }

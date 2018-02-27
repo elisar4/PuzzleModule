@@ -6,6 +6,7 @@ import UIKit
 protocol PaletteOutput: class
 {
     func getProxy(fromItem: PieceItem) -> UIImageView
+    func getProxyAsync(fromItem: PieceItem, completion: @escaping (UIImageView)->())
     func didPick(pieceItem: PieceItem, atPoint: CGPoint)
     func didMove(pieceItem: PieceItem, by: CGPoint)
     func didDrop(pieceItem: PieceItem, atPoint: CGPoint)
@@ -18,6 +19,7 @@ protocol PaletteInput: class
     func didGrabItem(_ pieceItem: PieceItem)
     func didReturnToPalette(_ piece: Piece)
     func didPanTouchView(_ pan: UIPanGestureRecognizer)
+    func setPaletteBGColor(_ color: UIColor)
 }
 
 class PaletteCell: UICollectionViewCell
@@ -27,6 +29,13 @@ class PaletteCell: UICollectionViewCell
 
 class PaletteViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PaletteInput, UIGestureRecognizerDelegate
 {
+    
+    func unsub()
+    {
+        self.data.removeAll()
+        self.lastItem = nil
+    }
+    
     weak var output: PaletteOutput?
     
     var data: [PieceItem] = []
@@ -39,16 +48,23 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         self.collectionView?.register(PaletteCell.self, forCellWithReuseIdentifier: "Cell")
 
         self.collectionView?.backgroundColor = UIColor(white: 38.0/255.0, alpha: 1.0)
-        
-        print("palette did load")
     }
     
-    var lastItem: PieceItem?
+    func setPaletteBGColor(_ color: UIColor)
+    {
+        self.collectionView?.backgroundColor = color
+    }
+    
+    var lastItem: PieceItem? = nil
     var lastPoint: CGPoint!
     func didPanTouchView(_ pan: UIPanGestureRecognizer)
     {
         if pan.state == .began
         {
+            if self.lastItem != nil
+            {
+                return;
+            }
             let pt = pan.location(in: collectionView)
             self.lastPoint = pt
             if let ip = collectionView?.indexPathForItem(at: pt)
@@ -70,6 +86,8 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                 }
             }
         } else if pan.state == .ended
+                || pan.state == .cancelled
+                || pan.state == .failed
         {
             if let item = self.lastItem
             {
@@ -114,25 +132,28 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
             let ip = IndexPath(row: index, section: 0)
             if let cell = cv.cellForItem(at: ip)
             {
-                UIView.animate(withDuration: 0.22, animations: { 
+                self.view.isUserInteractionEnabled = false
+                UIView.animate(withDuration: 0.2, animations: {
                     piece.center = (self.view.window?.convert(cell.contentView.center, from: cell.contentView)) ?? CGPoint.zero
                 }, completion: { (finished) in
+                    self.view.isUserInteractionEnabled = true
                     if finished
                     {
                         piece.isHidden = true
                         piece.item.inPalette = true
-                        cv.reloadItems(at: [ip])
+                        self.reloadCellWithPiece(piece)
                     }
                 })
             }
         } else
         {
             // need to insert
-            
             let pt = cv.convert(piece.center, from: piece.superview)
             let ppt = CGPoint(x: pt.x, y: cv.bounds.height * 0.5)
             
-            let ip = cv.indexPathForItem(at: ppt) ?? IndexPath(row: 0, section: 0)
+            let defIp = (cv.contentOffset.x < 50) ? IndexPath(row: 0, section: 0) : IndexPath(row: cv.numberOfItems(inSection: 0), section: 0)
+            
+            let ip = cv.indexPathForItem(at: ppt) ?? defIp
             
             if let cell = cv.cellForItem(at: ip)
             {
@@ -147,6 +168,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                 let ind = self.data.index(where: {$0.uidInt == piece.item.uidInt}) ?? ip.row
                 if ind != ip.row
                 {
+                    print("swap")
                     // swap
                     self.data.remove(at: ind)
                     cv.deleteItems(at: [IndexPath(row: ind, section: 0)])
@@ -155,27 +177,43 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                 cv.insertItems(at: [ip])
                 
                 DispatchQueue.main.async {
-                    
-                    if let index = self.data.index(where: {$0.uid == piece.item.uid})
+                    if let cell = cv.cellForItem(at: ip)
                     {
-                        let ip = IndexPath(row: index, section: 0)
-                        if let cell = cv.cellForItem(at: ip)
-                        {
-                            UIView.animate(withDuration: 0.22, animations: {
-                                piece.center = (self.view.window?.convert(cell.contentView.center, from: cell.contentView)) ?? CGPoint.zero
-                            }, completion: { (finished) in
-                                if finished
-                                {
-                                    piece.isHidden = true
-                                    piece.item.inPalette = true
-                                    cv.reloadItems(at: [ip])
-                                }
-                            })
-                        }
+                        self.view.isUserInteractionEnabled = false
+                        UIView.animate(withDuration: 0.2, animations: {
+                            piece.center = (self.view.window?.convert(cell.contentView.center, from: cell.contentView)) ?? CGPoint.zero
+                        }, completion: { (finished) in
+                            self.view.isUserInteractionEnabled = true
+                            if finished
+                            {
+                                piece.isHidden = true
+                                piece.item.inPalette = true
+                                self.reloadCellWithPiece(piece)
+                            }
+                        })
                     }
                 }
-            }, completion: nil)
-            
+                
+            }, completion: { (finished) in
+            })
+        }
+    }
+    
+    func reloadCellWithPiece(_ piece: Piece)
+    {
+        if let vcs = self.collectionView?.visibleCells
+        {
+            for c in vcs
+            {
+                if c.contentView.tag == piece.item.uidInt
+                {
+                    if let ip = self.collectionView?.indexPath(for: c)
+                    {
+                        self.collectionView?.reloadItems(at: [ip])
+                    }
+                    return;
+                }
+            }
         }
     }
     
@@ -196,11 +234,18 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
             //print("oob ")
             if let ind = self.data.index(where: {$0.uidInt == piece.item.uidInt})
             {
+                let cox = cv.contentOffset.x
                 // need to remove item
                 cv.performBatchUpdates({
                     self.data.remove(at: ind)
                     cv.deleteItems(at: [IndexPath(row: ind, section: 0)])
-                }, completion: nil)
+                    
+                    DispatchQueue.main.async {
+                        let dx = cox - cv.contentOffset.x
+                        self.lastPoint.x = self.lastPoint.x - dx
+                    }
+                }, completion: { (finished) in
+                })
             }
         } else
         {
@@ -266,20 +311,26 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         return self.data.count
     }
     
+    
+    var animCnt = 0
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PaletteCell
         
         let item = self.data[indexPath.row]
         
-        DispatchQueue.main.async {
-            
-            if let proxy = self.output?.getProxy(fromItem: item)
+        cell.contentView.tag = item.uidInt
+        
+        self.output?.getProxyAsync(fromItem: item,
+                                   completion: { (proxy) in
+            if cell.contentView.tag == proxy.tag
             {
                 cell.contentView.subviews.forEach { $0.removeFromSuperview() }
                 
                 cell.contentView.addSubview(proxy)
-                cell.contentView.tag = proxy.tag
+                
+                proxy.alpha = 0.0
                 
                 var b = cell.contentView.bounds
                 b.size.width -= 10
@@ -300,8 +351,21 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                 proxy.transform = CGAffineTransform.identity.rotated(by: item.rotation.angle)
                 
                 proxy.isHidden = !item.inPalette
+                
+                let delay = min(0.15, max(0, Double(self.animCnt)*0.033))
+                
+                self.animCnt += 1
+                
+                UIView.animate(withDuration: 0.35, delay: delay, options: [], animations: {
+                    proxy.alpha = 1.0
+                }, completion: { (finished) in
+                    if finished
+                    {
+                        self.animCnt -= 1
+                    }
+                })
             }
-        }
+        })
         return cell
     }
 }

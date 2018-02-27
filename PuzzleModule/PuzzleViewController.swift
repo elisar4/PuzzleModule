@@ -8,16 +8,85 @@ import UIKit
     func didCompletePuzzle()
 }
 
-protocol PuzzleInput: class
+@objc protocol PuzzleInput: class
 {
-    func configure(withPaths: [[CGPath]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat)
+    func configure(withPaths: [[CGPath]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
+    
+    func storePuzzleState() -> PuzzleState
+    
+    func setBoardImageVisible(_ val: Bool)
+    
+    func setBGColors(_ board: UIColor?, _ palette: UIColor?)
+    
+    func deinitPuzzle()
 }
 
 public class PuzzleViewController: UIViewController, PuzzleInput
 {
+    
+    public func deinitPuzzle()
+    {
+        self.view.gestureRecognizers?.forEach({ (gr) in
+            self.view.removeGestureRecognizer(gr)
+        })
+        
+        self.timer?.invalidate()
+        self.timer = nil
+        
+        self.pcs.forEach { (p) in
+            p.unsub()
+        }
+        self.gr.forEach { (pg) in
+            pg.unsub()
+        }
+        self.pcs.removeAll()
+        self.gr.removeAll()
+        
+        self.boardController.unsub()
+        self.paletteController.unsub()
+        
+        if self.lastDataSource != nil {
+            self.lastDataSource.unsub()
+        }
+        
+        if self.lastImage != nil {
+            self.lastImage = nil
+        }
+        
+        self.lastPaths.removeAll()
+    }
+    
+    deinit {
+        //print("deinit")
+    }
+    
+    public func setBoardImageVisible(_ val: Bool) {
+        self.boardController.setBoardImageVisible(val)
+    }
+    
+    public func storePuzzleState() -> PuzzleState {
+        return PuzzleState(from: self)
+    }
+    
+    func setBGColors(_ board: UIColor?, _ palette: UIColor?)
+    {
+        if let board = board
+        {
+            self.boardController.setBoardBGColor(board)
+        }
+        
+        if let palette = palette
+        {
+            self.paletteController.setPaletteBGColor(palette)
+        }
+    }
+    
     weak var output: PuzzleOutput?
     var pcs: [Piece] = []
     var gr: [PieceGroup] = []
+    var blockCounter: Int = 0
+    
+    var sectionTransition: Bool = false
     
     let paletteHeight: CGFloat = 94.0
     
@@ -39,7 +108,6 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     lazy var boardController: BoardViewController = {
         
         let board = BoardViewController()
-        board.output = self
         
         return board
     }()
@@ -65,27 +133,66 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         self.paletteController.view.addRightConstraint(toView: self.view)
         self.paletteController.view.addBottomConstraint(toView: self.view)
         self.paletteController.view.addHeightConstraint(toView: nil, relation: .equal, constant: self.paletteHeight)
-        
-        print("puzzle view did load")
     }
     
-    func checkCompletion()
+    @objc func checkCompletion()
     {
-        if self.gr.count == 1
-        {
-            if self.paletteController.data.count == 0
+        DispatchQueue.main.async {
+            if self.gr.count == 1
             {
-                if self.pcs.count == self.gr[0].pieces.count
+                if self.paletteController.data.count == 0
                 {
-                    self.didCompleteSection()
+                    if self.pcs.count == self.gr[0].pieces.count
+                    {
+                        let items = self.lastDataSource.getPieceItems(forBoardColumn: self.boardController.col, boardRow: self.boardController.row)
+                        if self.boardController.isAllItemsOnBoard(items)
+                        {
+                            if self.sectionTransition
+                            {
+                                return;
+                            }
+                            self.sectionTransition = true
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2,
+                                                          execute: {
+                                                            print("$puzzle didCompleteSection checkCompletion");
+                                                            self.didCompleteSection()
+                            })
+                        }
+                    }
                 }
             }
         }
     }
     
-    func didPanTouchView(_ pan: UIPanGestureRecognizer)
+    var panPiece: Piece?
+    @objc func didPanTouchView(_ pan: UIPanGestureRecognizer)
     {
-        self.paletteController.didPanTouchView(pan)
+        if let p = self.panPiece
+        {
+            p.pan(pan)
+            if pan.state == .ended
+                || pan.state == .cancelled
+                || pan.state == .failed
+            {
+                self.panPiece = nil
+            }
+        } else
+        {
+            if pan.state == .began
+            {
+                if let p = self.boardController.panTouchingPiece(pan)
+                {
+                    p.pan(pan)
+                    self.panPiece = p
+                } else
+                {
+                    self.paletteController.didPanTouchView(pan)
+                }
+            } else
+            {
+                self.paletteController.didPanTouchView(pan)
+            }
+        }
     }
     
     var timer: Timer?
@@ -94,13 +201,29 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     var lastDifficulty: EAPuzzleDifficulty!
     var lastDataSource: PuzzleDataSource!
     var lastPaths: [[CGPath]] = []
+    var lastShuffled: Bool = true
+    var lastBoardBG: UIColor?
+    var lastPaletteBG: UIColor?
     
-    func configure(withPaths: [[CGPath]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat)
+    func configure(withPaths: [[CGPath]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
     {
+        self.lastShuffled = shuffle
         self.lastPaths = withPaths
         self.lastSize = originSize
         self.lastImage = image
         self.lastDifficulty = difficulty
+        self.lastPaletteBG = paletteBGColor
+        self.lastBoardBG = boardBGColor
+        
+        if let boardBG = boardBGColor
+        {
+            self.boardController.setBoardBGColor(boardBG)
+        }
+        
+        if let paletteBG = paletteBGColor
+        {
+            self.paletteController.setPaletteBGColor(paletteBG)
+        }
         
         let coeff: CGFloat = (UIDevice.current.userInterfaceIdiom == .phone) ? -0.05 : +0.05
         let boardSize = self.preferedBoardSize(withOrigin: originSize,
@@ -116,17 +239,84 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         
         let img = image.resizedImage(toSize: CGSize(width: size, height: size))
         
-        let dataSource = PuzzleDataSource(withPiecePaths: withPaths, difficulty: difficulty, scale: scale, originSize: originSize, boardSize: boardSize, puzzleImage: img)
+        let dataSource = PuzzleDataSource(withPiecePaths: withPaths, difficulty: difficulty, scale: scale, originSize: originSize, boardSize: boardSize, puzzleImage: self.imgWithBorder(img))
         self.lastDataSource = dataSource
         
         self.boardController.setBoardSize(boardSize, originSize: originSize * scale)
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
-            self.setBoardPosition(0, row: 0)
-            //self.addAllPiecesToBoardRandomly(fromDataSource: dataSource)
+        self.boardController.setBackgroundImage(img, withMaxCols: difficulty.width, maxRows: difficulty.height)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25, execute: {
             
+            if let state = puzzleState
+            {
+                // load puzzle
+                self.loadState(state)
+            } else
+            {
+                // new puzzle
+                self.setBoardPosition(0, row: 0)
+            }
             self.remakeTimer()
         })
+    }
+    
+    func imgWithBorder(_ image: UIImage) -> UIImage
+    {
+        let s = image.size
+        UIGraphicsBeginImageContext(s)
+        let rect = CGRect(origin: CGPoint.zero, size: s)
+        image.draw(in: rect)
+        let c = UIGraphicsGetCurrentContext()
+        c?.setStrokeColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
+        c?.stroke(rect, width: 15.0)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        if let img = img
+        {
+            return img
+        }
+        return image
+    }
+    
+    func loadState(_ state: PuzzleState)
+    {
+        let col = state.boardPositionC
+        let row = state.boardPositionR
+        
+        let sorted = state.palettePieces.sorted { $0.paletteIndex < $1.paletteIndex }
+        let paletteItems = self.lastDataSource.getPieceItemsByPieceStates(sorted)
+        self.paletteController.setDataItems(paletteItems)
+        
+        for stateItem in state.boardPieces
+        {
+            if let item = self.lastDataSource.getPieceItemById(stateItem.uid)
+            {
+                let p = self.lastDataSource.getPiece(forItem: item)
+                self.boardController.addPiece(p)
+                self.pcs.append(p)
+                p.setPosition(col: stateItem.curX, row: stateItem.curY, rotation: stateItem.rotation)
+                p.output = self
+            }
+        }
+        
+        let cl = (self.lastDataSource.boardSize.verticalSize.width * (col+1)) >= self.lastDataSource.difficulty.width
+        let rw = (self.lastDataSource.boardSize.verticalSize.height * (row+1)) >= self.lastDataSource.difficulty.height
+        
+        self.boardController.setBoardPosition(col: col, row: row,
+                                              isColLast: cl, isRowLast: rw,
+                                              puzzleW: self.lastDataSource.difficulty.width,
+                                              puzzleH: self.lastDataSource.difficulty.height,
+                                              animated: false)
+        
+        self.pcs.forEach({ (p) in
+            // performance ??
+            self.didSnap(piece: p)
+        })
+        
+//        DispatchQueue.global().async {
+//            self.preloadPieceItems()
+//        }
     }
     
     func remakeTimer()
@@ -159,31 +349,40 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     func setBoardPosition(_ col: Int, row: Int)
     {
         let items = self.lastDataSource.getPieceItems(forBoardColumn: col, boardRow: row)
-        self.paletteController.setDataItems(items)//items.shuffled())
+        
+        if self.lastShuffled
+        {
+            self.paletteController.setDataItems(items.shuffled())
+        } else
+        {
+            self.paletteController.setDataItems(items)//no shuffle
+        }
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2, execute: {
             
-            UIView.animate(withDuration: 1.25, delay: 0.0, options: [.preferredFramesPerSecond60, .layoutSubviews, .curveEaseInOut], animations: {
-                
-                
-                let cl = (self.lastDataSource.boardSize.verticalSize.width * (col+1)) >= self.lastDataSource.difficulty.width
-                let rw = (self.lastDataSource.boardSize.verticalSize.height * (row+1)) >= self.lastDataSource.difficulty.height
-                
-                self.boardController.setBoardPosition(col: col, row: row,
-                                                      isColLast: cl, isRowLast: rw,
-                                                      puzzleW: self.lastDataSource.difficulty.width,
-                                                      puzzleH: self.lastDataSource.difficulty.height)
-                
-            }, completion: nil)
+            let dur = (col+row == 0) ? 0.0 : 1.25
+            
+            let cl = (self.lastDataSource.boardSize.verticalSize.width * (col+1)) >= self.lastDataSource.difficulty.width
+            let rw = (self.lastDataSource.boardSize.verticalSize.height * (row+1)) >= self.lastDataSource.difficulty.height
+            
+            self.boardController.setBoardPosition(col: col, row: row,
+                                                  isColLast: cl, isRowLast: rw,
+                                                  puzzleW: self.lastDataSource.difficulty.width,
+                                                  puzzleH: self.lastDataSource.difficulty.height, animated: dur>0, completion: { () in
+                                                  self.sectionTransition = false
+            })
         })
-        
+        /*
         if col == 0 && row == 0
         {
+            
             DispatchQueue.global().async {
                 print("preloadPieceItems")
                 self.preloadPieceItems()
             }
+ 
         }
+         */
     }
     
     func preloadPieceItems()
@@ -283,7 +482,6 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     
     func didCompleteSection()
     {
-        print("didCompleteSection")
         
         if let nxt = self.getNextUncompletedRowCol(fromCol: self.boardController.col,
                                                    fromRow: self.boardController.row)
@@ -292,27 +490,33 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         } else
         {
             // Puzzle comleted
-            self.output?.didCompletePuzzle()
+            
             self.view.gestureRecognizers?.forEach({ (gr) in
                 self.view.removeGestureRecognizer(gr)
             })
             self.timer?.invalidate()
             self.timer = nil
+            
+            
+            self.boardController.setFinishedState(withCompletion: { 
+                
+                self.output?.didCompletePuzzle()
+            })
+            
         }
     }
     
     func getNextUncompletedRowCol(fromCol: Int, fromRow: Int) -> (Int, Int)?
     {
-        var col = fromCol
+        let col = fromCol + ((fromRow%2==0) ? 1 : -1)
         let row = fromRow
-        col += (row%2==0) ? 1 : -1
         
         if self.hasUncompletedPieces(atCol: col, row: row)
         {
             return (col, row)
         } else if self.hasUncompletedPieces(atCol: fromCol, row: row+1)
         {
-            return (col, row+1)
+            return (fromCol, row+1)
         }
         
         return nil
@@ -331,7 +535,7 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     func resetPuzzleRequest()
     {
         self.clearBoard()
-        self.configure(withPaths: self.lastPaths, image: self.lastImage, difficulty: self.lastDifficulty, originSize: self.lastSize)
+        self.configure(withPaths: self.lastPaths, image: self.lastImage, difficulty: self.lastDifficulty, originSize: self.lastSize, puzzleState: nil, shuffle: self.lastShuffled, boardBGColor: self.lastBoardBG, paletteBGColor: self.lastPaletteBG)
     }
 }
 
@@ -340,6 +544,16 @@ extension PuzzleViewController: PaletteOutput
     func getProxy(fromItem: PieceItem) -> UIImageView
     {
         return self.lastDataSource.getPieceItemImageViewProxy(pieceItem: fromItem)
+    }
+    
+    func getProxyAsync(fromItem: PieceItem, completion: @escaping (UIImageView) -> ())
+    {
+        
+        DispatchQueue.main.async {
+            let proxy = self.lastDataSource.getPieceItemImageViewProxy(pieceItem: fromItem)
+            
+            completion(proxy)
+        }
     }
     
     func didPick(pieceItem: PieceItem, atPoint: CGPoint)
@@ -375,6 +589,7 @@ extension PuzzleViewController: PaletteOutput
         
         if self.boardController.canPlacePieceOnBoard(p)
         {
+            self.boardController.view.window?.isUserInteractionEnabled = false
             //if piece on board -> insert piece on board view
             self.paletteController.didGrabItem(pieceItem)
             self.boardController.addPiece(p)
@@ -383,14 +598,20 @@ extension PuzzleViewController: PaletteOutput
                 self.pcs.append(p)
                 p.output = self
             }
-            
-            UIView.animate(withDuration: 0.15,
+            UIView.animate(withDuration: 0.12,
                            animations: {
                 p.snapToGrid(false)
-            }, completion: { (finished) in
                 
-                DispatchQueue.global().async {
-                    p.dispatchSnap()
+            }, completion: { (finished) in
+                if finished
+                {
+                    DispatchQueue.main.async {
+                        p.dispatchSnap()
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.08, execute: {
+                            
+                            self.boardController.view.window?.isUserInteractionEnabled = true
+                        })
+                    }
                 }
             })
         } else
@@ -411,14 +632,16 @@ extension PuzzleViewController: PieceOutput
         
         if self.boardController.canPlacePieceOnBoard(p)
         {
+            self.view.window?.isUserInteractionEnabled = false
+            
             //if piece on board -> insert piece on board view
-            self.paletteController.didGrabItem(p.item)
             self.boardController.addPiece(p)
             if !self.pcs.contains(p)
             {
                 self.pcs.append(p)
                 p.output = self
             }
+            self.paletteController.didGrabItem(p.item)
             
 //            UIView.animate(withDuration: 0.15,
 //                           animations: {
@@ -430,6 +653,13 @@ extension PuzzleViewController: PieceOutput
 //                    p.dispatchSnap()
 //                }
 //            })
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.08, execute: {
+                
+                self.view.window?.isUserInteractionEnabled = true
+            })
+            
+            
             return false
         } else
         {
@@ -539,7 +769,21 @@ extension PuzzleViewController: PieceOutput
                 {
                     if self.pcs.count == self.gr[0].pieces.count
                     {
-                        self.didCompleteSection()
+                        let items = self.lastDataSource.getPieceItems(forBoardColumn: self.boardController.col, boardRow: self.boardController.row)
+                        if self.boardController.isAllItemsOnBoard(items)
+                        {
+                            if sectionTransition
+                            {
+                                return;
+                            }
+                            sectionTransition = true
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2,
+                                                          execute: {
+                                                            
+                                                            print("$puzzle didCompleteSection didSnap");
+                                                            self.didCompleteSection()
+                            })
+                        }
                     }
                 }
             }
@@ -586,8 +830,26 @@ extension PuzzleViewController: PieceOutput
                     return piece.item.translationToGridCell(col: ngx+check.0, row: ngy+check.1)
                 }
             }
+            let checkGridExt = [(1,-3),    (2,-3),  (3,-2),  (3,-1),
+                                (3,1),   (3,2), (2,3),  (1,3),
+                                (-1,3),    (-2,3), (-3,2),  (-3,1),
+                                (-3,-1),    (-3,-2), (-2,-3), (-1,-3),
+                                (0,-4),    (4,0), (0,4),  (-4,0),
+                                (3,-3),    (3,3),(-3,3), (-3,-3),
+                                (1,-4),(2,-4),(3,-4),(4,-4),(4,-3),(4,-2),(4,-1),(4,1),(4,2),(4,3),(4,4),(3,4),(2,4),(1,4),(-1,4),(-2,4),(-3,4),(-4,4),(-4,3),(-4,2),(-4,1),(-4,-1),(-4,-2),(-4,-3),(-4,-4),(-3,-4),(-2,-4),(-1,-4),
+                                (0,-5),(5,0),(0,-5),(-5,0),(5,-5),(5,5),(-5,5),(-5,-5),
+                                (0,-6),(6,0),(0,-6),(-6,0),(6,-6),(6,6),(-6,6),(-6,-6),
+                                (0,-7),(7,0),(0,-7),(-7,0),(7,-7),(7,7),(-7,7),(-7,-7),
+                                (0,-8),(8,0),(0,-8),(-8,0),(8,-8),(8,8),(-8,8),(-8,-8)]
+            for check in checkGridExt
+            {
+                if self.boardController.isColRowInside(col: ngx+check.0, row: ngy+check.1)
+                {
+                    return piece.item.translationToGridCell(col: ngx+check.0, row: ngy+check.1)
+                }
+            }
         }
-        return trans
+        return piece.item.translationToGridCell(col: 0, row: 0)
     }
 }
 
@@ -601,7 +863,7 @@ extension MutableCollection where Indices.Iterator.Element == Index {
             let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
             guard d != 0 else { continue }
             let i = index(firstUnshuffled, offsetBy: d)
-            swap(&self[firstUnshuffled], &self[i])
+            self.swapAt(firstUnshuffled, i)
         }
     }
 }

@@ -19,7 +19,7 @@ import UIKit
 
 @objc public class PuzzleModule: NSObject
 {
-    public static func puzzle(atViewController: UIViewController,
+    @objc public static func puzzle(atViewController: UIViewController,
                               withDelegate: PuzzleOutput,
                               puzzleImage: UIImage,
                               puzzleRotationEnabled: Bool,
@@ -27,12 +27,18 @@ import UIKit
                               puzzleColumns: Int,
                               puzzlePieces: Array<Array<UIBezierPath>>,
                               puzzleSize: CGFloat,
-                              puzzleInsets: UIEdgeInsets) -> PuzzleViewController
+                              puzzleInsets: UIEdgeInsets,
+                              puzzleState: PuzzleState?,
+                              shuffle: Bool,
+                              boardBGColor: UIColor?,
+                              paletteBGColor: UIColor?) -> PuzzleViewController
     {
         let puzzle = PuzzleViewController()
         atViewController.addChildViewController(puzzle)
         atViewController.view.addSubview(puzzle.view)
         puzzle.output = withDelegate
+        
+        puzzle.setBGColors(boardBGColor, paletteBGColor)
         
         puzzle.view.fillSuperView(puzzleInsets)
         
@@ -46,12 +52,17 @@ import UIKit
             })
         }
         
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.01,
                                       execute: {
             puzzle.configure(withPaths: pieces,
                              image: puzzleImage,
                              difficulty: difficulty,
-                             originSize: puzzleSize)
+                             originSize: puzzleSize,
+                             puzzleState: puzzleState,
+                             shuffle: shuffle,
+                             boardBGColor: boardBGColor,
+                             paletteBGColor: paletteBGColor)
         })
         
         return puzzle
