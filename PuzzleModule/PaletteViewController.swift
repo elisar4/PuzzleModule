@@ -224,26 +224,32 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         }
         
         let pt = cv.convert(piece.center, from: piece.superview)
-        //print(pt, cv.contentOffset)
         if pt.x < cv.contentOffset.x
             || pt.y < cv.contentOffset.y
             || pt.x > cv.contentOffset.x + cv.bounds.width
             || pt.y > cv.contentOffset.y + cv.bounds.height
         {
             // out of bounds
-            //print("oob ")
             if let ind = self.data.index(where: {$0.uidInt == piece.item.uidInt})
             {
-                let cox = cv.contentOffset.x
+                let ipToDelete = IndexPath(row: ind, section: 0)
+                let size = self.collectionView(cv, layout: self.collectionViewLayout, sizeForItemAt: ipToDelete)
+                let curX = cv.bounds.width + cv.contentOffset.x
+                let maxX = cv.contentSize.width
+                let limit = size.width*0.73
+                if cv.contentOffset.x > 0 && curX >= maxX - limit {
+                    if cv.contentOffset.x > 0 && curX >= maxX - limit*0.2 {
+                        self.lastPoint.x = self.lastPoint.x - size.width
+                    } else if cv.contentOffset.x > 0 && curX >= maxX - limit*0.5 {
+                        self.lastPoint.x = self.lastPoint.x - size.width * 0.7
+                    } else {
+                        self.lastPoint.x = self.lastPoint.x - size.width * 0.5
+                    }
+                }
                 // need to remove item
                 cv.performBatchUpdates({
                     self.data.remove(at: ind)
-                    cv.deleteItems(at: [IndexPath(row: ind, section: 0)])
-                    
-                    DispatchQueue.main.async {
-                        let dx = cox - cv.contentOffset.x
-                        self.lastPoint.x = self.lastPoint.x - dx
-                    }
+                    cv.deleteItems(at: [ipToDelete])
                 }, completion: { (finished) in
                 })
             }
