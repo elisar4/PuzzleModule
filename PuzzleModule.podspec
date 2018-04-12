@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "PuzzleModule"
-  s.version      = "1.1"
+  s.version      = "1.2"
   s.summary      = "PuzzleModule developed to include as a solid puzzle board controller."
 
   # This description is used to generate tags and improve search results.

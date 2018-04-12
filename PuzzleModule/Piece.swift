@@ -109,6 +109,10 @@ class Piece: UIView, PieceItemOutput
                 self.item.snapToNearestGridCell()
             }
             self.isRotating = false
+            
+            if piece == self {
+                self.output?.didRotate(piece: self)
+            }
         }
     }
     
@@ -185,7 +189,6 @@ class Piece: UIView, PieceItemOutput
         if let gr = self.group
         {
             gr.didRotatePiece(piece: self, to: self.rotation.nextSide)
-            self.output?.didRotate(piece: self)
         } else
         {
             self.rotate(to: self.rotation.nextSide)
