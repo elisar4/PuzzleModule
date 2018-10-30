@@ -118,10 +118,10 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         
         self.view.backgroundColor = .black
         
-        self.addChildViewController(self.boardController)
+        self.addChild(self.boardController)
         self.view.addSubview(self.boardController.view)
         
-        self.addChildViewController(self.paletteController)
+        self.addChild(self.paletteController)
         self.view.addSubview(self.paletteController.view)
         
         self.boardController.view.addTopConstraint(toView: self.view, attribute: .top, relation: .equal, constant: 0)
@@ -747,7 +747,7 @@ extension PuzzleViewController: PieceOutput
         let zSorted = self.pcs.sorted { $0.layer.zPosition < $1.layer.zPosition }
         for ps in zSorted
         {
-            self.boardController.view.bringSubview(toFront: ps)
+            self.boardController.view.bringSubviewToFront(ps)
         }
     }
     
@@ -860,7 +860,7 @@ extension MutableCollection where Indices.Iterator.Element == Index {
         guard c > 1 else { return }
         
         for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
-            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
             guard d != 0 else { continue }
             let i = index(firstUnshuffled, offsetBy: d)
             self.swapAt(firstUnshuffled, i)

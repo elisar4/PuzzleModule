@@ -34,7 +34,7 @@ import UIKit
                               paletteBGColor: UIColor?) -> PuzzleViewController
     {
         let puzzle = PuzzleViewController()
-        atViewController.addChildViewController(puzzle)
+        atViewController.addChild(puzzle)
         atViewController.view.addSubview(puzzle.view)
         puzzle.output = withDelegate
         
