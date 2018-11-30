@@ -273,6 +273,25 @@ class PieceItem
     let ow: CGFloat
     let oh: CGFloat
     let oframe: CGRect
+    let osize: CGSize
+    let corrX: CGFloat
+    let corrY: CGFloat
+    
+    var rosize: CGSize {
+        if rotation == .left || rotation == .right {
+            return CGSize(width: osize.height, height: osize.width)
+        }
+        return osize
+    }
+    
+    var rosizeCorrected: CGSize {
+        let w: CGFloat = osize.width - corrX - ox
+        let h: CGFloat = osize.height - corrY - oy
+        if rotation == .left || rotation == .right {
+            return CGSize(width: h, height: w)
+        }
+        return CGSize(width: w, height: h)
+    }
     
     let ax: CGFloat
     let ay: CGFloat
@@ -290,21 +309,28 @@ class PieceItem
         self.col = col
         self.fixed = fixed
         self.path = path
-        self.oframe = path.boundingBoxOfPath.scaled(by: scale)
+        self.corrX = size*CGFloat(col)
+        self.corrY = size*CGFloat(row)
+        let ss = path.boundingBoxOfPath.scaled(by: scale)
+        self.oframe = ss
         self.ox = oframe.origin.x
         self.oy = oframe.origin.y
-        self.ow = oframe.size.width
-        self.oh = oframe.size.height
+        self.ow = oframe.size.width//-oframe.origin.x-corrX
+        self.oh = oframe.size.height//-oframe.origin.y-corrY
         self.scale = scale
         self.size = size
         
-        self.ax = size * 0.5 + (size * CGFloat(col)) - self.ox
-        self.ay = size * 0.5 + (size * CGFloat(row)) - self.oy
+        self.ax = size * 0.5 + corrX - self.ox
+        self.ay = size * 0.5 + corrY - self.oy
         self.a = CGPoint(x: self.ax, y: self.ay)
+        
+        self.osize = CGSize(width: ow, height: oh)
+        
+        print("#1233", ss)
         
         if !fixed
         {
-            if let r =  PieceRotation(rawValue: Int(arc4random() % 4))
+            if let r = PieceRotation(rawValue: Int(arc4random() % 4))
             {
                 self.rotation = r
             }

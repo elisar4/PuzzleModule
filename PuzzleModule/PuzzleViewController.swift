@@ -235,14 +235,14 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         let screenSize = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
         let scale = screenSize / (pieces+0.5) / originSize
         
-        let size = originSize * CGFloat(max(difficulty.height, difficulty.width)) * scale
+        let s = (screenSize / (pieces+0.5)) * CGFloat(difficulty.width) / image.size.width
         
-        let img = image.resizedImage(toSize: CGSize(width: size, height: size))
+        let img = image.resizedImage(scale: s)
         
         let dataSource = PuzzleDataSource(withPiecePaths: withPaths, difficulty: difficulty, scale: scale, originSize: originSize, boardSize: boardSize, puzzleImage: self.imgWithBorder(img))
         self.lastDataSource = dataSource
         
-        self.boardController.setBoardSize(boardSize, originSize: originSize * scale)
+        self.boardController.setBoardSize(boardSize, originSize: originSize*scale)
         
         self.boardController.setBackgroundImage(img, withMaxCols: difficulty.width, maxRows: difficulty.height)
         
@@ -444,35 +444,35 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     
     func preferedBoardSize(withOrigin: CGFloat, difficulty: EAPuzzleDifficulty, pieceCoefficient: CGFloat) -> EAPuzzleBoard
     {
-        let piecesMinSize: CGFloat = 48.0
-        let piecesMaxSize: CGFloat = 128.0
-        
-        let screenSizeMIN = min(self.boardController.view.frame.size.width,
-                                self.boardController.view.frame.size.height)
-        let screenSizeMAX = max(self.boardController.view.frame.size.width,
-                                self.boardController.view.frame.size.height)
-        
-        let mxw = Int(screenSizeMIN / piecesMinSize)
-        let mnw = Int(screenSizeMIN / piecesMaxSize)
-        
-        var bestOption = 0
-        var bestOptionValue: CGFloat = 0.0
-        for i in mnw...mxw
-        {
-            let coeff = CGFloat(mxw - i) * pieceCoefficient
-            let z = CGFloat(difficulty.width) / CGFloat(i)
-            let c = z / CGFloat(Int(ceil(z))) + coeff
-            if c > bestOptionValue
-            {
-                bestOptionValue = c
-                bestOption = i
-            }
-        }
-        
-        let pieceSize = screenSizeMIN / CGFloat(bestOption)
-        
-        let vertical = EAPuzzleBoardSize(withWidth: Int(screenSizeMIN/pieceSize),
-                                         height: Int(screenSizeMAX/pieceSize))
+//        let piecesMinSize: CGFloat = 48.0
+//        let piecesMaxSize: CGFloat = 128.0
+//
+//        let screenSizeMIN = min(self.boardController.view.frame.size.width,
+//                                self.boardController.view.frame.size.height)
+//        let screenSizeMAX = max(self.boardController.view.frame.size.width,
+//                                self.boardController.view.frame.size.height)
+//
+//        let mxw = Int(screenSizeMIN / piecesMinSize)
+//        let mnw = Int(screenSizeMIN / piecesMaxSize)
+//
+//        var bestOption = 0
+//        var bestOptionValue: CGFloat = 0.0
+//        for i in mnw...mxw
+//        {
+//            let coeff = CGFloat(mxw - i) * pieceCoefficient
+//            let z = CGFloat(difficulty.width) / CGFloat(i)
+//            let c = z / CGFloat(Int(ceil(z))) + coeff
+//            if c > bestOptionValue
+//            {
+//                bestOptionValue = c
+//                bestOption = i
+//            }
+//        }
+//
+//        let pieceSize = screenSizeMIN / CGFloat(bestOption)
+//        print("#123 size:", pieceSize)
+        let vertical = EAPuzzleBoardSize(withWidth: 4,
+                                         height: 6)
         let horizontal = EAPuzzleBoardSize(withWidth: vertical.height,
                                            height: vertical.width)
         

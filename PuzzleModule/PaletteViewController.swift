@@ -280,17 +280,14 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
-    func setDataItems(_ items: [PieceItem])
-    {
+    func setDataItems(_ items: [PieceItem]) {
         var maxSize: CGFloat = 1.0
-        let s = CGSize(width: self.view.bounds.height-8, height: self.view.bounds.height-8)
-        for pi in items
-        {
-            let pis = pi.oframe.applying(pi.rotationTransform).size
-            
+        let s = CGSize(width: view.bounds.height-8, height: view.bounds.height-8)
+        for pi in items {
+            let pis = pi.rosizeCorrected
+            print("#123:", pis)
             let sc = min(s.width / pis.width, s.height / pis.height)
-            if sc < maxSize
-            {
+            if sc < maxSize {
                 maxSize = sc
             }
         }
@@ -299,21 +296,19 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         self.collectionView?.reloadData()
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = self.data[indexPath.row]
-        let size = item.oframe.applying(item.rotationTransform.scaledBy(x: self.scale, y: self.scale)).size
+        let rs = item.rosizeCorrected
+        let size = CGSize(width: rs.width*self.scale, height: rs.height*self.scale)
         return CGSize(width: size.width+15,
                       height: self.view.bounds.height)
     }
     
-    override func numberOfSections(in collectionView: UICollectionView) -> Int
-    {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.data.count
     }
     
@@ -340,15 +335,11 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                 
                 var b = cell.contentView.bounds
                 b.size.width -= 10
-                let newFrame = item.oframe.applying(CGAffineTransform.identity.rotated(by: item.rotation.angle)).cliped(with: b)
+                let ros = item.rosizeCorrected
+                let newFrame = CGRect(x: 0, y: 0, width: ros.width*self.scale, height: ros.height*self.scale)
+                proxy.bounds = newFrame
                 
-                if item.rotation == .left || item.rotation == .right
-                {
-                    proxy.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: newFrame.size.height, height: newFrame.size.width))
-                } else
-                {
-                    proxy.bounds = CGRect(origin: CGPoint.zero, size: newFrame.size)
-                }
+                print("#111", newFrame)
                 
                 proxy.mAnchor = CGPoint(x: 0.5, y: 0.5)
                 
@@ -365,8 +356,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                 UIView.animate(withDuration: 0.35, delay: delay, options: [], animations: {
                     proxy.alpha = 1.0
                 }, completion: { (finished) in
-                    if finished
-                    {
+                    if finished {
                         self.animCnt -= 1
                     }
                 })

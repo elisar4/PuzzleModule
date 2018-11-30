@@ -47,6 +47,8 @@ class BoardViewController: UIViewController, BoardInput
         
         self.view.clipsToBounds = true
         self.bgimg.mAnchor = CGPoint.zero
+        self.bgimg.contentMode = .scaleAspectFill
+        self.bgimg.clipsToBounds = false
         self.bgimg.alpha = 0.0
         self.pieceContainer.mAnchor = CGPoint.zero
         self.pieceContainer.layer.addSublayer(self.border)

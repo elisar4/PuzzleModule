@@ -63,13 +63,19 @@ class PuzzleDataSource
         {
             return p
         }
-        let i = self.getPieceItemImageProxy(pieceItem: pieceItem)
+        let i = self.getPieceItemImageProxy2(pieceItem: pieceItem)
         let img = UIImageView(image: i)
         img.tag = pieceItem.uidInt
         self.proxys.append(img)
         //img.mAnchor = CGPoint.zero
         //img.transform = pieceItem.rotationTransform
         return img
+    }
+    
+    func getPieceItemImageProxy2(pieceItem: PieceItem) -> UIImage?
+    {
+        let p = getPieceProxy(forItem: pieceItem)
+        return p.render
     }
     
     func getPieceItemImageProxy(pieceItem: PieceItem) -> UIImage?
@@ -94,6 +100,12 @@ class PuzzleDataSource
         }
         let p = Piece(withItem: forItem, originImage: self.puzzleImage)
         self.pcs.append(p)
+        return p
+    }
+    
+    func getPieceProxy(forItem: PieceItem) -> PieceProxy
+    {
+        let p = PieceProxy(withItem: forItem, originImage: self.puzzleImage)
         return p
     }
     

@@ -3,8 +3,21 @@
 
 import UIKit
 
-extension UIImage
-{
+extension UIImage {
+    func resizedImage(scale: CGFloat) -> UIImage {
+        let ow = self.size.width*scale
+        let oh = self.size.height*scale
+        
+        UIGraphicsBeginImageContext(CGSize(width: ow, height: oh))
+        self.draw(in: CGRect(x: 0, y: 0, width: ow, height: oh))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        if let ni = newImage {
+            return ni
+        }
+        return self
+    }
+    
     //scale type: ScaleAspectFill
     func resizedImage(toSize: CGSize) -> UIImage
     {
