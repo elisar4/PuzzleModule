@@ -26,6 +26,7 @@ import UIKit
                               puzzleRows: Int,
                               puzzleColumns: Int,
                               puzzlePieces: Array<Array<UIBezierPath>>,
+                              puzzleFrames: Array<Array<CGRect>>,
                               puzzleSize: CGFloat,
                               puzzleInsets: UIEdgeInsets,
                               puzzleState: PuzzleState?,
@@ -56,6 +57,7 @@ import UIKit
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.01,
                                       execute: {
             puzzle.configure(withPaths: pieces,
+                             frames: puzzleFrames,
                              image: puzzleImage,
                              difficulty: difficulty,
                              originSize: puzzleSize,

@@ -137,13 +137,13 @@ class Piece: UIView, PieceItemOutput
     {
         self.item = item
         
-        super.init(frame: item.oframe)
+        super.init(frame: item.oframeScaled)
         
         let cgi = originImage.cgImage!
-        let im = cgi.cropping(to: item.oframe)
+        let im = cgi.cropping(to: item.oframeScaled)
         
-        var trans = CGAffineTransform(translationX: -item.path.boundingBoxOfPath.origin.x,
-                                      y: -item.path.boundingBoxOfPath.origin.y)
+        var trans = CGAffineTransform(translationX: -item.oframe.origin.x,
+                                      y: -item.oframe.origin.y)
         let mask = CAShapeLayer()
         mask.path = item.path.copy(using: &trans)
         mask.fillColor = UIColor.blue.cgColor

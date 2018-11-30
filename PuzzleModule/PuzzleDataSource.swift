@@ -27,6 +27,7 @@ class PuzzleDataSource
     var proxys: [UIImageView] = []
     
     init(withPiecePaths paths: [[CGPath]],
+         frames: [[CGRect]],
          difficulty: EAPuzzleDifficulty,
          scale: CGFloat,
          originSize: CGFloat,
@@ -38,10 +39,10 @@ class PuzzleDataSource
         self.difficulty = difficulty
         self.boardSize = boardSize
         self.puzzleImage = puzzleImage
-        self.pcsItms = self.buildItems(withColumns: difficulty.width, rows: difficulty.height, scale: scale, originSize: originSize, rotation: difficulty.rotation, paths: paths)
+        self.pcsItms = self.buildItems(withColumns: difficulty.width, rows: difficulty.height, scale: scale, originSize: originSize, rotation: difficulty.rotation, paths: paths, frames: frames)
     }
     
-    func buildItems(withColumns columns: Int, rows: Int, scale: CGFloat, originSize: CGFloat, rotation: Bool, paths: [[CGPath]]) -> [PieceItem]
+    func buildItems(withColumns columns: Int, rows: Int, scale: CGFloat, originSize: CGFloat, rotation: Bool, paths: [[CGPath]], frames: [[CGRect]]) -> [PieceItem]
     {
         let scaledSize = originSize * scale
         var pieceItems: [PieceItem] = []
@@ -51,7 +52,7 @@ class PuzzleDataSource
             {
                 let name = "\(r)-\(c)"
                 let path = paths[r][c]
-                pieceItems.append(PieceItem(uid: name, row: r, col: c, path: path, scale: scale, size: scaledSize, fixed: !rotation))
+                pieceItems.append(PieceItem(uid: name, row: r, col: c, path: path, scale: scale, size: scaledSize, fixed: !rotation, originFrame: frames[r][c]))
             }
         }
         return pieceItems

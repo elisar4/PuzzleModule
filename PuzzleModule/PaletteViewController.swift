@@ -284,8 +284,8 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         var maxSize: CGFloat = 1.0
         let s = CGSize(width: view.bounds.height-8, height: view.bounds.height-8)
         for pi in items {
-            let pis = pi.rosizeCorrected
-            print("#123:", pis)
+            
+            let pis = pi.oframe.applying(pi.rotationTransform).size
             let sc = min(s.width / pis.width, s.height / pis.height)
             if sc < maxSize {
                 maxSize = sc
@@ -298,8 +298,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = self.data[indexPath.row]
-        let rs = item.rosizeCorrected
-        let size = CGSize(width: rs.width*self.scale, height: rs.height*self.scale)
+        let size = item.oframe.applying(item.rotationTransform.scaledBy(x: self.scale, y: self.scale)).size
         return CGSize(width: size.width+15,
                       height: self.view.bounds.height)
     }
@@ -335,11 +334,12 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                 
                 var b = cell.contentView.bounds
                 b.size.width -= 10
-                let ros = item.rosizeCorrected
-                let newFrame = CGRect(x: 0, y: 0, width: ros.width*self.scale, height: ros.height*self.scale)
-                proxy.bounds = newFrame
-                
-                print("#111", newFrame)
+                let newFrame = item.oframe.applying(CGAffineTransform.identity.rotated(by: item.rotation.angle)).cliped(with: b)
+                if item.rotation == .left || item.rotation == .right {
+                    proxy.bounds = CGRect(origin: .zero, size: newFrame.size.reversed)
+                } else {
+                    proxy.bounds = CGRect(origin: .zero, size: newFrame.size)
+                }
                 
                 proxy.mAnchor = CGPoint(x: 0.5, y: 0.5)
                 
@@ -376,5 +376,11 @@ extension CGRect
         let newH = self.height * p
         
         return CGRect(x: (with.width - newW) * 0.5, y: (with.height - newH) * 0.5, width: newW, height: newH)
+    }
+}
+
+extension CGSize {
+    var reversed: CGSize {
+        return CGSize(width: height, height: width)
     }
 }

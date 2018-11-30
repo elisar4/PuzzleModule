@@ -10,7 +10,7 @@ import UIKit
 
 @objc protocol PuzzleInput: class
 {
-    func configure(withPaths: [[CGPath]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
+    func configure(withPaths: [[CGPath]], frames: [[CGRect]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
     
     func storePuzzleState() -> PuzzleState
     
@@ -201,14 +201,16 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     var lastDifficulty: EAPuzzleDifficulty!
     var lastDataSource: PuzzleDataSource!
     var lastPaths: [[CGPath]] = []
+    var lastFrames: [[CGRect]] = []
     var lastShuffled: Bool = true
     var lastBoardBG: UIColor?
     var lastPaletteBG: UIColor?
     
-    func configure(withPaths: [[CGPath]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
+    func configure(withPaths: [[CGPath]], frames: [[CGRect]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
     {
         self.lastShuffled = shuffle
         self.lastPaths = withPaths
+        self.lastFrames = frames
         self.lastSize = originSize
         self.lastImage = image
         self.lastDifficulty = difficulty
@@ -239,7 +241,7 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         
         let img = image.resizedImage(scale: s)
         
-        let dataSource = PuzzleDataSource(withPiecePaths: withPaths, difficulty: difficulty, scale: scale, originSize: originSize, boardSize: boardSize, puzzleImage: self.imgWithBorder(img))
+        let dataSource = PuzzleDataSource(withPiecePaths: withPaths, frames: frames, difficulty: difficulty, scale: scale, originSize: originSize, boardSize: boardSize, puzzleImage: self.imgWithBorder(img))
         self.lastDataSource = dataSource
         
         self.boardController.setBoardSize(boardSize, originSize: originSize*scale)
@@ -248,12 +250,10 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25, execute: {
             
-            if let state = puzzleState
-            {
+            if let state = puzzleState {
                 // load puzzle
                 self.loadState(state)
-            } else
-            {
+            } else {
                 // new puzzle
                 self.setBoardPosition(0, row: 0)
             }
@@ -272,8 +272,7 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         c?.stroke(rect, width: 15.0)
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        if let img = img
-        {
+        if let img = img {
             return img
         }
         return image
@@ -535,7 +534,7 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     func resetPuzzleRequest()
     {
         self.clearBoard()
-        self.configure(withPaths: self.lastPaths, image: self.lastImage, difficulty: self.lastDifficulty, originSize: self.lastSize, puzzleState: nil, shuffle: self.lastShuffled, boardBGColor: self.lastBoardBG, paletteBGColor: self.lastPaletteBG)
+        self.configure(withPaths: self.lastPaths, frames: self.lastFrames, image: self.lastImage, difficulty: self.lastDifficulty, originSize: self.lastSize, puzzleState: nil, shuffle: self.lastShuffled, boardBGColor: self.lastBoardBG, paletteBGColor: self.lastPaletteBG)
     }
 }
 
