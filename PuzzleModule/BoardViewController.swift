@@ -14,11 +14,9 @@ protocol BoardInput: class
     func setBoardBGColor(_ color: UIColor)
 }
 
-class BoardViewController: UIViewController, BoardInput
-{
+class BoardViewController: UIViewController, BoardInput {
     
-    func unsub()
-    {
+    func unsub() {
         self.bgimg.image = nil
         self.bgimg.removeFromSuperview()
     }
@@ -37,8 +35,7 @@ class BoardViewController: UIViewController, BoardInput
     
     let pieceContainer: UIView = UIView()
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         self.border.strokeColor = UIColor(white: 1.0, alpha: 0.0).cgColor
@@ -61,18 +58,14 @@ class BoardViewController: UIViewController, BoardInput
                                            height: 3800)
     }
     
-    func setBoardBGColor(_ color: UIColor)
-    {
+    func setBoardBGColor(_ color: UIColor) {
         self.view.backgroundColor = color
     }
     
-    func panTouchingPiece(_ pan: UIPanGestureRecognizer) -> Piece?
-    {
-        if pan.state == .began
-        {
+    func panTouchingPiece(_ pan: UIPanGestureRecognizer) -> Piece? {
+        if pan.state == .began {
             let pieces = self.pieceContainer.subviews.map({ (v) -> Piece? in
-                if let p = v as? Piece
-                {
+                if let p = v as? Piece {
                     return p
                 }
                 return nil
@@ -82,13 +75,10 @@ class BoardViewController: UIViewController, BoardInput
                 return p1?.layer.zPosition ?? 0 > p2?.layer.zPosition ?? 0
             })
             
-            for p in pps
-            {
-                if let pp = p
-                {
+            for p in pps {
+                if let pp = p {
                     let pt = pan.location(in: pp)
-                    if pp.hitTest(pt, with: nil) != nil
-                    {
+                    if pp.hitTest(pt, with: nil) != nil {
                         return pp
                     }
                 }
@@ -97,20 +87,16 @@ class BoardViewController: UIViewController, BoardInput
         return nil
     }
     
-    func isAllItemsOnBoard(_ items: [PieceItem]) -> Bool
-    {
+    func isAllItemsOnBoard(_ items: [PieceItem]) -> Bool {
         let uids = self.pieceContainer.subviews.map { (v) -> String in
-            if let p = v as? Piece
-            {
+            if let p = v as? Piece {
                 return p.item.uid
             }
             return ""
         }
         
-        for item in items
-        {
-            if !uids.contains(item.uid)
-            {
+        for item in items {
+            if !uids.contains(item.uid) {
                 return false
             }
         }
@@ -118,23 +104,19 @@ class BoardViewController: UIViewController, BoardInput
         return true
     }
     
-    func addPiece(_ piece: Piece)
-    {
+    func addPiece(_ piece: Piece) {
         self.pieceContainer.addSubview(piece)
     }
     
-    func removePiece(_ piece: Piece)
-    {
+    func removePiece(_ piece: Piece) {
         piece.removeFromSuperview()
     }
     
-    func setBoardImageVisible(_ val: Bool)
-    {
+    func setBoardImageVisible(_ val: Bool) {
         self.bgimg.isHidden = !val
     }
     
-    func setBoardSize(_ boardSize: EAPuzzleBoard, originSize: CGFloat)
-    {
+    func setBoardSize(_ boardSize: EAPuzzleBoard, originSize: CGFloat) {
         self.board = boardSize
         self.originSize = originSize
     }
@@ -143,8 +125,7 @@ class BoardViewController: UIViewController, BoardInput
     var maxCol: Int = 0
     var maxRow: Int = 0
     
-    func setBackgroundImage(_ image: UIImage, withMaxCols: Int, maxRows: Int)
-    {
+    func setBackgroundImage(_ image: UIImage, withMaxCols: Int, maxRows: Int) {
         self.maxCol = withMaxCols
         self.maxRow = maxRows
         
@@ -162,21 +143,16 @@ class BoardViewController: UIViewController, BoardInput
         self.border.path = UIBezierPath(rect: self.bgimg.frame.insetBy(dx: 4, dy: 4)).cgPath
     }
     
-    func canPlacePieceOnBoard(_ piece: Piece) -> Bool
-    {
-        if let sv = piece.superview
-        {
+    func canPlacePieceOnBoard(_ piece: Piece) -> Bool {
+        if let sv = piece.superview {
             let pt = self.pieceContainer.convert(piece.center, from: sv)
-            if let v = self.pieceContainer.hitTest(pt, with: nil)
-            {
-                if v.isDescendant(of: self.pieceContainer)
-                {
+            if let v = self.pieceContainer.hitTest(pt, with: nil) {
+                if v.isDescendant(of: self.pieceContainer) {
                     let oldCenter = piece.center
                     piece.center = pt
                     let ngx = piece.item.nearestGX
                     let ngy = piece.item.nearestGY
-                    if self.isColRowInside(col: ngx, row: ngy)
-                    {
+                    if self.isColRowInside(col: ngx, row: ngy) {
                         return true
                     }
                     piece.center = oldCenter
@@ -186,8 +162,7 @@ class BoardViewController: UIViewController, BoardInput
         return false
     }
     
-    func isColRowInside(col: Int, row: Int) -> Bool
-    {
+    func isColRowInside(col: Int, row: Int) -> Bool {
         let bw = self.board?.verticalSize.width ?? 0
         let bh = self.board?.verticalSize.height ?? 0
         
@@ -197,8 +172,7 @@ class BoardViewController: UIViewController, BoardInput
         let maxBR = min(minBR + bh, maxRow)
         
         if col >= minBC && col < maxBC
-            && row >= minBR && row < maxBR
-        {
+            && row >= minBR && row < maxBR {
             return true
         }
         
@@ -208,97 +182,86 @@ class BoardViewController: UIViewController, BoardInput
     func setBoardPosition(col: Int, row: Int,
                           isColLast: Bool, isRowLast: Bool,
                           puzzleW: Int, puzzleH: Int,
-                          animated: Bool = true, completion: (()->())? = nil)
-    {
-        if self.col == col && self.row == row
-        {
+                          animated: Bool = true, completion: (()->())? = nil) {
+        if self.col == col && self.row == row {
             return;
         }
         
         print("\(self.col),\(self.row)==>\(col),\(row)")
         
-        if self.animating
-        {
+        if animating {
             return;
         }
         
-        self.animating = true
+        animating = true
         
-        let bw = self.board?.verticalSize.width ?? 0
-        let bh = self.board?.verticalSize.height ?? 0
+        let bw = board?.verticalSize.width ?? 0
+        let bh = board?.verticalSize.height ?? 0
         
         let isColFirst = col == 0
         let isRowFirst = row == 0
         
-        var xOff = self.originSize * 0.25
-        var yOff = self.originSize * 0.25
+        var xOff = originSize * 0.25
+        var yOff = originSize * 0.25
         
-        if isColFirst && isColLast
-        {
+        if isColFirst && isColLast {
             //is first and last
-            xOff = self.originSize * 0.25
-        } else if isColFirst
-        {
+            xOff = originSize * 0.25
+        } else if isColFirst {
             //first and more
             xOff = 0
-        } else if isColLast
-        {
+        } else if isColLast {
             //last
-            xOff = self.originSize * 0.5
+            xOff = originSize * 0.5
         }
         
-        if isRowFirst && isRowLast
-        {
+        if isRowFirst && isRowLast {
             //is first and last
-            yOff = self.originSize * 0.25
-        } else if isRowFirst
-        {
+            yOff = originSize * 0.25
+        } else if isRowFirst {
             //first and more
             yOff = 0
-        } else if isRowLast
-        {
+        } else if isRowLast {
             //last
-            yOff = self.originSize * 0.5
+            yOff = originSize * 0.5
         }
         
         let dc = puzzleW - bw * col
-        if dc < bw
-        {
+        if dc < bw {
             // correction, not all pieces available
-            xOff += self.originSize * CGFloat(bw - dc)
+            xOff += originSize * CGFloat(bw - dc)
         }
         
         let dr = puzzleH - bh * row
-        if dr < bh
-        {
-            if isRowFirst && isRowLast
-            {
-                yOff += -self.originSize * 0.25 + self.view.bounds.height * 0.5 - self.originSize * CGFloat(puzzleH) * 0.5
-            } else
-            {
+        if dr < bh {
+            if isRowFirst && isRowLast {
+                yOff += -originSize * 0.25 + view.bounds.height * 0.5 - originSize * CGFloat(puzzleH) * 0.5
+            } else {
                 // correction, not all pieces available
-                yOff += self.originSize * CGFloat(bh - dr)
+                yOff += originSize * CGFloat(bh - dr)
             }
         }
         
-        let cp = CGPoint(x: -CGFloat(bw * col) * self.originSize + xOff,
-                         y: -CGFloat(bh * row) * self.originSize + yOff)
-        
+        let cp = CGPoint(x: -CGFloat(bw * col) * originSize + xOff,
+                         y: -CGFloat(bh * row) * originSize + yOff)
+        set(centerPoint: cp, row: row, col: col, animated: animated, completion: completion)
+    }
+    
+    private func set(centerPoint cp: CGPoint, row: Int, col: Int, animated: Bool, completion: (()->())? = nil) {
         self.col = col
         self.row = row
         
-        self.bgimg.alpha = 0.15
+        bgimg.alpha = 0.15
         
-        if animated
-        {
-            let mpcx = self.view.bounds.width * 0.5
-            let mpcy = self.view.bounds.height * 0.5
+        if animated {
+            let mpcx = view.bounds.width * 0.5
+            let mpcy = view.bounds.height * 0.5
             
-            let mpc = self.pieceContainer.convert(CGPoint(x: mpcx, y: mpcy), from: self.view)
-            let mpci = self.bgimg.convert(CGPoint(x: mpcx, y: mpcy), from: self.view)
+            let mpc = pieceContainer.convert(CGPoint(x: mpcx, y: mpcy), from: view)
+            let mpci = bgimg.convert(CGPoint(x: mpcx, y: mpcy), from: view)
             
-            self.pieceContainer.mAnchorXY = mpc
-            self.bgimg.mAnchorXY = mpci
+            pieceContainer.mAnchorXY = mpc
+            bgimg.mAnchorXY = mpci
             
             //first phase
             UIView.animate(withDuration: 0.6, delay: 0.05, options: [.curveEaseInOut], animations: {
@@ -307,8 +270,7 @@ class BoardViewController: UIViewController, BoardInput
                 self.bgimg.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
                 
             }, completion: { (finished) in
-                if finished
-                {
+                if finished {
                     self.pieceContainer.mAnchor = CGPoint.zero
                     self.bgimg.mAnchor = CGPoint.zero
                     
@@ -322,16 +284,14 @@ class BoardViewController: UIViewController, BoardInput
                         self.bgimg.center = cp
                         
                     }, completion: { (finished) in
-                        if finished
-                        {
+                        if finished {
                             self.animating = false
                             completion?()
                         }
                     })
                 }
             })
-        } else
-        {
+        } else {
             self.pieceContainer.center = cp
             self.bgimg.center = cp
             self.animating = false
@@ -340,8 +300,7 @@ class BoardViewController: UIViewController, BoardInput
         self.border.strokeColor = UIColor(white: 1.0, alpha: 0.25).cgColor
     }
     
-    func setFinishedState(withCompletion: (()->())?)
-    {
+    func setFinishedState(withCompletion: (()->())?) {
         let cx = self.view.bounds.width * 0.5
         let cy = self.view.bounds.height * 0.5
         let scale = self.view.bounds.width / self.bgimg.bounds.width
@@ -352,16 +311,13 @@ class BoardViewController: UIViewController, BoardInput
         self.bgimg.mAnchor = anch
         
         UIView.animate(withDuration: 0.8, delay: 0.0, options: [], animations: {
-            
             self.pieceContainer.center = CGPoint(x: cx, y: cy)
             self.bgimg.center = CGPoint(x: cx, y: cy)
             
             self.pieceContainer.transform = CGAffineTransform(scaleX: scale, y: scale)
             self.bgimg.transform = CGAffineTransform(scaleX: scale, y: scale)
-            
         }) { (finished) in
-            if finished
-            {
+            if finished {
                 withCompletion?()
             }
         }

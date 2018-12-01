@@ -43,6 +43,7 @@ import Foundation
     }
 }
 
+//TODO: try storing state in background thread to make autosaving feature
 @objc public class PuzzleState: NSObject, NSCoding
 {
     @objc public var progress: CGFloat = 0.0
