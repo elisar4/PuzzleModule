@@ -190,56 +190,45 @@ class BoardViewController: UIViewController, BoardInput {
         print("\(self.col),\(self.row)==>\(col),\(row)")
         
         if animating {
-            return;
+            return
+        }
+        
+        guard let bw = board?.verticalSize.width,
+            let bh = board?.verticalSize.height else {
+            return
         }
         
         animating = true
         
-        let bw = board?.verticalSize.width ?? 0
-        let bh = board?.verticalSize.height ?? 0
-        
+        let isSingleCol = bw >= puzzleW
+        let isSingleRow = bh >= puzzleH
         let isColFirst = col == 0
         let isRowFirst = row == 0
+        let isCenteringX = isSingleCol || (!isColFirst && !isColLast)
+        let isCenteringY = isSingleRow || (!isRowFirst && !isRowLast)
+        let pw = originSize*(CGFloat(bw)+0.5)
+        let ph = originSize*(CGFloat(bh)+0.5)
         
-        var xOff = originSize * 0.25
-        var yOff = originSize * 0.25
-        
-        if isColFirst && isColLast {
-            //is first and last
-            xOff = originSize * 0.25
+        let xOff: CGFloat
+        if isSingleCol {
+            xOff = (view.bounds.width-(originSize*(CGFloat(bw))))*0.5
+        } else if isCenteringX {
+            xOff = (view.bounds.width-pw)*0.5
         } else if isColFirst {
-            //first and more
-            xOff = 0
-        } else if isColLast {
-            //last
-            xOff = originSize * 0.5
+            xOff = view.bounds.width-pw
+        } else {
+            xOff = 0.0
         }
         
-        if isRowFirst && isRowLast {
-            //is first and last
-            yOff = originSize * 0.25
+        let yOff: CGFloat
+        if isSingleRow {
+            yOff = (view.bounds.height-(originSize*(CGFloat(bh))))*0.5
+        } else if isCenteringY {
+            yOff = (view.bounds.height-ph)*0.5
         } else if isRowFirst {
-            //first and more
-            yOff = 0
-        } else if isRowLast {
-            //last
-            yOff = originSize * 0.5
-        }
-        
-        let dc = puzzleW - bw * col
-        if dc < bw {
-            // correction, not all pieces available
-            xOff += originSize * CGFloat(bw - dc)
-        }
-        
-        let dr = puzzleH - bh * row
-        if dr < bh {
-            if isRowFirst && isRowLast {
-                yOff += -originSize * 0.25 + view.bounds.height * 0.5 - originSize * CGFloat(puzzleH) * 0.5
-            } else {
-                // correction, not all pieces available
-                yOff += originSize * CGFloat(bh - dr)
-            }
+            yOff = view.bounds.height-ph
+        } else {
+            yOff = 0.0
         }
         
         let cp = CGPoint(x: -CGFloat(bw * col) * originSize + xOff,

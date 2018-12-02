@@ -105,6 +105,13 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         return palette
     }()
     
+    var boardSize: CGSize {
+        let ins = PuzzleModule.insets
+        let s = UIScreen.main.bounds
+        return CGSize(width: s.width-ins.left-ins.right,
+                      height: s.height-paletteHeight-ins.top-ins.bottom)
+    }
+    
     lazy var boardController: BoardViewController = {
         
         let board = BoardViewController()
@@ -135,26 +142,19 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         self.paletteController.view.addHeightConstraint(toView: nil, relation: .equal, constant: self.paletteHeight)
     }
     
-    @objc func checkCompletion()
-    {
+    @objc func checkCompletion() {
         DispatchQueue.main.async {
-            if self.gr.count == 1
-            {
-                if self.paletteController.data.count == 0
-                {
-                    if self.pcs.count == self.gr[0].pieces.count
-                    {
+            if self.gr.count == 1 {
+                if self.paletteController.data.count == 0 {
+                    if self.pcs.count == self.gr[0].pieces.count {
                         let items = self.lastDataSource.getPieceItems(forBoardColumn: self.boardController.col, boardRow: self.boardController.row)
-                        if self.boardController.isAllItemsOnBoard(items)
-                        {
-                            if self.sectionTransition
-                            {
+                        if self.boardController.isAllItemsOnBoard(items) {
+                            if self.sectionTransition {
                                 return;
                             }
                             self.sectionTransition = true
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2,
                                                           execute: {
-                                                            print("$puzzle didCompleteSection checkCompletion");
                                                             self.didCompleteSection()
                             })
                         }
@@ -233,11 +233,21 @@ public class PuzzleViewController: UIViewController, PuzzleInput
                                                pieceCoefficient: coeff)
         
         let pieces: CGFloat = CGFloat(boardSize.verticalSize.width)
+        let vPieces: CGFloat = CGFloat(boardSize.verticalSize.height)
         
-        let screenSize = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
-        let scale = screenSize / (pieces+0.5) / originSize
+        let bs = self.boardSize
         
-        let s = (screenSize / (pieces+0.5)) * CGFloat(difficulty.width) / image.size.width
+        let www = bs.width/(pieces+0.5)
+        let hhh = bs.height/(vPieces+0.5)
+        
+        let scale: CGFloat
+        if www <= hhh {
+            scale = www/originSize
+        } else {
+            scale = hhh/originSize
+        }
+        
+        let s = (originSize*scale) * CGFloat(difficulty.width) / image.size.width
         
         let img = image.resizedImage(scale: s)
         

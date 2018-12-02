@@ -19,6 +19,8 @@ import UIKit
 
 @objc public class PuzzleModule: NSObject
 {
+    static var insets: UIEdgeInsets = .zero
+    
     @objc public static func puzzle(atViewController: UIViewController,
                               withDelegate: PuzzleOutput,
                               puzzleImage: UIImage,
@@ -40,6 +42,8 @@ import UIKit
         puzzle.output = withDelegate
         
         puzzle.setBGColors(boardBGColor, paletteBGColor)
+        
+        insets = puzzleInsets
         
         puzzle.view.fillSuperView(puzzleInsets)
         
