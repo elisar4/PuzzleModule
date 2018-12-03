@@ -217,7 +217,7 @@ class BoardViewController: UIViewController, BoardInput {
         } else if isColFirst {
             xOff = view.bounds.width-pw
         } else {
-            xOff = 0.0
+            xOff = view.bounds.width-pw+originSize*0.5
         }
         
         let yOff: CGFloat
@@ -228,7 +228,7 @@ class BoardViewController: UIViewController, BoardInput {
         } else if isRowFirst {
             yOff = view.bounds.height-ph
         } else {
-            yOff = 0.0
+            yOff = view.bounds.height-ph//+originSize*0.5
         }
         
         let cp = CGPoint(x: -CGFloat(bw * col) * originSize + xOff,

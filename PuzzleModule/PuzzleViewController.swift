@@ -10,7 +10,7 @@ import UIKit
 
 @objc protocol PuzzleInput: class
 {
-    func configure(withPaths: [[CGPath]], frames: [[CGRect]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
+    func configure(withPaths: [[CGPath]], frames: [[CGRect]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, w: Int, h: Int, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
     
     func storePuzzleState() -> PuzzleState
     
@@ -165,31 +165,23 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     }
     
     var panPiece: Piece?
-    @objc func didPanTouchView(_ pan: UIPanGestureRecognizer)
-    {
-        if let p = self.panPiece
-        {
+    @objc func didPanTouchView(_ pan: UIPanGestureRecognizer) {
+        if let p = self.panPiece {
             p.pan(pan)
             if pan.state == .ended
                 || pan.state == .cancelled
-                || pan.state == .failed
-            {
+                || pan.state == .failed {
                 self.panPiece = nil
             }
-        } else
-        {
-            if pan.state == .began
-            {
-                if let p = self.boardController.panTouchingPiece(pan)
-                {
+        } else {
+            if pan.state == .began {
+                if let p = self.boardController.panTouchingPiece(pan) {
                     p.pan(pan)
                     self.panPiece = p
-                } else
-                {
+                } else {
                     self.paletteController.didPanTouchView(pan)
                 }
-            } else
-            {
+            } else {
                 self.paletteController.didPanTouchView(pan)
             }
         }
@@ -205,9 +197,13 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     var lastShuffled: Bool = true
     var lastBoardBG: UIColor?
     var lastPaletteBG: UIColor?
+    var lastW = 0
+    var lastH = 0
     
-    func configure(withPaths: [[CGPath]], frames: [[CGRect]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
+    func configure(withPaths: [[CGPath]], frames: [[CGRect]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, w: Int, h: Int, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)
     {
+        self.lastH = h
+        self.lastW = w
         self.lastShuffled = shuffle
         self.lastPaths = withPaths
         self.lastFrames = frames
@@ -227,10 +223,14 @@ public class PuzzleViewController: UIViewController, PuzzleInput
             self.paletteController.setPaletteBGColor(paletteBG)
         }
         
-        let coeff: CGFloat = (UIDevice.current.userInterfaceIdiom == .phone) ? -0.05 : +0.05
-        let boardSize = self.preferedBoardSize(withOrigin: originSize,
-                                               difficulty: difficulty,
-                                               pieceCoefficient: coeff)
+        
+        let vertical = EAPuzzleBoardSize(withWidth: w,
+                                         height: h)
+        let horizontal = EAPuzzleBoardSize(withWidth: vertical.height,
+                                           height: vertical.width)
+        
+        let boardSize = EAPuzzleBoard(withHorizontalSize: horizontal,
+                                      verticalSize: vertical)
         
         let pieces: CGFloat = CGFloat(boardSize.verticalSize.width)
         let vPieces: CGFloat = CGFloat(boardSize.verticalSize.height)
@@ -451,44 +451,6 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         return false
     }
     
-    func preferedBoardSize(withOrigin: CGFloat, difficulty: EAPuzzleDifficulty, pieceCoefficient: CGFloat) -> EAPuzzleBoard
-    {
-//        let piecesMinSize: CGFloat = 48.0
-//        let piecesMaxSize: CGFloat = 128.0
-//
-//        let screenSizeMIN = min(self.boardController.view.frame.size.width,
-//                                self.boardController.view.frame.size.height)
-//        let screenSizeMAX = max(self.boardController.view.frame.size.width,
-//                                self.boardController.view.frame.size.height)
-//
-//        let mxw = Int(screenSizeMIN / piecesMinSize)
-//        let mnw = Int(screenSizeMIN / piecesMaxSize)
-//
-//        var bestOption = 0
-//        var bestOptionValue: CGFloat = 0.0
-//        for i in mnw...mxw
-//        {
-//            let coeff = CGFloat(mxw - i) * pieceCoefficient
-//            let z = CGFloat(difficulty.width) / CGFloat(i)
-//            let c = z / CGFloat(Int(ceil(z))) + coeff
-//            if c > bestOptionValue
-//            {
-//                bestOptionValue = c
-//                bestOption = i
-//            }
-//        }
-//
-//        let pieceSize = screenSizeMIN / CGFloat(bestOption)
-//        print("#123 size:", pieceSize)
-        let vertical = EAPuzzleBoardSize(withWidth: 4,
-                                         height: 6)
-        let horizontal = EAPuzzleBoardSize(withWidth: vertical.height,
-                                           height: vertical.width)
-        
-        return EAPuzzleBoard(withHorizontalSize: horizontal,
-                             verticalSize: vertical)
-    }
-    
     func didCompleteSection()
     {
         
@@ -544,7 +506,7 @@ public class PuzzleViewController: UIViewController, PuzzleInput
     func resetPuzzleRequest()
     {
         self.clearBoard()
-        self.configure(withPaths: self.lastPaths, frames: self.lastFrames, image: self.lastImage, difficulty: self.lastDifficulty, originSize: self.lastSize, puzzleState: nil, shuffle: self.lastShuffled, boardBGColor: self.lastBoardBG, paletteBGColor: self.lastPaletteBG)
+        self.configure(withPaths: self.lastPaths, frames: self.lastFrames, image: self.lastImage, difficulty: self.lastDifficulty, originSize: self.lastSize, w: self.lastW, h: self.lastH, puzzleState: nil, shuffle: self.lastShuffled, boardBGColor: self.lastBoardBG, paletteBGColor: self.lastPaletteBG)
     }
 }
 
