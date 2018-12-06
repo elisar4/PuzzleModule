@@ -90,35 +90,37 @@ class PieceGroup
         }
     }
     
-    func snapToGrid(piece: Piece)
-    {
+    func snapToGrid(piece: Piece) {
         self.pieces.forEach { (p) in
-            if p.item.uid != piece.item.uid
-            {
-                p.snapToGrid()
+            if p.item.uid != piece.item.uid {
+                p.snapToGrid(false, group: true)
             }
         }
         self.checkLocked()
     }
     
-    func checkLocked()
-    {
-        if let piece = self.pieces.first
-        {
-            if self.pieces.count > 6
-            {
+    func snapToGrid(piece: String, dx: Int, dy: Int) {
+        self.pieces.forEach { (p) in
+            if p.item.uid != piece {
+                p.snapToGrid(dx: dx, dy: dy)
+            }
+        }
+        self.checkLocked()
+    }
+    
+    func checkLocked() {
+        if let piece = self.pieces.first {
+            if self.pieces.count > 6 {
                 if piece.item.dx == 0
                     && piece.item.dy == 0
-                    && piece.item.rotation == .origin
-                {
+                    && piece.item.rotation == .origin {
                     self.isLocked = true
                 }
             }
         }
     }
     
-    func append(piece: Piece)
-    {
+    func append(piece: Piece) {
         piece.group = self
         piece.item.locked = self.isLocked
         self.pieces.append(piece)

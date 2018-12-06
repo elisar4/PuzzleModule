@@ -28,7 +28,7 @@ class PieceItem {
     var gridX: Int = 0 {
         didSet {
             if let out = output {
-                out.frame = out.frame.rect(withX: scaledSize * CGFloat(dx) + ox*scale)
+                out.frame = out.frame.rect(withX: size * CGFloat(dx) + ox*scale)
             }
         }
     }
@@ -36,9 +36,28 @@ class PieceItem {
     var gridY: Int = 0 {
         didSet {
             if let out = output {
-                out.frame = out.frame.rect(withY: scaledSize * CGFloat(dy) + oy*scale)
+                out.frame = out.frame.rect(withY: size * CGFloat(dy) + oy*scale)
             }
         }
+    }
+    
+    func targetFrame(x: Int, y: Int) -> CGRect {
+        if let out = output {
+            let fx = CGFloat(x-col)*size+ox*scale
+            let fy = CGFloat(y-row)*size+oy*scale
+            return CGRect(x: fx, y: fy, width: out.frame.width, height: out.frame.height)
+        }
+        return .zero
+    }
+    
+    func deltaXY(x: Int, y: Int) -> CGPoint {
+        if let out = output {
+            let fx = CGFloat(x-col)*size+ox*scale
+            let fy = CGFloat(y-row)*size+oy*scale
+            return CGPoint(x: fx-out.frame.origin.x,
+                           y: fy-out.frame.origin.y)
+        }
+        return .zero
     }
     
     var dx: Int {
@@ -49,18 +68,22 @@ class PieceItem {
         return gridY - row
     }
     
+//    let r = sv.convert(piece.frame, to: pieceContainer)
+//    
+//    let gxf = (r.origin.x + piece.item.ax) / originSize
+//    let ngx = (gxf < 0) ? Int(gxf - 0.5) : Int(gxf + 0.5)
+//    let gyf = (r.origin.y + piece.item.ay) / originSize
+//    let ngy = (gyf < 0) ? Int(gyf - 0.5) : Int(gyf + 0.5)
     var nearestGX: Int {
         if let out = output {
-            let gxf = (out.frame.origin.x + ax - scaledSize * 0.5) / scaledSize
-            return (gxf < 0) ? Int(gxf - 0.5) : Int(gxf + 0.5)
+            return Int((out.frame.origin.x + ax) / size)
         }
         return 0
     }
     
     var nearestGY: Int {
         if let out = output {
-            let gfy = (out.frame.origin.y + ay - scaledSize * 0.5) / scaledSize
-            return (gfy < 0) ? Int(gfy - 0.5) : Int(gfy + 0.5)
+            return Int((out.frame.origin.y + ay) / size)
         }
         return 0
     }
@@ -71,11 +94,20 @@ class PieceItem {
     
     func translationToGridCell(col: Int, row: Int) -> CGPoint {
         if let out = output {
-            let nX = scaledSize * CGFloat(col - self.col) + ox*scale
-            let nY = scaledSize * CGFloat(row - self.row) + oy*scale
+            let nX = size * CGFloat(col - self.col) + ax
+            let nY = size * CGFloat(row - self.row) + ay
             return CGPoint(x: nX - out.frame.origin.x, y: nY - out.frame.origin.y)
         }
         return CGPoint.zero
+    }
+    
+    func nearestGridPoint() -> CGPoint {
+        if let out = output {
+            var fr = out.frame.rect(withX: size * CGFloat(dx) + ox*scale)
+            fr = fr.rect(withY: size * CGFloat(dy) + oy*scale)
+            return fr.origin
+        }
+        return .zero
     }
     
     func snapToNearestGridCell() {
@@ -183,10 +215,10 @@ class PieceItem {
         self.size = size
         self.scaledSize = size * scale
         
-        self.ax = (size * 0.5 + size * CGFloat(col) - ox)*scale
-        self.ay = (size * 0.5 + size * CGFloat(row) - oy)*scale
+        self.ax = (CGFloat(col)+0.5)*size - ox*scale
+        self.ay = (CGFloat(row)+0.5)*size - oy*scale
         self.a = CGPoint(x: ax, y: ay)
-        
+        print("#123", a)
         if !fixed {
             if let r = PieceRotation(rawValue: Int(arc4random() % 4)) {
                 self.rotation = r

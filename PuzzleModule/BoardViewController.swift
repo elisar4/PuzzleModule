@@ -8,7 +8,7 @@ protocol BoardInput: class
     func setBoardPosition(col: Int, row: Int, isColLast: Bool, isRowLast: Bool, puzzleW: Int, puzzleH: Int, animated: Bool, completion: (()->())?)
     func setBoardSize(_ boardSize: EAPuzzleBoard, originSize: CGFloat)
     func addPiece(_ piece: Piece)
-    func canPlacePieceOnBoard(_ piece: Piece) -> Bool
+    func canPlacePieceOnBoard(_ piece: Piece, isSingle: Bool, fromPalette: Bool) -> Bool
     func setFinishedState(withCompletion: (()->())?)
     func panTouchingPiece(_ pan: UIPanGestureRecognizer) -> Piece?
     func setBoardBGColor(_ color: UIColor)
@@ -143,19 +143,62 @@ class BoardViewController: UIViewController, BoardInput {
         self.border.path = UIBezierPath(rect: self.bgimg.frame.insetBy(dx: 4, dy: 4)).cgPath
     }
     
-    func canPlacePieceOnBoard(_ piece: Piece) -> Bool {
-        if let sv = piece.superview {
-            let pt = self.pieceContainer.convert(piece.center, from: sv)
-            if let v = self.pieceContainer.hitTest(pt, with: nil) {
-                if v.isDescendant(of: self.pieceContainer) {
-                    let oldCenter = piece.center
-                    piece.center = pt
-                    let ngx = piece.item.nearestGX
-                    let ngy = piece.item.nearestGY
-                    if self.isColRowInside(col: ngx, row: ngy) {
+    func snapPoint(_ piece: Piece) -> (Int, Int) {
+        guard let sv = piece.superview else {
+            return (-1, -1)
+        }
+        let pt = pieceContainer.convert(piece.center, from: sv)
+        if let v = pieceContainer.hitTest(pt, with: nil) {
+            if v.isDescendant(of: view) {
+                
+                let r = sv.convert(piece.frame, to: pieceContainer)
+                
+                let gxf = (r.origin.x + piece.item.ax) / originSize
+                let ngx = (gxf < 0) ? Int(gxf - 0.5) : Int(gxf + 0.5)
+                let gyf = (r.origin.y + piece.item.ay) / originSize
+                let ngy = (gyf < 0) ? Int(gyf - 0.5) : Int(gyf + 0.5)
+                
+                return (ngx, ngy)
+            }
+        }
+        return (-1, -1)
+    }
+    
+    func canPlacePieceOnBoard(_ piece: Piece, isSingle: Bool = false, fromPalette: Bool = false) -> Bool {
+        guard let sv = piece.superview else {
+            return false
+        }
+        let pt = pieceContainer.convert(piece.center, from: sv)
+        if let v = pieceContainer.hitTest(pt, with: nil) {
+            if v.isDescendant(of: view) {
+                
+                let tp = view.convert(CGPoint(x: 0.0, y: view.frame.maxY), to: sv)
+                if piece.frame.origin.y > tp.y {
+                    return false
+                }
+                
+                let r = sv.convert(piece.frame, to: pieceContainer)
+                
+                let gxf = (r.origin.x + piece.item.ax) / originSize
+                let ngx = (gxf < 0) ? Int(gxf - 0.5) : Int(gxf + 0.5)
+                let gyf = (r.origin.y + piece.item.ay) / originSize
+                let ngy = (gyf < 0) ? Int(gyf - 0.5) : Int(gyf + 0.5)
+                
+                if self.isColRowInside(col: ngx, row: ngy) {
+                    piece.frame = r
+                    return true
+                } else if isSingle && fromPalette {
+                    let corr = self.corrected(col: ngx, row: ngy)
+                    if corr.0 != ngx || corr.1 != ngy {
+                        piece.frame = r
                         return true
                     }
-                    piece.center = oldCenter
+                } else if isSingle {
+                    let corr = self.corrected(col: ngx, row: ngy)
+                    if corr.0 != ngx {
+                        piece.frame = r
+                        return true
+                    }
                 }
             }
         }
@@ -177,6 +220,43 @@ class BoardViewController: UIViewController, BoardInput {
         }
         
         return false
+    }
+    
+    func corrected(_ piece: Piece) -> (Int, Int) {
+        return snapPoint(piece)
+    }
+    
+    func corrected(col: Int, row: Int) -> (Int, Int) {
+        if isColRowInside(col: col, row: row) {
+            return (col, row)
+        }
+        
+        let bw = self.board?.verticalSize.width ?? 0
+        let bh = self.board?.verticalSize.height ?? 0
+        
+        let minBC = bw * self.col
+        let maxBC = min(minBC + bw, maxCol) - 1
+        let minBR = bh * self.row
+        let maxBR = min(minBR + bh, maxRow) - 1
+        
+        let c: Int
+        if col < minBC {
+            c = minBC
+        } else if col > maxBC {
+            c = maxBC
+        } else {
+            c = col
+        }
+        
+        let r: Int
+        if row < minBR {
+            r = minBR
+        } else if row > maxBR {
+            r = maxBR
+        } else {
+            r = row
+        }
+        return (c, r)
     }
     
     func setBoardPosition(col: Int, row: Int,

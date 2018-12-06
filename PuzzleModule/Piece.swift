@@ -26,16 +26,6 @@ enum PieceRotation: Int
     }
 }
 
-protocol PieceOutput
-{
-    func didMoveSinglePiece(_ piece: Piece)
-    func didPickSinglePiece(_ piece: Piece)
-    func didDropSinglePiece(_ piece: Piece) -> Bool
-    func didSnap(piece: Piece)
-    func didRotate(piece: Piece)
-    func correctedSnapPoint(forPiece: Piece) -> CGPoint
-}
-
 class Piece: UIView, PieceItemOutput
 {
     
@@ -253,35 +243,38 @@ class Piece: UIView, PieceItemOutput
             || sender.state == .cancelled
             || sender.state == .failed
         {
-            if self.group == nil
-            {
-                if self.output?.didDropSinglePiece(self) ?? false
-                {
+            if self.group == nil {
+                if self.output?.didDropSinglePiece(self) ?? false {
                     return
                 }
             }
             
-            let translation = (self.output?.correctedSnapPoint(forPiece: self)) ?? self.item.translationToNearestSnapPoint
+            let LGX = item.gridX
+            let LGY = item.gridY
+            let gr = group
             
+            let translation = self.output?.correctedSnapPoint(forPiece: self) ?? self.item.deltaXY(x: self.item.nearestGX, y: self.item.nearestGY)
             UIView.animate(withDuration: 0.15, animations: {
                 self.move(by: translation)
-                self.group?.didMovePiece(piece: self, by: translation)
+                gr?.didMovePiece(piece: self, by: translation)
             }, completion: { (finished) in
                 if finished {
-                    self.group?.snapToGrid(piece: self)
-                    self.snapToGrid()
+                    self.isMoving = false
+                    self.item.snapToNearestGridCell()
+                    let dx = self.item.gridX - LGX
+                    let dy = self.item.gridY - LGY
+                    gr?.snapToGrid(piece: self.item.uid, dx: dx, dy: dy)
+                    self.dispatchSnap()
                 }
             })
         }
     }
     
-    func showLockedEffect()
-    {
+    func showLockedEffect() {
         self.alpha = 0.45
     }
     
-    func hideLockedEffect()
-    {
+    func hideLockedEffect() {
         self.alpha = 1.0
     }
     
@@ -307,13 +300,22 @@ class Piece: UIView, PieceItemOutput
         self.frame = self.frame.offsetBy(dx: by.x, dy: by.y)
     }
     
-    func snapToGrid(_ dispatch: Bool = true)
-    {
+    func snapToGrid(_ dispatch: Bool = true, group: Bool = false) {
         self.isMoving = false
-        self.item.snapToNearestGridCell()
-        if dispatch
-        {
+        if !group {
+            self.item.snapToNearestGridCell()
+        }
+        if dispatch {
             self.dispatchSnap()
+        }
+    }
+    
+    func snapToGrid(_ dispatch: Bool = true, dx: Int, dy: Int) {
+        isMoving = false
+        item.gridX += dx
+        item.gridY += dy
+        if dispatch {
+            dispatchSnap()
         }
     }
     

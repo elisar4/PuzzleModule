@@ -3,15 +3,6 @@
 
 import UIKit
 
-protocol PaletteOutput: class
-{
-    func getProxy(fromItem: PieceItem) -> UIImageView
-    func getProxyAsync(fromItem: PieceItem, completion: @escaping (UIImageView)->())
-    func didPick(pieceItem: PieceItem, atPoint: CGPoint)
-    func didMove(pieceItem: PieceItem, by: CGPoint)
-    func didDrop(pieceItem: PieceItem, atPoint: CGPoint)
-}
-
 protocol PaletteInput: class
 {
     func hoverPiece(_ piece: Piece)
