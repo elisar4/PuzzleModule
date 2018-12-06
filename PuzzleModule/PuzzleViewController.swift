@@ -185,13 +185,8 @@ public class PuzzleViewController: UIViewController {
                                          animated: false)
         
         pcs.forEach({ (p) in
-            // performance ??
             self.didSnap(piece: p)
         })
-        
-//        DispatchQueue.global().async {
-//            self.preloadPieceItems()
-//        }
     }
     
     func remakeTimer() {
@@ -230,34 +225,6 @@ public class PuzzleViewController: UIViewController {
                                                   self.sectionTransition = false
             })
         })
-        /*
-        if col == 0 && row == 0
-        {
-            
-            DispatchQueue.global().async {
-                print("preloadPieceItems")
-                self.preloadPieceItems()
-            }
- 
-        }
-         */
-    }
-    
-    func preloadPieceItems() {
-        var col = 0
-        var row = 0
-        while let nxt = getNextUncompletedRowCol(fromCol: col, fromRow: row) {
-            col = nxt.0
-            row = nxt.1
-            let items = self.lastDataSource.getPieceItems(forBoardColumn: col,
-                                                          boardRow: row)
-            //print("preloaded items at: ", col, row)
-            
-            for item in items {
-                _ = self.lastDataSource.getPiece(forItem: item)
-                //print("preloaded piece: ", item.uid)
-            }
-        }
     }
     
     func hasUncompletedPieces(atCol: Int, row: Int) -> Bool {
@@ -273,14 +240,6 @@ public class PuzzleViewController: UIViewController {
                     || pi.rotation != .origin
                     || !pi.locked
             })
-            //maybe need to check Piece's from pss items
-//            for pi in pss {
-//                let p = self.lastDataSource.getPiece(forItem: pi)
-//                if p.isHidden || p.superview == nil {
-//                    return true
-//                }
-//            }
-            
             return pss.count > 0
         }
         return false
