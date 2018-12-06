@@ -3,9 +3,9 @@
 
 import UIKit
 
-@objc public protocol PuzzleOutput: class
-{
+@objc public protocol PuzzleOutput: class {
     func didCompletePuzzle()
+    func didUpdate(progress: CGFloat)
 }
 
 @objc protocol PuzzleInput: class
@@ -118,6 +118,34 @@ public class PuzzleViewController: UIViewController, PuzzleInput
         
         return board
     }()
+    
+    var inPlaceCount: Int {
+        return pcs.filter({ (p) -> Bool in
+            return p.item.dx == 0 && p.item.dy == 0
+        }).count
+    }
+    
+    var onBoardCount: Int {
+        return pcs.count
+    }
+    
+    var allCount: Int {
+        return lastDataSource.pcsItms.count
+    }
+    
+    public var currentProgress: CGFloat {
+        let inPlace = inPlaceCount
+        let all = allCount
+        let onBoard = onBoardCount
+        
+        let b = CGFloat(onBoard) / CGFloat(all) * 0.15
+        let p = CGFloat(inPlace) / CGFloat(all) * 0.91
+        
+        if p + b > 1.0 {
+            return 1.0
+        }
+        return p + b
+    }
     
     override public func viewDidLoad()
     {
@@ -585,145 +613,111 @@ extension PuzzleViewController: PaletteOutput
                     }
                 }
             })
-        } else
-        {
+        } else {
             //else -> return to palette
             self.paletteController.didReturnToPalette(p)
         }
     }
 }
 
-extension PuzzleViewController: PieceOutput
-{
+extension PuzzleViewController: PieceOutput {
     
-    func didDropSinglePiece(_ piece: Piece) -> Bool
-    {
+    func didDropSinglePiece(_ piece: Piece) -> Bool {
         let p = piece
         p.isUserInteractionEnabled = true
         
-        if self.boardController.canPlacePieceOnBoard(p)
-        {
+        if self.boardController.canPlacePieceOnBoard(p) {
             self.view.window?.isUserInteractionEnabled = false
             
             //if piece on board -> insert piece on board view
             self.boardController.addPiece(p)
-            if !self.pcs.contains(p)
-            {
+            if !self.pcs.contains(p) {
                 self.pcs.append(p)
                 p.output = self
             }
             self.paletteController.didGrabItem(p.item)
             
-//            UIView.animate(withDuration: 0.15,
-//                           animations: {
-//                            p.snapToGrid(false)
-//            }, completion: { (finished) in
-//                
-//                DispatchQueue.global().async {
-//                    
-//                    p.dispatchSnap()
-//                }
-//            })
-            
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.08, execute: {
-                
                 self.view.window?.isUserInteractionEnabled = true
             })
             
-            
+            self.output?.didUpdate(progress: self.currentProgress)
             return false
-        } else
-        {
+        } else {
             //else -> return to palette
             print("did return")
             self.paletteController.didReturnToPalette(piece)
+            self.output?.didUpdate(progress: self.currentProgress)
             return true
         }
     }
     
-    func didMoveSinglePiece(_ piece: Piece)
-    {
+    func didMoveSinglePiece(_ piece: Piece) {
         self.paletteController.hoverPiece(piece)
     }
     
-    func didPickSinglePiece(_ piece: Piece)
-    {
+    func didPickSinglePiece(_ piece: Piece) {
         if let wnd = self.view.window,
-            let pt = piece.superview?.convert(piece.center, to: wnd)
-        {
+            let pt = piece.superview?.convert(piece.center, to: wnd) {
             self.view.window?.addSubview(piece)
             piece.center = pt
         }
     }
     
-    func processGroup(_ piece: Piece)
-    {
+    func processGroup(_ piece: Piece) {
         let maxDist = (self.lastDataSource.originSize * self.lastDataSource.scale) * 3
         var shouldRepeat = false
-        for p in self.pcs
-        {
+        for p in self.pcs {
             let dist = piece.center.distance(toPoint: p.center)
-            if dist > maxDist
-            {
+            if dist > maxDist {
                 continue
             }
-            if piece.canGroup(withPiece: p)
-            {
-                if let gr1 = piece.group
-                {
-                    if let gr2 = p.group
-                    {
+            if piece.canGroup(withPiece: p) {
+                if let gr1 = piece.group {
+                    if let gr2 = p.group {
                         let removedGroup = gr1.combine(withGroup: gr2)
-                        if let ind = self.gr.index(where: { $0.uid == removedGroup.uid })
-                        {
+                        if let ind = self.gr.index(where: { $0.uid == removedGroup.uid }) {
                             self.gr.remove(at: ind)
                         }
                         shouldRepeat = true
-                    } else
-                    {
+                    } else {
                         gr1.append(piece: p)
                         shouldRepeat = true
                     }
-                } else if let gr2 = p.group
-                {
+                } else if let gr2 = p.group {
                     gr2.append(piece: piece)
                     shouldRepeat = true
-                } else
-                {
+                } else {
                     self.gr.append(PieceGroup(withPieces: [piece, p]))
                     shouldRepeat = true
                 }
             }
         }
         
-        if shouldRepeat
-        {
+        if shouldRepeat {
             self.processGroup(piece)
+        } else {
+            self.output?.didUpdate(progress: self.currentProgress)
         }
     }
     
-    func updateZIndexes()
-    {
-        for g in self.gr
-        {
+    func updateZIndexes() {
+        for g in self.gr {
             g.updateZIndex()
         }
         
         let individualPieces = self.pcs.filter { $0.group == nil }
-        for p in individualPieces
-        {
+        for p in individualPieces {
             p.layer.zPosition = p.lastAction
         }
         
         let zSorted = self.pcs.sorted { $0.layer.zPosition < $1.layer.zPosition }
-        for ps in zSorted
-        {
+        for ps in zSorted {
             self.boardController.view.bringSubviewToFront(ps)
         }
     }
     
-    func didSnap(piece: Piece)
-    {
+    func didSnap(piece: Piece) {
         self.processGroup(piece)
 //        for p in self.pcs
 //        {
@@ -732,26 +726,18 @@ extension PuzzleViewController: PieceOutput
         self.updateZIndexes()
         piece.group?.checkLocked()
         
-        if self.gr.count == 1
-        {
-            if self.gr[0].isLocked
-            {
-                if self.paletteController.data.count == 0
-                {
-                    if self.pcs.count == self.gr[0].pieces.count
-                    {
+        if self.gr.count == 1 {
+            if self.gr[0].isLocked {
+                if self.paletteController.data.count == 0 {
+                    if self.pcs.count == self.gr[0].pieces.count {
                         let items = self.lastDataSource.getPieceItems(forBoardColumn: self.boardController.col, boardRow: self.boardController.row)
-                        if self.boardController.isAllItemsOnBoard(items)
-                        {
-                            if sectionTransition
-                            {
+                        if self.boardController.isAllItemsOnBoard(items) {
+                            if sectionTransition {
                                 return;
                             }
                             sectionTransition = true
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2,
                                                           execute: {
-                                                            
-                                                            print("$puzzle didCompleteSection didSnap");
                                                             self.didCompleteSection()
                             })
                         }
@@ -761,17 +747,14 @@ extension PuzzleViewController: PieceOutput
         }
     }
     
-    func didRotate(piece: Piece)
-    {
-        for p in self.pcs
-        {
+    func didRotate(piece: Piece) {
+        for p in self.pcs {
             self.processGroup(p)
         }
         self.updateZIndexes()
     }
     
-    func correctedSnapPoint(forPiece piece: Piece) -> CGPoint
-    {
+    func correctedSnapPoint(forPiece piece: Piece) -> CGPoint {
         let oldCenter = piece.center
         let trans = piece.item.translationToNearestSnapPoint
         piece.center = CGPoint(x: piece.center.x + trans.x,
@@ -782,11 +765,9 @@ extension PuzzleViewController: PieceOutput
         
         piece.center = oldCenter
         
-        if self.boardController.isColRowInside(col: ngx, row: ngy)
-        {
+        if self.boardController.isColRowInside(col: ngx, row: ngy) {
             return trans
-        } else
-        {
+        } else {
             let checkGrid = [(0,-1),    (1,0),  (0,1),  (-1,0),
                              (-1,-1),   (1,-1), (1,1),  (-1,1),
                              (-2,0),    (0,-2), (2,0),  (0,2),
@@ -794,10 +775,8 @@ extension PuzzleViewController: PieceOutput
                              (1,-2),    (2,-1), (2,1),  (1,2),
                              (-2,2),    (-2,-2),(2,-2), (2,2),
                              (0,3),     (-3,0), (0,-3), (3,0)]
-            for check in checkGrid
-            {
-                if self.boardController.isColRowInside(col: ngx+check.0, row: ngy+check.1)
-                {
+            for check in checkGrid {
+                if self.boardController.isColRowInside(col: ngx+check.0, row: ngy+check.1) {
                     return piece.item.translationToGridCell(col: ngx+check.0, row: ngy+check.1)
                 }
             }
@@ -812,10 +791,8 @@ extension PuzzleViewController: PieceOutput
                                 (0,-6),(6,0),(0,-6),(-6,0),(6,-6),(6,6),(-6,6),(-6,-6),
                                 (0,-7),(7,0),(0,-7),(-7,0),(7,-7),(7,7),(-7,7),(-7,-7),
                                 (0,-8),(8,0),(0,-8),(-8,0),(8,-8),(8,8),(-8,8),(-8,-8)]
-            for check in checkGridExt
-            {
-                if self.boardController.isColRowInside(col: ngx+check.0, row: ngy+check.1)
-                {
+            for check in checkGridExt {
+                if self.boardController.isColRowInside(col: ngx+check.0, row: ngy+check.1) {
                     return piece.item.translationToGridCell(col: ngx+check.0, row: ngy+check.1)
                 }
             }

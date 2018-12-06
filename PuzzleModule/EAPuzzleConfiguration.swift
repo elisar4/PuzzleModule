@@ -3,16 +3,14 @@
 
 import Foundation
 
-@objc public class PieceState: NSObject, NSCoding
-{
+@objc public class PieceState: NSObject, NSCoding {
     public var uid: String = ""
     public var paletteIndex: Int = -1
     public var curX: Int = 0
     public var curY: Int = 0
     public var rotation: Int = 0
     
-    init(from: PieceItem, paletteIndex: Int = -1)
-    {
+    init(from: PieceItem, paletteIndex: Int = -1) {
         super.init()
         
         self.uid = from.uid
@@ -22,8 +20,7 @@ import Foundation
         self.paletteIndex = paletteIndex
     }
     
-    public func encode(with aCoder: NSCoder)
-    {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(self.uid, forKey: "uid")
         aCoder.encode(self.curX, forKey: "curX")
         aCoder.encode(self.curY, forKey: "curY")
@@ -31,8 +28,7 @@ import Foundation
         aCoder.encode(self.paletteIndex, forKey: "paletteIndex")
     }
     
-    public required init?(coder aDecoder: NSCoder)
-    {
+    public required init?(coder aDecoder: NSCoder) {
         super.init()
         
         self.uid = (aDecoder.decodeObject(forKey: "uid") as? String) ?? ""
@@ -44,8 +40,7 @@ import Foundation
 }
 
 //TODO: try storing state in background thread to make autosaving feature
-@objc public class PuzzleState: NSObject, NSCoding
-{
+@objc public class PuzzleState: NSObject, NSCoding {
     @objc public var progress: CGFloat = 0.0
     @objc public var difficulty: Int = 0
     @objc public var rotationEnabled: Bool = false
@@ -56,49 +51,26 @@ import Foundation
     @objc public var boardPieces: [PieceState] = []
     @objc public var palettePieces: [PieceState] = []
     
-    init(from: PuzzleViewController)
-    {
+    init(from: PuzzleViewController) {
         super.init()
         
-        let inPlace = from.pcs.filter({ (p) -> Bool in
-            return p.item.dx == 0 && p.item.dy == 0
-        }).count
-        let all = from.lastDataSource.pcsItms.count
-        
-        let onBoard = from.pcs.count
-        
-        let onBP = CGFloat(onBoard) / CGFloat(all) * 0.15
-        
-        let p = CGFloat(inPlace) / CGFloat(all) * 0.91
-        
-        self.progress = p + onBP
-        if self.progress > 1.0
-        {
-            self.progress = 1.0
-        }
-        
+        self.progress = from.currentProgress
         self.difficulty = from.lastDifficulty.width
-        
         self.rotationEnabled = from.lastDifficulty.rotation
-        
         self.boardPositionR = from.boardController.row
-        
         self.boardPositionC = from.boardController.col
         
-        for p in from.pcs
-        {
+        for p in from.pcs {
             self.boardPieces.append(PieceState(from: p.item))
         }
         
-        for i in 0..<from.paletteController.data.count
-        {
+        for i in 0..<from.paletteController.data.count {
             let pi = from.paletteController.data[i]
             self.palettePieces.append(PieceState(from: pi, paletteIndex: i))
         }
     }
     
-    @objc public func encode(with aCoder: NSCoder)
-    {
+    @objc public func encode(with aCoder: NSCoder) {
         aCoder.encode(Float(self.progress), forKey: "progress")
         aCoder.encode(self.difficulty, forKey: "difficulty")
         aCoder.encode(self.rotationEnabled, forKey: "rotationEnabled")
@@ -108,8 +80,7 @@ import Foundation
         aCoder.encode(self.palettePieces, forKey: "palettePieces")
     }
     
-    @objc public required init?(coder aDecoder: NSCoder)
-    {
+    @objc public required init?(coder aDecoder: NSCoder) {
         super.init()
         
         self.progress = CGFloat(aDecoder.decodeFloat(forKey: "progress"))
@@ -119,77 +90,63 @@ import Foundation
         self.boardPositionC = aDecoder.decodeInteger(forKey: "boardPositionC")
         self.boardPieces = (aDecoder.decodeObject(forKey: "boardPieces") as? [PieceState]) ?? [PieceState]()
         self.palettePieces = (aDecoder.decodeObject(forKey: "palettePieces") as? [PieceState]) ?? [PieceState]()
-        
     }
-    
 }
 
-class EAPuzzle
-{
+class EAPuzzle {
     public let config: EAPuzzleConfiguration
     public let progress: EAPuzzleProgress = EAPuzzleProgress()
     
-    init(withConfig config: EAPuzzleConfiguration)
-    {
+    init(withConfig config: EAPuzzleConfiguration) {
         self.config = config
-        
     }
 }
 
-class EAPuzzleConfiguration
-{
+class EAPuzzleConfiguration {
     public let originSize: Float
     public let difficulty: EAPuzzleDifficulty
     public var board: EAPuzzleBoard
     
-    init(withDifficulty: EAPuzzleDifficulty, board: EAPuzzleBoard, originSize: Float)
-    {
+    init(withDifficulty: EAPuzzleDifficulty, board: EAPuzzleBoard, originSize: Float) {
         self.originSize = originSize
         self.difficulty = withDifficulty
         self.board = board
     }
 }
 
-@objc class EAPuzzleDifficulty: NSObject
-{
+@objc class EAPuzzleDifficulty: NSObject {
     public let width: Int
     public let height: Int
     public let rotation: Bool
     
-    init(withPiecesColumns piecesColumns: Int, piecesRows: Int, rotationEnabled: Bool)
-    {
+    init(withPiecesColumns piecesColumns: Int, piecesRows: Int, rotationEnabled: Bool) {
         self.width = piecesColumns
         self.height = piecesRows
         self.rotation = rotationEnabled
     }
 }
 
-class EAPuzzleBoardSize
-{
+class EAPuzzleBoardSize {
     public let width: Int
     public let height: Int
     
-    init(withWidth width: Int, height: Int)
-    {
+    init(withWidth width: Int, height: Int) {
         self.width = width
         self.height = height
     }
 }
 
-class EAPuzzleBoard
-{
+class EAPuzzleBoard {
     public let horizontalSize: EAPuzzleBoardSize
     public let verticalSize: EAPuzzleBoardSize
     
-    init(withHorizontalSize horizontalSize: EAPuzzleBoardSize, verticalSize: EAPuzzleBoardSize)
-    {
+    init(withHorizontalSize horizontalSize: EAPuzzleBoardSize, verticalSize: EAPuzzleBoardSize) {
         self.horizontalSize = horizontalSize
         self.verticalSize = verticalSize
     }
 }
 
-class EAPuzzleProgress
-{
+class EAPuzzleProgress {
     public var onBoardPieces: [String:(x: Int, y: Int, r: Float)] = [:]
     public var completedPieces: [String] = []
 }
