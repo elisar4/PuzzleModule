@@ -76,8 +76,7 @@ public class PuzzleViewController: UIViewController {
         return p + b
     }
     
-    override public func viewDidLoad()
-    {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .black

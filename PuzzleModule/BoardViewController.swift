@@ -3,8 +3,7 @@
 
 import UIKit
 
-protocol BoardInput: class
-{
+protocol BoardInput: class {
     func setBoardPosition(col: Int, row: Int, isColLast: Bool, isRowLast: Bool, puzzleW: Int, puzzleH: Int, animated: Bool, completion: (()->())?)
     func setBoardSize(_ boardSize: EAPuzzleBoard, originSize: CGFloat)
     func addPiece(_ piece: Piece)
