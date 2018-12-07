@@ -292,7 +292,9 @@ class BoardViewController: UIViewController, BoardInput {
         if isSingleCol {
             xOff = (view.bounds.width-(originSize*(CGFloat(bw))))*0.5
         } else if isCenteringX {
-            xOff = (view.bounds.width-pw)*0.5
+            let rowOdd = CGFloat(row).remainder(dividingBy: 2.0) == 0.0
+            let os = rowOdd ? originSize*0.35 : originSize*0.1
+            xOff = (view.bounds.width-pw)*0.5 + os
         } else if isColFirst {
             xOff = view.bounds.width-pw
         } else {
@@ -303,7 +305,7 @@ class BoardViewController: UIViewController, BoardInput {
         if isSingleRow {
             yOff = (view.bounds.height-(originSize*(CGFloat(bh))))*0.5
         } else if isCenteringY {
-            yOff = (view.bounds.height-ph)*0.5
+            yOff = (view.bounds.height-ph)*0.5+originSize*0.35
         } else if isRowFirst {
             yOff = view.bounds.height-ph
         } else {

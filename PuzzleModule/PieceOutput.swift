@@ -103,10 +103,10 @@ extension PuzzleViewController: PieceOutput {
             p.layer.zPosition = p.lastAction
         }
         
-        let zSorted = pcs.sorted { $0.layer.zPosition < $1.layer.zPosition }
-        for ps in zSorted {
-            boardController.view.bringSubviewToFront(ps)
-        }
+//        let zSorted = pcs.sorted { $0.layer.zPosition < $1.layer.zPosition }
+//        for ps in zSorted {
+//            boardController.view.bringSubviewToFront(ps)
+//        }
     }
     
     func didSnap(piece: Piece) {
