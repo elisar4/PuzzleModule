@@ -179,14 +179,6 @@ class Piece: UIView, PieceItemOutput
             let tap = UITapGestureRecognizer(target: self, action: #selector(Piece.tap(_:)))
             self.addGestureRecognizer(tap)
         }
-        
-        let v = UIView()
-        v.frame = CGRect(x: 0, y: 0, width: 5, height: 5)
-        v.clipsToBounds = true
-        v.layer.cornerRadius = 2.5
-        v.backgroundColor = .red
-        addSubview(v)
-        v.center = item.a
     }
     
     @objc func tap(_ sender: UITapGestureRecognizer) {
