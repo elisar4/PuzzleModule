@@ -68,7 +68,7 @@ public class PuzzleViewController: UIViewController {
         let onBoard = onBoardCount
         
         let b = CGFloat(onBoard) / CGFloat(all) * 0.15
-        let p = CGFloat(inPlace) / CGFloat(all) * 0.91
+        let p = CGFloat(inPlace) / CGFloat(all) * 0.85
         
         if p + b > 1.0 {
             return 1.0

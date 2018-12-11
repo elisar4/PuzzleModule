@@ -60,28 +60,25 @@ class PieceGroup
         }
     }
     
-    func didRotatePiece(piece: Piece, to: PieceRotation)
-    {
-        for p in self.pieces
-        {
-            if p.isRotating && p != piece
-            {
+    func didRotatePiece(piece: Piece, to: PieceRotation) {
+        let cx = piece.item.gridX
+        let cy = piece.item.gridY
+        for p in self.pieces {
+            if p.isRotating && p != piece {
                 // avoiding group rotation from multiple pieces
                 return
             }
         }
         
         self.pieces.forEach { (p) in
-            if p.item.uid != piece.item.uid
-            {
-                p.animateRotationFromPiece(piece, to: to)
+            if p.item.uid != piece.item.uid {
+                p.animateRotationFromPiece(piece, to: to, lx: cx, ly: cy)
             }
         }
-        piece.animateRotationFromPiece(piece, to: to)
+        piece.animateRotationFromPiece(piece, to: to, lx: cx, ly: cy)
     }
     
-    func didMovePiece(piece: Piece, by: CGPoint)
-    {
+    func didMovePiece(piece: Piece, by: CGPoint) {
         self.pieces.forEach { (p) in
             if p.item.uid != piece.item.uid
             {

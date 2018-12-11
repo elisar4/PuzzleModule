@@ -218,7 +218,7 @@ class PieceItem {
         self.ax = (CGFloat(col)+0.5)*size - ox*scale
         self.ay = (CGFloat(row)+0.5)*size - oy*scale
         self.a = CGPoint(x: ax, y: ay)
-        print("#123", a)
+        
         if !fixed {
             if let r = PieceRotation(rawValue: Int(arc4random() % 4)) {
                 self.rotation = r

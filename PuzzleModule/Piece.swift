@@ -80,8 +80,7 @@ class Piece: UIView, PieceItemOutput
         }
     }
     
-    func animateRotationFromPiece(_ piece: Piece, to: PieceRotation)
-    {
+    func animateRotationFromPiece(_ piece: Piece, to: PieceRotation, lx: Int, ly: Int) {
         let oldT = self.layer.transform
         let oldAnchor = self.mAnchor
         
@@ -96,7 +95,26 @@ class Piece: UIView, PieceItemOutput
             CATransaction.instant {
                 self.layer.transform = oldT
                 self.rotation = to
-                self.item.snapToNearestGridCell()
+                if self == piece {
+                    self.item.gridX = lx
+                    self.item.gridY = ly
+                } else {
+                    let ldx = self.item.col - piece.item.col
+                    let ldy = self.item.row - piece.item.row
+                    if to == .right {
+                        self.item.gridX = lx + ldy
+                        self.item.gridY = ly - ldx
+                    } else if to == .upside {
+                        self.item.gridX = lx - ldx
+                        self.item.gridY = ly - ldy
+                    } else if to == .left {
+                        self.item.gridX = lx - ldy
+                        self.item.gridY = ly + ldx
+                    } else if to == .origin {
+                        self.item.gridX = lx + ldx
+                        self.item.gridY = ly + ldy
+                    }
+                }
             }
             self.isRotating = false
             
@@ -161,26 +179,29 @@ class Piece: UIView, PieceItemOutput
             let tap = UITapGestureRecognizer(target: self, action: #selector(Piece.tap(_:)))
             self.addGestureRecognizer(tap)
         }
+        
+        let v = UIView()
+        v.frame = CGRect(x: 0, y: 0, width: 5, height: 5)
+        v.clipsToBounds = true
+        v.layer.cornerRadius = 2.5
+        v.backgroundColor = .red
+        addSubview(v)
+        v.center = item.a
     }
     
-    @objc func tap(_ sender: UITapGestureRecognizer)
-    {
-        if self.group?.isLocked ?? false
-        {
+    @objc func tap(_ sender: UITapGestureRecognizer) {
+        if self.group?.isLocked ?? false {
             return
         }
-        if self.isRotating || self.isMoving
-        {
+        if self.isRotating || self.isMoving {
             return
         }
         self.isRotating = true
         self.updateLastAction()
         
-        if let gr = self.group
-        {
+        if let gr = self.group {
             gr.didRotatePiece(piece: self, to: self.rotation.nextSide)
-        } else
-        {
+        } else {
             self.rotate(to: self.rotation.nextSide)
         }
     }
