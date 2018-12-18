@@ -63,8 +63,62 @@ class Piece: UIView, PieceItemOutput
         }
     }
     
-    func rotate(to: PieceRotation, animated: Bool = true)
-    {
+    let blinkView = UIView()
+    let blinkMask = CAShapeLayer()
+    
+    var animations = ["0_1": false,
+                      "0_-1": false,
+                      "1_0": false,
+                      "-1_0": false]
+    
+    func blink(_ piece: Piece) {
+        let pcx: CGFloat
+        
+        let dx = piece.item.col - item.col
+        if dx == 0 {
+            pcx = item.ax
+        } else if dx == 1 {
+            pcx = item.ax + item.scaledSize
+        } else {
+            pcx = item.ax - item.scaledSize
+        }
+        
+        let pcy: CGFloat
+        
+        let dy = piece.item.row - item.row
+        if dy == 0 {
+            pcy = item.ay
+        } else if dy == 1 {
+            pcy = item.ay + item.scaledSize
+        } else {
+            pcy = item.ay - item.scaledSize
+        }
+        
+        let k = "\(dx)_\(dy)"
+        if animations[k] ?? true {
+            return
+        }
+        animations[k] = false
+        
+        let bl = UIView()
+        bl.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+        bl.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+        bl.layer.cornerRadius = 4
+        bl.center = CGPoint(x: pcx, y: pcy)
+        blinkView.addSubview(bl)
+        
+        UIView.animate(withDuration: 0.445, animations: {
+            bl.transform = CGAffineTransform(scaleX: 35.0, y: 35.0)
+            bl.alpha = 0.0
+        }) { (finished) in
+            if finished {
+                bl.removeFromSuperview()
+                self.animations[k] = false
+            }
+        }
+    }
+    
+    func rotate(to: PieceRotation, animated: Bool = true) {
         if animated
         {
             UIView.animate(withDuration: 0.15, animations: {
@@ -124,8 +178,7 @@ class Piece: UIView, PieceItemOutput
         }
     }
     
-    func canGroup(withPiece piece: Piece) -> Bool
-    {
+    func canGroup(withPiece piece: Piece) -> Bool {
         if piece.item.uid == self.item.uid {
             return false
         }
@@ -137,12 +190,10 @@ class Piece: UIView, PieceItemOutput
         if piece.group?.containsPiece(self) ?? false {
             return false
         }
-        
         return self.item.canGroup(withItem: piece.item, atRotation: self.rotation)
     }
     
-    init(withItem item: PieceItem, originImage: UIImage)
-    {
+    init(withItem item: PieceItem, originImage: UIImage) {
         self.item = item
         
         super.init(frame: item.oframeScaled)
@@ -154,13 +205,19 @@ class Piece: UIView, PieceItemOutput
                                       y: -item.oframe.origin.y)
         let mask = CAShapeLayer()
         mask.path = item.path.copy(using: &trans)
-        mask.fillColor = UIColor.blue.cgColor
         mask.transform = CATransform3DMakeScale(item.scale, item.scale, item.scale)
-        self.img.layer.mask = mask
-        self.img.layer.anchorPoint = CGPoint(x: 0, y: 0)
-        self.img.frame = self.bounds
-        self.img.image = UIImage(cgImage: im!)
-        self.addSubview(self.img)
+        img.layer.mask = mask
+        img.layer.anchorPoint = CGPoint(x: 0, y: 0)
+        img.frame = bounds
+        img.image = UIImage(cgImage: im!)
+        addSubview(img)
+        
+        blinkMask.path = item.path.copy(using: &trans)
+        blinkMask.transform = CATransform3DMakeScale(item.scale, item.scale, item.scale)
+        blinkView.backgroundColor = .clear
+        blinkView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+        blinkView.layer.mask = blinkMask
+        addSubview(blinkView)
         
         self.rotation = item.rotation
         
@@ -198,23 +255,18 @@ class Piece: UIView, PieceItemOutput
         }
     }
     
-    func updateLastAction()
-    {
+    func updateLastAction() {
         self.lastAction = Piece.getNextLastAction()
     }
     
-    @objc func pan(_ sender: UIPanGestureRecognizer)
-    {
-        if self.group?.isLocked ?? false
-        {
-            if sender.state == .began
-            {
+    @objc func pan(_ sender: UIPanGestureRecognizer) {
+        if self.group?.isLocked ?? false {
+            if sender.state == .began {
                 UIView.animate(withDuration: 0.2,
                                animations: {
                     self.group?.showLockedEffect()
                 })
-            } else if sender.state == .ended
-            {
+            } else if sender.state == .ended {
                 UIView.animate(withDuration: 0.2,
                                animations: {
                     self.group?.hideLockedEffect()
@@ -222,23 +274,20 @@ class Piece: UIView, PieceItemOutput
             }
             return
         }
-        if self.isRotating
-        {
+        if self.isRotating {
             return
         }
-        if sender.state == .began
-        {
+        if sender.state == .began {
+            output?.pickSingleEvent()
             self.updateLastAction()
             self.layer.zPosition = 1500000.0
             self.group?.pieces.forEach({ (p) in
                 p.layer.zPosition = 1500000.0
             })
-            if self.group == nil
-            {
+            if self.group == nil {
                 self.output?.didPickSinglePiece(self)
             }
-        } else if sender.state == .changed
-        {
+        } else if sender.state == .changed {
             //move
             let translation = sender.translation(in: self.superview)
             
@@ -248,14 +297,13 @@ class Piece: UIView, PieceItemOutput
             
             sender.setTranslation(CGPoint.zero, in: self)
             
-            if self.group == nil
-            {
+            if self.group == nil {
                 self.output?.didMoveSinglePiece(self)
             }
         } else if sender.state == .ended
             || sender.state == .cancelled
-            || sender.state == .failed
-        {
+            || sender.state == .failed {
+            output?.dropSingleEvent()
             if self.group == nil {
                 if self.output?.didDropSinglePiece(self) ?? false {
                     return

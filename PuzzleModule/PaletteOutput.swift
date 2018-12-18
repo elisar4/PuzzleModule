@@ -36,6 +36,7 @@ extension PuzzleViewController: PaletteOutput {
             p.rotation = pieceItem.rotation
             p.center = pt
         }
+        output?.pickPiece()
     }
     
     func didMove(pieceItem: PieceItem, by: CGPoint) {
@@ -71,9 +72,11 @@ extension PuzzleViewController: PaletteOutput {
                     }
                 }
             })
+            output?.dropPiece()
         } else {
             //else -> return to palette
             paletteController.didReturnToPalette(p)
+            output?.returnToPalette()
         }
     }
 }

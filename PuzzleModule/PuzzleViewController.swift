@@ -6,6 +6,10 @@ import UIKit
 @objc public protocol PuzzleOutput: class {
     func didCompletePuzzle()
     func didUpdate(progress: CGFloat)
+    func pickPiece()
+    func dropPiece()
+    func groupPiece()
+    func returnToPalette()
 }
 
 public class PuzzleViewController: UIViewController {
@@ -161,7 +165,7 @@ public class PuzzleViewController: UIViewController {
         let row = state.boardPositionR
         
         let sorted = state.palettePieces.sorted { $0.paletteIndex < $1.paletteIndex }
-        let paletteItems = self.lastDataSource.getPieceItemsByPieceStates(sorted)
+        let paletteItems = lastDataSource.getPieceItemsByPieceStates(sorted)
         paletteController.setDataItems(paletteItems)
         
         for stateItem in state.boardPieces {
@@ -184,7 +188,7 @@ public class PuzzleViewController: UIViewController {
                                          animated: false)
         
         pcs.forEach({ (p) in
-            self.didSnap(piece: p)
+            self.didSnap(piece: p, initialLoad: true)
         })
     }
     

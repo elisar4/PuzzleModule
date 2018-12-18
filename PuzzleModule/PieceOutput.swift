@@ -4,15 +4,27 @@
 import Foundation
 
 protocol PieceOutput {
+    func pickSingleEvent()
+    func dropSingleEvent()
     func didMoveSinglePiece(_ piece: Piece)
     func didPickSinglePiece(_ piece: Piece)
     func didDropSinglePiece(_ piece: Piece) -> Bool
     func didSnap(piece: Piece)
+    func didSnap(piece: Piece, initialLoad: Bool)
     func didRotate(piece: Piece)
     func correctedSnapPoint(forPiece: Piece) -> CGPoint
 }
 
 extension PuzzleViewController: PieceOutput {
+    
+    
+    func pickSingleEvent() {
+        output?.pickPiece()
+    }
+    
+    func dropSingleEvent() {
+        output?.dropPiece()
+    }
     
     func didDropSinglePiece(_ piece: Piece) -> Bool {
         let p = piece
@@ -40,6 +52,7 @@ extension PuzzleViewController: PieceOutput {
             print("did return")
             paletteController.didReturnToPalette(piece)
             output?.didUpdate(progress: self.currentProgress)
+            output?.returnToPalette()
             return true
         }
     }
@@ -56,7 +69,7 @@ extension PuzzleViewController: PieceOutput {
         }
     }
     
-    func processGroup(_ piece: Piece) {
+    func processGroup(_ piece: Piece, initialLoad: Bool = false) {
         let maxDist = (lastDataSource.originSize * lastDataSource.scale) * 3
         var shouldRepeat = false
         for p in pcs {
@@ -82,6 +95,12 @@ extension PuzzleViewController: PieceOutput {
                 } else {
                     gr.append(PieceGroup(withPieces: [piece, p]))
                     shouldRepeat = true
+                }
+                
+                if !initialLoad {
+                    piece.blink(p)
+                    p.blink(piece)
+                    output?.groupPiece()
                 }
             }
         }
@@ -110,7 +129,11 @@ extension PuzzleViewController: PieceOutput {
     }
     
     func didSnap(piece: Piece) {
-        processGroup(piece)
+        didSnap(piece: piece, initialLoad: false)
+    }
+    
+    func didSnap(piece: Piece, initialLoad: Bool) {
+        processGroup(piece, initialLoad: initialLoad)
         //        for p in self.pcs
         //        {
         //            self.processGroup(p)
