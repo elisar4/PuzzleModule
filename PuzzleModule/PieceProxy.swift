@@ -97,29 +97,6 @@ class PieceProxy: UIView {
         self.lastAction = Piece.getNextLastAction()
     }
     
-    func setPosition(col: Int, row: Int, rotation: Int) {
-        self.item.gridX = col
-        self.item.gridY = row
-        if let rot = PieceRotation(rawValue:rotation) {
-            self.rotation = rot
-        }
-    }
-    
-    func randomPosition(maxCol: Int, maxRow: Int) {
-        self.item.gridX = Int(arc4random()%UInt32(maxCol))
-        self.item.gridY = Int(arc4random()%UInt32(maxRow))
-    }
-    
-    func move(by: CGPoint) {
-        self.isMoving = true
-        self.frame = self.frame.offsetBy(dx: by.x, dy: by.y)
-    }
-    
-    func snapToGrid(_ dispatch: Bool = true) {
-        self.isMoving = false
-        self.item.snapToNearestGridCell()
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

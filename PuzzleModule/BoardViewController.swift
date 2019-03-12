@@ -16,8 +16,8 @@ protocol BoardInput: class {
 class BoardViewController: UIViewController, BoardInput {
     
     func unsub() {
-        self.bgimg.image = nil
-        self.bgimg.removeFromSuperview()
+        bgimg.image = nil
+        bgimg.removeFromSuperview()
     }
     
     var board: EAPuzzleBoard?
@@ -37,33 +37,31 @@ class BoardViewController: UIViewController, BoardInput {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.border.strokeColor = UIColor(white: 1.0, alpha: 0.0).cgColor
-        self.border.fillColor = UIColor.clear.cgColor
-        self.border.lineWidth = 7.5
+        border.strokeColor = UIColor(white: 1.0, alpha: 0.0).cgColor
+        border.fillColor = UIColor.clear.cgColor
+        border.lineWidth = 7.5
         
-        self.view.clipsToBounds = true
-        self.bgimg.mAnchor = CGPoint.zero
-        self.bgimg.contentMode = .scaleAspectFill
-        self.bgimg.clipsToBounds = false
-        self.bgimg.alpha = 0.0
-        self.pieceContainer.mAnchor = CGPoint.zero
-        self.pieceContainer.layer.addSublayer(self.border)
-        self.view.backgroundColor = UIColor(white: 80.0/255.0, alpha: 1.0)
-        self.view.addSubview(self.bgimg)
-        self.view.addSubview(self.pieceContainer)
+        view.clipsToBounds = true
+        bgimg.mAnchor = CGPoint.zero
+        bgimg.contentMode = .scaleAspectFill
+        bgimg.clipsToBounds = false
+        bgimg.alpha = 0.0
+        pieceContainer.mAnchor = CGPoint.zero
+        pieceContainer.layer.addSublayer(border)
+        view.backgroundColor = UIColor(white: 80.0/255.0, alpha: 1.0)
+        view.addSubview(bgimg)
+        view.addSubview(pieceContainer)
 
-        self.pieceContainer.frame = CGRect(x: 0, y: 0,
-                                           width: 3800,
-                                           height: 3800)
+        pieceContainer.frame = CGRect(x: 0, y: 0, width: 3800, height: 3800)
     }
     
     func setBoardBGColor(_ color: UIColor) {
-        self.view.backgroundColor = color
+        view.backgroundColor = color
     }
     
     func panTouchingPiece(_ pan: UIPanGestureRecognizer) -> Piece? {
         if pan.state == .began {
-            let pieces = self.pieceContainer.subviews.map({ (v) -> Piece? in
+            let pieces = pieceContainer.subviews.map({ (v) -> Piece? in
                 if let p = v as? Piece {
                     return p
                 }
@@ -87,7 +85,7 @@ class BoardViewController: UIViewController, BoardInput {
     }
     
     func isAllItemsOnBoard(_ items: [PieceItem]) -> Bool {
-        let uids = self.pieceContainer.subviews.map { (v) -> String in
+        let uids = pieceContainer.subviews.map { (v) -> String in
             if let p = v as? Piece {
                 return p.item.uid
             }
@@ -104,7 +102,7 @@ class BoardViewController: UIViewController, BoardInput {
     }
     
     func addPiece(_ piece: Piece) {
-        self.pieceContainer.addSubview(piece)
+        pieceContainer.addSubview(piece)
     }
     
     func removePiece(_ piece: Piece) {
@@ -112,7 +110,7 @@ class BoardViewController: UIViewController, BoardInput {
     }
     
     func setBoardImageVisible(_ val: Bool) {
-        self.bgimg.isHidden = !val
+        bgimg.isHidden = !val
     }
     
     func setBoardSize(_ boardSize: EAPuzzleBoard, originSize: CGFloat) {
@@ -131,15 +129,13 @@ class BoardViewController: UIViewController, BoardInput {
         let mx = CGFloat(withMaxCols) * originSize
         let my = CGFloat(maxRows) * originSize
         
-        self.bgimg.frame = CGRect(x: 0, y: 0, width: mx, height: my)
-        self.bgimg.image = image
+        bgimg.frame = CGRect(x: 0, y: 0, width: mx, height: my)
+        bgimg.image = image
         
         
-        self.pieceContainer.frame = CGRect(x: 0, y: 0,
-                                           width: mx,
-                                           height: my)
+        pieceContainer.frame = CGRect(x: 0, y: 0, width: mx, height: my)
         
-        self.border.path = UIBezierPath(rect: self.bgimg.frame.insetBy(dx: 4, dy: 4)).cgPath
+        border.path = UIBezierPath(rect: bgimg.frame.insetBy(dx: 4, dy: 4)).cgPath
     }
     
     func snapPoint(_ piece: Piece) -> (Int, Int) {
@@ -205,8 +201,8 @@ class BoardViewController: UIViewController, BoardInput {
     }
     
     func isColRowInside(col: Int, row: Int) -> Bool {
-        let bw = self.board?.verticalSize.width ?? 0
-        let bh = self.board?.verticalSize.height ?? 0
+        let bw = board?.verticalSize.width ?? 0
+        let bh = board?.verticalSize.height ?? 0
         
         let minBC = bw * self.col
         let maxBC = min(minBC + bw, maxCol)
@@ -230,8 +226,8 @@ class BoardViewController: UIViewController, BoardInput {
             return (col, row)
         }
         
-        let bw = self.board?.verticalSize.width ?? 0
-        let bh = self.board?.verticalSize.height ?? 0
+        let bw = board?.verticalSize.width ?? 0
+        let bh = board?.verticalSize.height ?? 0
         
         let minBC = bw * self.col
         let maxBC = min(minBC + bw, maxCol) - 1
@@ -266,7 +262,7 @@ class BoardViewController: UIViewController, BoardInput {
             return;
         }
         
-        print("\(self.col),\(self.row)==>\(col),\(row)")
+        //print("\(self.col),\(self.row)==>\(col),\(row)")
         
         if animating {
             return
@@ -362,23 +358,23 @@ class BoardViewController: UIViewController, BoardInput {
                 }
             })
         } else {
-            self.pieceContainer.center = cp
-            self.bgimg.center = cp
-            self.animating = false
+            pieceContainer.center = cp
+            bgimg.center = cp
+            animating = false
         }
         
-        self.border.strokeColor = UIColor(white: 1.0, alpha: 0.25).cgColor
+        border.strokeColor = UIColor(white: 1.0, alpha: 0.25).cgColor
     }
     
     func setFinishedState(withCompletion: (()->())?) {
-        let cx = self.view.bounds.width * 0.5
-        let cy = self.view.bounds.height * 0.5
-        let scale = self.view.bounds.width / self.bgimg.bounds.width
+        let cx = view.bounds.width * 0.5
+        let cy = view.bounds.height * 0.5
+        let scale = view.bounds.width / bgimg.bounds.width
         
         let anch = CGPoint(x: 0.5, y: 0.5)
         
-        self.pieceContainer.mAnchor = anch
-        self.bgimg.mAnchor = anch
+        pieceContainer.mAnchor = anch
+        bgimg.mAnchor = anch
         
         UIView.animate(withDuration: 0.8, delay: 0.0, options: [], animations: {
             self.pieceContainer.center = CGPoint(x: cx, y: cy)
