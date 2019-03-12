@@ -65,36 +65,16 @@ class PieceProxy: UIView {
     
     init(withItem item: PieceItem, originImage: UIImage) {
         self.item = item
-        
         super.init(frame: item.oframeScaled)
-        
         let cgi = originImage.cgImage!
         let im = cgi.cropping(to: item.oframeScaled)
-        
-        var trans = CGAffineTransform(translationX: -item.oframe.origin.x,
-                                      y: -item.oframe.origin.y)
-        let mask = CAShapeLayer()
-        mask.path = item.path.copy(using: &trans)
-        mask.fillColor = UIColor.blue.cgColor
-        mask.transform = CATransform3DMakeScale(item.scale, item.scale, item.scale)
-        self.img.layer.mask = mask
-        self.img.layer.anchorPoint = CGPoint(x: 0, y: 0)
-        self.img.frame = self.bounds
-        self.img.image = UIImage(cgImage: im!)
-        self.addSubview(self.img)
-        
-        self.rotation = item.rotation
-        
+        var trans = CGAffineTransform(translationX: item.oframe.origin.x, y: item.oframe.origin.y).scaledBy(x: item.scale, y: item.scale).translatedBy(x: -item.oframe.origin.x, y: -item.oframe.origin.y)
+        let p = item.path.copy(using: &trans)!
+        var t = CGAffineTransform(translationX: -item.oframe.origin.x, y: -item.oframe.origin.y)
+        img.frame = bounds
+        img.image = UIImage(cgImage: im!).croppedWith(path: p.copy(using: &t)!)
+        rotation = item.rotation
         item.snapToOriginGridCell()
-        
-        self.updateLastAction()
-        
-        self.layer.rasterizationScale = UIScreen.main.scale
-        self.layer.shouldRasterize = true
-    }
-    
-    func updateLastAction() {
-        self.lastAction = Piece.getNextLastAction()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -102,12 +82,17 @@ class PieceProxy: UIView {
     }
     
     var render: UIImage? {
-        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
-        if self.drawHierarchy(in: bounds, afterScreenUpdates: true) {
-            let img = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            return img
-        }
-        return nil
+        return img.image
+    }
+}
+
+extension UIImage {
+    func croppedWith(path: CGPath) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        UIBezierPath(cgPath: path).addClip()
+        draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
     }
 }

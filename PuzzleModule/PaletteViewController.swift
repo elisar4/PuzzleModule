@@ -12,10 +12,6 @@ protocol PaletteInput: class {
     func setPaletteBGColor(_ color: UIColor)
 }
 
-class PaletteCell: UICollectionViewCell {
-    
-}
-
 class PaletteViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PaletteInput, UIGestureRecognizerDelegate {
     
     func unsub() {
@@ -83,10 +79,9 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
     
     func didGrabItem(_ pieceItem: PieceItem) {
         if let index = data.index(where: {$0.uid == pieceItem.uid}) {
-            let ip = IndexPath(row: index, section: 0)
             collectionView?.performBatchUpdates({
                 self.data.remove(at: index)
-                self.collectionView?.deleteItems(at: [ip])
+                self.collectionView?.deleteItems(at: [IndexPath(row: index, section: 0)])
                 self.collectionView?.reloadData()
             }, completion: nil)
         }
@@ -146,8 +141,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                             piece.center = (self.view.window?.convert(cell.contentView.center, from: cell.contentView)) ?? CGPoint.zero
                         }, completion: { (finished) in
                             self.view.isUserInteractionEnabled = true
-                            if finished
-                            {
+                            if finished {
                                 piece.isHidden = true
                                 piece.item.inPalette = true
                                 self.reloadCellWithPiece(piece)
@@ -155,7 +149,6 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                         })
                     }
                 }
-                
             }, completion: { (finished) in
             })
         }
@@ -248,8 +241,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = data[indexPath.row]
         let size = item.oframe.applying(item.rotationTransform.scaledBy(x: scale, y: scale)).size
-        return CGSize(width: size.width+15,
-                      height: view.bounds.height)
+        return CGSize(width: size.width + 15, height: view.bounds.height)
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -260,55 +252,18 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         return data.count
     }
     
-    
-    var animCnt = 0
-    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PaletteCell
-        
-        let item = self.data[indexPath.row]
-        
+        let item = data[indexPath.row]
         cell.contentView.tag = item.uidInt
-        
-        self.output?.getProxyAsync(fromItem: item,
-                                   completion: { (proxy) in
-            if cell.contentView.tag == proxy.tag {
-                cell.contentView.subviews.forEach { $0.removeFromSuperview() }
-                
-                cell.contentView.addSubview(proxy)
-                
-                proxy.alpha = 0.0
-                
-                var b = cell.contentView.bounds
-                b.size.width -= 10
-                let newFrame = item.oframe.applying(CGAffineTransform.identity.rotated(by: item.rotation.angle)).cliped(with: b)
-                if item.rotation == .left || item.rotation == .right {
-                    proxy.bounds = CGRect(origin: .zero, size: newFrame.size.reversed)
-                } else {
-                    proxy.bounds = CGRect(origin: .zero, size: newFrame.size)
+        cell.contentView.subviews.forEach { $0.removeFromSuperview() }
+        DispatchQueue.main.async {
+            if let proxy = self.output?.getProxy(fromItem: item) {
+                DispatchQueue.main.async {
+                    cell.setup(withProxy: proxy, item: item)
                 }
-                
-                proxy.mAnchor = CGPoint(x: 0.5, y: 0.5)
-                
-                proxy.center = cell.contentView.center
-                
-                proxy.transform = CGAffineTransform.identity.rotated(by: item.rotation.angle)
-                
-                proxy.isHidden = !item.inPalette
-                
-                let delay = min(0.15, max(0, Double(self.animCnt)*0.033))
-                
-                self.animCnt += 1
-                
-                UIView.animate(withDuration: 0.35, delay: delay, options: [], animations: {
-                    proxy.alpha = 1.0
-                }, completion: { (finished) in
-                    if finished {
-                        self.animCnt -= 1
-                    }
-                })
             }
-        })
+        }
         return cell
     }
 }

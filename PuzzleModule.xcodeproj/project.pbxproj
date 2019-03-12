@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E94EDD162237488C00DD9AA8 /* PaletteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94EDD152237488C00DD9AA8 /* PaletteCell.swift */; };
 		E95744CF21B9AA6C002B2864 /* PuzzleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744CE21B9AA6C002B2864 /* PuzzleInput.swift */; };
 		E95744D121B9ABD3002B2864 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744D021B9ABD3002B2864 /* Shuffle.swift */; };
 		E95744D321B9AC3C002B2864 /* PaletteOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744D221B9AC3C002B2864 /* PaletteOutput.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E94EDD152237488C00DD9AA8 /* PaletteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteCell.swift; sourceTree = "<group>"; };
 		E95744CE21B9AA6C002B2864 /* PuzzleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleInput.swift; sourceTree = "<group>"; };
 		E95744D021B9ABD3002B2864 /* Shuffle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
 		E95744D221B9AC3C002B2864 /* PaletteOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteOutput.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				E95744D221B9AC3C002B2864 /* PaletteOutput.swift */,
 				E95744D421B9AD3B002B2864 /* PieceOutput.swift */,
 				E95744D621B9B03C002B2864 /* Unused.swift */,
+				E94EDD152237488C00DD9AA8 /* PaletteCell.swift */,
 			);
 			name = Puzzle;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 				E95744D321B9AC3C002B2864 /* PaletteOutput.swift in Sources */,
 				E95744CF21B9AA6C002B2864 /* PuzzleInput.swift in Sources */,
 				E957B5BE1ECEE7AE000AABB3 /* AnimationHelper.swift in Sources */,
+				E94EDD162237488C00DD9AA8 /* PaletteCell.swift in Sources */,
 				E957B5C31ECEE7AE000AABB3 /* PieceGroup.swift in Sources */,
 				E957B5C81ECEE7AE000AABB3 /* PuzzleViewController.swift in Sources */,
 				E957B5C21ECEE7AE000AABB3 /* Piece.swift in Sources */,

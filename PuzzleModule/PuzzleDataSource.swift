@@ -34,7 +34,7 @@ class PuzzleDataSource {
         self.difficulty = difficulty
         self.boardSize = boardSize
         self.puzzleImage = puzzleImage
-        self.pcsItms = self.buildItems(withColumns: difficulty.width, rows: difficulty.height, scale: scale, originSize: originSize, rotation: difficulty.rotation, paths: paths, frames: frames)
+        self.pcsItms = buildItems(withColumns: difficulty.width, rows: difficulty.height, scale: scale, originSize: originSize, rotation: difficulty.rotation, paths: paths, frames: frames)
     }
     
     func buildItems(withColumns columns: Int, rows: Int, scale: CGFloat, originSize: CGFloat, rotation: Bool, paths: [[CGPath]], frames: [[CGRect]]) -> [PieceItem] {
@@ -54,26 +54,10 @@ class PuzzleDataSource {
         if let p = proxys.first(where: {$0.tag == pieceItem.uidInt}) {
             return p
         }
-        let i = getPieceItemImageProxy2(pieceItem: pieceItem)
-        let img = UIImageView(image: i)
+        let img = UIImageView(image: PieceProxy(withItem: pieceItem, originImage: puzzleImage).render)
         img.tag = pieceItem.uidInt
         proxys.append(img)
         return img
-    }
-    
-    func getPieceItemImageProxy2(pieceItem: PieceItem) -> UIImage? {
-        return getPieceProxy(forItem: pieceItem).render
-    }
-    
-    func getPieceItemImageProxy(pieceItem: PieceItem) -> UIImage? {
-        return getPiece(forItem: pieceItem).render
-    }
-    
-    func getPieceItemProxy(pieceItem: PieceItem) -> UIView? {
-        let p = getPiece(forItem: pieceItem)
-        let v = p.img.snapshotView(afterScreenUpdates: true)
-        v?.layer.transform = p.img.layer.transform
-        return v
     }
     
     func getPiece(forItem: PieceItem) -> Piece {
@@ -85,22 +69,9 @@ class PuzzleDataSource {
         return p
     }
     
-    func getPieceProxy(forItem: PieceItem) -> PieceProxy {
-        return PieceProxy(withItem: forItem, originImage: puzzleImage)
-    }
-    
-    func getPieces(forItems: [PieceItem]) -> [Piece] {
-        return forItems.map({ self.getPiece(forItem: $0) })
-    }
-    
     func getPieceItemsByPieceStates(_ states: [PieceState]) -> [PieceItem] {
-        return getPieceItemsByIds(states.map({$0.uid}))
-    }
-    
-    func getPieceItemsByIds(_ ids: [String]) -> [PieceItem] {
-        return pcsItms.filter({ (itm) -> Bool in
-            return ids.contains(itm.uid)
-        })
+        let ids = states.map({$0.uid})
+        return pcsItms.filter({ids.contains($0.uid)})
     }
     
     func getPieceItemById(_ uid: String) -> PieceItem? {
@@ -113,9 +84,6 @@ class PuzzleDataSource {
         let boundMNR = boardSize.verticalSize.height * r
         let boundMXR = boundMNR + boardSize.verticalSize.height
         //print(boundMNC, boundMXC, boundMNR, boundMXR)
-        return pcsItms.filter { (item) -> Bool in
-            return (item.col >= boundMNC && item.col < boundMXC
-                    && item.row >= boundMNR && item.row < boundMXR)
-        }
+        return pcsItms.filter({($0.col >= boundMNC && $0.col < boundMXC && $0.row >= boundMNR && $0.row < boundMXR)})
     }
 }
