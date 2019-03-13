@@ -5,27 +5,18 @@ import UIKit
 
 class PieceProxy: UIView {
     
-    static var nextLastAction: CGFloat = 50000.0
-    static func getNextLastAction() -> CGFloat {
-        Piece.nextLastAction += 0.1
-        return Piece.nextLastAction
-    }
-    
     let item: PieceItem
     
     let img: UIImageView = UIImageView()
     
-    var group: PieceGroup?
-    var output: PieceOutput?
-    
+    var uid: Int = -1
     var isRotating = false
-    var isMoving = false
     var lastAction: CGFloat = 0.0
     
     var rotation: PieceRotation = .origin {
         didSet {
-            self.item.rotation = self.rotation
-            self.img.transform = self.item.rotationTransform
+            item.rotation = rotation
+            img.transform = item.rotationTransform
         }
     }
     
@@ -37,17 +28,17 @@ class PieceProxy: UIView {
                 self.isRotating = false
             }
         } else {
-            self.rotation = to
-            self.isRotating = false
+            rotation = to
+            isRotating = false
         }
     }
     
     func animateRotationFromPiece(_ piece: Piece, to: PieceRotation) {
-        let oldT = self.layer.transform
-        let oldAnchor = self.mAnchor
+        let oldT = layer.transform
+        let oldAnchor = mAnchor
         
-        let ap = self.convert(piece.item.a, from: piece)
-        self.mAnchor = CGPoint(x: ap.x / (self.frame.width), y: ap.y / (self.frame.height))
+        let ap = convert(piece.item.a, from: piece)
+        mAnchor = CGPoint(x: ap.x / (frame.width), y: ap.y / (frame.height))
         
         UIView.animate(withDuration: 0.25, animations: {
             self.layer.transform = CATransform3DRotate(CATransform3DIdentity, PieceRotation.right.angle, 0.0, 0.0, 1.0)
@@ -74,21 +65,16 @@ class PieceProxy: UIView {
         img.frame = bounds
         img.image = UIImage(cgImage: im!).croppedWith(path: p.copy(using: &t)!)
         rotation = item.rotation
-        item.snapToOriginGridCell()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    var render: UIImage? {
-        return img.image
-    }
 }
 
 extension UIImage {
     func croppedWith(path: CGPath) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         UIBezierPath(cgPath: path).addClip()
         draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         let image = UIGraphicsGetImageFromCurrentImageContext()

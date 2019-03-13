@@ -6,7 +6,7 @@ import UIKit
 class PuzzleDataSource {
     
     func unsub() {
-        proxys.forEach({$0.image = nil})
+        proxys.forEach({$0.img.image = nil})
         pcs.removeAll()
         proxys.removeAll()
         pcsItms.removeAll()
@@ -20,7 +20,7 @@ class PuzzleDataSource {
     
     var pcsItms: [PieceItem] = []
     var pcs: [Piece] = []
-    var proxys: [UIImageView] = []
+    var proxys: [PieceProxy] = []
     
     init(withPiecePaths paths: [[CGPath]],
          frames: [[CGRect]],
@@ -51,13 +51,14 @@ class PuzzleDataSource {
     }
     
     func getPieceItemImageViewProxy(pieceItem: PieceItem) -> UIImageView {
-        if let p = proxys.first(where: {$0.tag == pieceItem.uidInt}) {
-            return p
+        if let p = proxys.first(where: {$0.uid == pieceItem.uidInt}) {
+            return p.img
         }
-        let img = UIImageView(image: PieceProxy(withItem: pieceItem, originImage: puzzleImage).render)
-        img.tag = pieceItem.uidInt
-        proxys.append(img)
-        return img
+        let proxy = PieceProxy(withItem: pieceItem, originImage: puzzleImage)
+        proxy.uid = pieceItem.uidInt
+        proxy.img.tag = pieceItem.uidInt
+        proxys.append(proxy)
+        return proxy.img
     }
     
     func getPiece(forItem: PieceItem) -> Piece {

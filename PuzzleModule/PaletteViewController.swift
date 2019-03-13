@@ -259,9 +259,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         cell.contentView.subviews.forEach { $0.removeFromSuperview() }
         DispatchQueue.main.async {
             if let proxy = self.output?.getProxy(fromItem: item) {
-                DispatchQueue.main.async {
-                    cell.setup(withProxy: proxy, item: item)
-                }
+                cell.setup(withProxy: proxy, item: item)
             }
         }
         return cell

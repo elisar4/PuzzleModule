@@ -10,9 +10,9 @@ class PaletteCell: UICollectionViewCell {
             let b = contentView.bounds.insetBy(dx: 5, dy: 0)
             let newSize = item.oframe.applying(CGAffineTransform.identity.rotated(by: item.rotation.angle)).cliped(with: b).size
             if item.rotation == .left || item.rotation == .right {
-                proxy.bounds = CGRect(origin: .zero, size: newSize.reversed)
+                proxy.frame = CGRect(origin: .zero, size: newSize.reversed)
             } else {
-                proxy.bounds = CGRect(origin: .zero, size: newSize)
+                proxy.frame = CGRect(origin: .zero, size: newSize)
             }
             proxy.mAnchor = CGPoint(x: 0.5, y: 0.5)
             proxy.center = contentView.center
