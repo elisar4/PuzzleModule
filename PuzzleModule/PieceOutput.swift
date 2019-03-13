@@ -98,8 +98,25 @@ extension PuzzleViewController: PieceOutput {
                 }
                 
                 if !initialLoad {
-                    piece.blink(p)
-                    p.blink(piece)
+                    if let wnd = view.window {
+                        let pt = piece.convert(piece.blinkPoint(p), to: wnd)
+                        let bl = UIView()
+                        bl.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+                        bl.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+                        bl.layer.cornerRadius = 4
+                        bl.center = pt
+                        wnd.addSubview(bl)
+                        
+                        UIView.animate(withDuration: 0.445, animations: {
+                            bl.transform = CGAffineTransform(scaleX: 17.0, y: 17.0)
+                            bl.alpha = 0.0
+                        }) { (finished) in
+                            if finished {
+                                bl.removeFromSuperview()
+                            }
+                        }
+                    }
+                    
                     output?.groupPiece()
                 }
             }
@@ -108,7 +125,7 @@ extension PuzzleViewController: PieceOutput {
         if shouldRepeat {
             processGroup(piece)
         } else {
-            output?.didUpdate(progress: currentProgress)
+            output?.didUpdate(progress: 0.0)
         }
     }
     
