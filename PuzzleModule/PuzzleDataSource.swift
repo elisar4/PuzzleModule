@@ -72,7 +72,13 @@ class PuzzleDataSource {
     
     func getPieceItemsByPieceStates(_ states: [PieceState]) -> [PieceItem] {
         let ids = states.map({$0.uid})
-        return pcsItms.filter({ids.contains($0.uid)})
+        var result: [PieceItem] = []
+        for uid in ids {
+            if let item = pcsItms.first(where: {$0.uid == uid}) {
+                result.append(item)
+            }
+        }
+        return result
     }
     
     func getPieceItemById(_ uid: String) -> PieceItem? {
