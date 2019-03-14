@@ -13,6 +13,10 @@ class PieceProxy: UIView {
     var isRotating = false
     var lastAction: CGFloat = 0.0
     
+    func unsub() {
+        img.image = nil
+    }
+    
     var rotation: PieceRotation = .origin {
         didSet {
             item.rotation = rotation

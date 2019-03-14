@@ -17,6 +17,10 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
     func unsub() {
         data.removeAll()
         lastItem = nil
+        output = nil
+        collectionView?.delegate = nil
+        collectionView?.dataSource = nil
+        collectionView?.removeFromSuperview()
     }
     
     weak var output: PaletteOutput?
@@ -79,10 +83,10 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
     
     func didGrabItem(_ pieceItem: PieceItem) {
         if let index = data.index(where: {$0.uid == pieceItem.uid}) {
-            collectionView?.performBatchUpdates({
-                self.data.remove(at: index)
-                self.collectionView?.deleteItems(at: [IndexPath(row: index, section: 0)])
-                self.collectionView?.reloadData()
+            collectionView?.performBatchUpdates({ [weak self] in
+                self?.data.remove(at: index)
+                self?.collectionView?.deleteItems(at: [IndexPath(row: index, section: 0)])
+                self?.collectionView?.reloadData()
             }, completion: nil)
         }
     }
@@ -139,12 +143,12 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                         self.view.isUserInteractionEnabled = false
                         UIView.animate(withDuration: 0.2, animations: {
                             piece.center = (self.view.window?.convert(cell.contentView.center, from: cell.contentView)) ?? CGPoint.zero
-                        }, completion: { (finished) in
-                            self.view.isUserInteractionEnabled = true
+                        }, completion: { [weak self] (finished) in
+                            self?.view.isUserInteractionEnabled = true
                             if finished {
                                 piece.isHidden = true
                                 piece.item.inPalette = true
-                                self.reloadCellWithPiece(piece)
+                                self?.reloadCellWithPiece(piece)
                             }
                         })
                     }
@@ -155,11 +159,11 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func reloadCellWithPiece(_ piece: Piece) {
-        if let vcs = self.collectionView?.visibleCells {
+        if let vcs = collectionView?.visibleCells {
             for c in vcs {
                 if c.contentView.tag == piece.item.uidInt {
-                    if let ip = self.collectionView?.indexPath(for: c) {
-                        self.collectionView?.reloadItems(at: [ip])
+                    if let ip = collectionView?.indexPath(for: c) {
+                        collectionView?.reloadItems(at: [ip])
                     }
                     return;
                 }
@@ -178,24 +182,24 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
             || pt.x > cv.contentOffset.x + cv.bounds.width
             || pt.y > cv.contentOffset.y + cv.bounds.height {
             // out of bounds
-            if let ind = self.data.index(where: {$0.uidInt == piece.item.uidInt}) {
+            if let ind = data.index(where: {$0.uidInt == piece.item.uidInt}) {
                 let ipToDelete = IndexPath(row: ind, section: 0)
-                let size = self.collectionView(cv, layout: self.collectionViewLayout, sizeForItemAt: ipToDelete)
+                let size = collectionView(cv, layout: collectionViewLayout, sizeForItemAt: ipToDelete)
                 let curX = cv.bounds.width + cv.contentOffset.x
                 let maxX = cv.contentSize.width
                 let limit = size.width*0.73
                 if cv.contentOffset.x > 0 && curX >= maxX - limit {
                     if cv.contentOffset.x > 0 && curX >= maxX - limit*0.2 {
-                        self.lastPoint.x = self.lastPoint.x - size.width
+                        lastPoint.x = lastPoint.x - size.width
                     } else if cv.contentOffset.x > 0 && curX >= maxX - limit*0.5 {
-                        self.lastPoint.x = self.lastPoint.x - size.width * 0.7
+                        lastPoint.x = lastPoint.x - size.width * 0.7
                     } else {
-                        self.lastPoint.x = self.lastPoint.x - size.width * 0.5
+                        lastPoint.x = lastPoint.x - size.width * 0.5
                     }
                 }
                 // need to remove item
-                cv.performBatchUpdates({
-                    self.data.remove(at: ind)
+                cv.performBatchUpdates({ [weak self] in
+                    self?.data.remove(at: ind)
                     cv.deleteItems(at: [ipToDelete])
                 }, completion: { (finished) in
                 })
@@ -210,14 +214,14 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
                 }
             }
             
-            cv.performBatchUpdates({
-                let ind = self.data.index(where: {$0.uidInt == piece.item.uidInt}) ?? ip.row
+            cv.performBatchUpdates({ [weak self] in
+                let ind = self?.data.index(where: {$0.uidInt == piece.item.uidInt}) ?? ip.row
                 if ind != ip.row {
                     // swap
-                    self.data.remove(at: ind)
+                    self?.data.remove(at: ind)
                     cv.deleteItems(at: [IndexPath(row: ind, section: 0)])
                 }
-                self.data.insert(piece.item, at: ip.row)
+                self?.data.insert(piece.item, at: ip.row)
                 cv.insertItems(at: [ip])
             }, completion: nil)
         }
@@ -257,9 +261,9 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
         let item = data[indexPath.row]
         cell.contentView.tag = item.uidInt
         cell.contentView.subviews.forEach { $0.removeFromSuperview() }
-        DispatchQueue.main.async {
-            if let proxy = self.output?.getProxy(fromItem: item) {
-                cell.setup(withProxy: proxy, item: item)
+        DispatchQueue.main.async { [weak self, weak cell] in
+            if let proxy = self?.output?.getProxy(fromItem: item) {
+                cell?.setup(withProxy: proxy, item: item)
             }
         }
         return cell

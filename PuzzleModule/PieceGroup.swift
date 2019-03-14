@@ -17,8 +17,7 @@ class PieceGroup
     }
     var pieces: [Piece]
     
-    func unsub()
-    {
+    func unsub() {
         self.pieces.removeAll()
     }
     

@@ -114,8 +114,8 @@ extension PuzzleViewController: PuzzleInput {
     }
     
     public func deinitPuzzle() {
-        view.gestureRecognizers?.forEach({ (gr) in
-            self.view.removeGestureRecognizer(gr)
+        view.gestureRecognizers?.forEach({ [weak self] (gr) in
+            self?.view.removeGestureRecognizer(gr)
         })
         
         timer?.invalidate()
@@ -133,13 +133,9 @@ extension PuzzleViewController: PuzzleInput {
         boardController.unsub()
         paletteController.unsub()
         
-        if lastDataSource != nil {
-            lastDataSource.unsub()
-        }
+        lastDataSource?.unsub()
         
-        if lastImage != nil {
-            lastImage = nil
-        }
+        lastImage = nil
         
         lastPaths.removeAll()
     }

@@ -18,6 +18,7 @@ class BoardViewController: UIViewController, BoardInput {
     func unsub() {
         bgimg.image = nil
         bgimg.removeFromSuperview()
+        pieceContainer.removeFromSuperview()
     }
     
     var board: EAPuzzleBoard?

@@ -6,7 +6,8 @@ import UIKit
 class PuzzleDataSource {
     
     func unsub() {
-        proxys.forEach({$0.img.image = nil})
+        proxys.forEach({$0.unsub()})
+        pcs.forEach({$0.unsub()})
         pcs.removeAll()
         proxys.removeAll()
         pcsItms.removeAll()

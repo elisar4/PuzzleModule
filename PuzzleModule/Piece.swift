@@ -33,6 +33,8 @@ class Piece: UIView, PieceItemOutput {
             self.removeGestureRecognizer(gr)
         })
         item.output = nil
+        img.image = nil
+        group = nil
         removeFromSuperview()
     }
     
