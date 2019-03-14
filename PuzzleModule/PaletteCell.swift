@@ -18,6 +18,7 @@ class PaletteCell: UICollectionViewCell {
             proxy.center = contentView.center
             proxy.transform = CGAffineTransform.identity.rotated(by: item.rotation.angle)
             proxy.isHidden = !item.inPalette
+            proxy.contentMode = .scaleAspectFit
         }
     }
 }
