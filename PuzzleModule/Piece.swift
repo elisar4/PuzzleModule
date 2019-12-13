@@ -26,31 +26,20 @@ enum PieceRotation: Int
     }
 }
 
-protocol PieceOutput
-{
-    func didMoveSinglePiece(_ piece: Piece)
-    func didPickSinglePiece(_ piece: Piece)
-    func didDropSinglePiece(_ piece: Piece) -> Bool
-    func didSnap(piece: Piece)
-    func didRotate(piece: Piece)
-    func correctedSnapPoint(forPiece: Piece) -> CGPoint
-}
-
-class Piece: UIView, PieceItemOutput
-{
+class Piece: UIView, PieceItemOutput {
     
-    public func unsub()
-    {
-        self.gestureRecognizers?.forEach({ (gr) in
+    public func unsub() {
+        gestureRecognizers?.forEach({ (gr) in
             self.removeGestureRecognizer(gr)
         })
-        self.item.output = nil
-        self.removeFromSuperview()
+        item.output = nil
+        img.image = nil
+        group = nil
+        removeFromSuperview()
     }
     
     static var nextLastAction: CGFloat = 50000.0
-    static func getNextLastAction() -> CGFloat
-    {
+    static func getNextLastAction() -> CGFloat {
         Piece.nextLastAction += 0.1
         return Piece.nextLastAction
     }
@@ -58,6 +47,7 @@ class Piece: UIView, PieceItemOutput
     let item: PieceItem
     
     let img: UIImageView = UIImageView()
+//    let proxyImage: UIImageView = UIImageView()
     
     var group: PieceGroup?
     var output: PieceOutput?
@@ -73,10 +63,36 @@ class Piece: UIView, PieceItemOutput
         }
     }
     
-    func rotate(to: PieceRotation, animated: Bool = true)
-    {
-        if animated
-        {
+    func blinkPoint(_ piece: Piece) -> CGPoint {
+        let pcx: CGFloat
+        
+        let ss = item.size * item.scale
+        
+        let dx = piece.item.col - item.col
+        if dx == 0 {
+            pcx = item.ax
+        } else if dx == 1 {
+            pcx = item.ax + ss
+        } else {
+            pcx = item.ax - ss
+        }
+        
+        let pcy: CGFloat
+        
+        let dy = piece.item.row - item.row
+        if dy == 0 {
+            pcy = item.ay
+        } else if dy == 1 {
+            pcy = item.ay + ss
+        } else {
+            pcy = item.ay - ss
+        }
+        
+        return CGPoint(x: pcx, y: pcy)
+    }
+    
+    func rotate(to: PieceRotation, animated: Bool = true) {
+        if animated {
             UIView.animate(withDuration: 0.15, animations: {
                 self.rotation = to
             }) { (finish) in
@@ -90,8 +106,7 @@ class Piece: UIView, PieceItemOutput
         }
     }
     
-    func animateRotationFromPiece(_ piece: Piece, to: PieceRotation)
-    {
+    func animateRotationFromPiece(_ piece: Piece, to: PieceRotation, lx: Int, ly: Int) {
         let oldT = self.layer.transform
         let oldAnchor = self.mAnchor
         
@@ -106,7 +121,26 @@ class Piece: UIView, PieceItemOutput
             CATransaction.instant {
                 self.layer.transform = oldT
                 self.rotation = to
-                self.item.snapToNearestGridCell()
+                if self == piece {
+                    self.item.gridX = lx
+                    self.item.gridY = ly
+                } else {
+                    let ldx = self.item.col - piece.item.col
+                    let ldy = self.item.row - piece.item.row
+                    if to == .right {
+                        self.item.gridX = lx + ldy
+                        self.item.gridY = ly - ldx
+                    } else if to == .upside {
+                        self.item.gridX = lx - ldx
+                        self.item.gridY = ly - ldy
+                    } else if to == .left {
+                        self.item.gridX = lx - ldy
+                        self.item.gridY = ly + ldx
+                    } else if to == .origin {
+                        self.item.gridX = lx + ldx
+                        self.item.gridY = ly + ldy
+                    }
+                }
             }
             self.isRotating = false
             
@@ -116,8 +150,7 @@ class Piece: UIView, PieceItemOutput
         }
     }
     
-    func canGroup(withPiece piece: Piece) -> Bool
-    {
+    func canGroup(withPiece piece: Piece) -> Bool {
         if piece.item.uid == self.item.uid {
             return false
         }
@@ -129,89 +162,70 @@ class Piece: UIView, PieceItemOutput
         if piece.group?.containsPiece(self) ?? false {
             return false
         }
-        
         return self.item.canGroup(withItem: piece.item, atRotation: self.rotation)
     }
     
-    init(withItem item: PieceItem, originImage: UIImage)
-    {
+    init(withItem item: PieceItem, originImage: UIImage) {
         self.item = item
         
-        super.init(frame: item.oframe)
+        super.init(frame: item.oframeScaled)
         
         let cgi = originImage.cgImage!
-        let im = cgi.cropping(to: item.oframe)
+        let im = cgi.cropping(to: item.oframeScaled)
         
-        var trans = CGAffineTransform(translationX: -item.path.boundingBoxOfPath.origin.x,
-                                      y: -item.path.boundingBoxOfPath.origin.y)
-        let mask = CAShapeLayer()
-        mask.path = item.path.copy(using: &trans)
-        mask.fillColor = UIColor.blue.cgColor
-        mask.transform = CATransform3DMakeScale(item.scale, item.scale, item.scale)
-        self.img.layer.mask = mask
-        self.img.layer.anchorPoint = CGPoint(x: 0, y: 0)
-        self.img.frame = self.bounds
-        self.img.image = UIImage(cgImage: im!)
-        self.addSubview(self.img)
+        var trans = CGAffineTransform(translationX: item.oframe.origin.x, y: item.oframe.origin.y).scaledBy(x: item.scale, y: item.scale).translatedBy(x: -item.oframe.origin.x, y: -item.oframe.origin.y)
+        let p = item.path.copy(using: &trans)!
+        var t = CGAffineTransform(translationX: -item.oframe.origin.x, y: -item.oframe.origin.y)
+        img.layer.anchorPoint = CGPoint(x: 0, y: 0)
+        img.frame = bounds
+        img.contentMode = .topLeft
+        img.image = UIImage(cgImage: im!).croppedWith(path: p.copy(using: &t)!)
+        addSubview(img)
         
-        self.rotation = item.rotation
+        rotation = item.rotation
         
         item.output = self
         
         item.snapToOriginGridCell()
         
-        self.updateLastAction()
+        updateLastAction()
         
-        self.layer.rasterizationScale = UIScreen.main.scale
-        self.layer.shouldRasterize = true
-        
-        self.isUserInteractionEnabled = true
-        if !item.fixed
-        {
+        isUserInteractionEnabled = true
+        if !item.fixed {
             let tap = UITapGestureRecognizer(target: self, action: #selector(Piece.tap(_:)))
-            self.addGestureRecognizer(tap)
+            addGestureRecognizer(tap)
         }
     }
     
-    @objc func tap(_ sender: UITapGestureRecognizer)
-    {
-        if self.group?.isLocked ?? false
-        {
+    @objc func tap(_ sender: UITapGestureRecognizer) {
+        if group?.isLocked ?? false {
             return
         }
-        if self.isRotating || self.isMoving
-        {
+        if isRotating || isMoving {
             return
         }
-        self.isRotating = true
-        self.updateLastAction()
+        isRotating = true
+        updateLastAction()
         
-        if let gr = self.group
-        {
-            gr.didRotatePiece(piece: self, to: self.rotation.nextSide)
-        } else
-        {
-            self.rotate(to: self.rotation.nextSide)
+        if let gr = group {
+            gr.didRotatePiece(piece: self, to: rotation.nextSide)
+        } else {
+            rotate(to: rotation.nextSide)
         }
     }
     
-    func updateLastAction()
-    {
-        self.lastAction = Piece.getNextLastAction()
+    func updateLastAction() {
+        lastAction = Piece.getNextLastAction()
     }
     
-    @objc func pan(_ sender: UIPanGestureRecognizer)
-    {
-        if self.group?.isLocked ?? false
-        {
-            if sender.state == .began
-            {
+    @objc func pan(_ sender: UIPanGestureRecognizer) {
+        if group?.isLocked ?? false {
+            if sender.state == .began {
                 UIView.animate(withDuration: 0.2,
                                animations: {
                     self.group?.showLockedEffect()
                 })
-            } else if sender.state == .ended
-            {
+            } else if sender.state == .ended {
                 UIView.animate(withDuration: 0.2,
                                animations: {
                     self.group?.hideLockedEffect()
@@ -219,23 +233,20 @@ class Piece: UIView, PieceItemOutput
             }
             return
         }
-        if self.isRotating
-        {
+        if isRotating {
             return
         }
-        if sender.state == .began
-        {
+        if sender.state == .began {
+            output?.pickSingleEvent()
             self.updateLastAction()
             self.layer.zPosition = 1500000.0
             self.group?.pieces.forEach({ (p) in
                 p.layer.zPosition = 1500000.0
             })
-            if self.group == nil
-            {
+            if self.group == nil {
                 self.output?.didPickSinglePiece(self)
             }
-        } else if sender.state == .changed
-        {
+        } else if sender.state == .changed {
             //move
             let translation = sender.translation(in: self.superview)
             
@@ -245,101 +256,94 @@ class Piece: UIView, PieceItemOutput
             
             sender.setTranslation(CGPoint.zero, in: self)
             
-            if self.group == nil
-            {
+            if self.group == nil {
                 self.output?.didMoveSinglePiece(self)
             }
         } else if sender.state == .ended
             || sender.state == .cancelled
-            || sender.state == .failed
-        {
-            if self.group == nil
-            {
-                if self.output?.didDropSinglePiece(self) ?? false
-                {
+            || sender.state == .failed {
+            output?.dropSingleEvent()
+            if self.group == nil {
+                if self.output?.didDropSinglePiece(self) ?? false {
                     return
                 }
             }
             
-            let translation = (self.output?.correctedSnapPoint(forPiece: self)) ?? self.item.translationToNearestSnapPoint
+            let LGX = item.gridX
+            let LGY = item.gridY
+            let gr = group
             
+            let translation = self.output?.correctedSnapPoint(forPiece: self) ?? self.item.deltaXY(x: self.item.nearestGX, y: self.item.nearestGY)
             UIView.animate(withDuration: 0.15, animations: {
                 self.move(by: translation)
-                self.group?.didMovePiece(piece: self, by: translation)
+                gr?.didMovePiece(piece: self, by: translation)
             }, completion: { (finished) in
                 if finished {
-                    self.group?.snapToGrid(piece: self)
-                    self.snapToGrid()
+                    self.isMoving = false
+                    self.item.snapToNearestGridCell()
+                    let dx = self.item.gridX - LGX
+                    let dy = self.item.gridY - LGY
+                    gr?.snapToGrid(piece: self.item.uid, dx: dx, dy: dy)
+                    self.dispatchSnap()
                 }
             })
         }
     }
     
-    func showLockedEffect()
-    {
-        self.alpha = 0.45
+    func showLockedEffect() {
+        alpha = 0.45
     }
     
-    func hideLockedEffect()
-    {
-        self.alpha = 1.0
+    func hideLockedEffect() {
+        alpha = 1.0
     }
     
-    func setPosition(col: Int, row: Int, rotation: Int)
-    {
-        self.item.gridX = col
-        self.item.gridY = row
-        if let rot = PieceRotation(rawValue:rotation)
-        {
+    func setPosition(col: Int, row: Int, rotation: Int) {
+        item.gridX = col
+        item.gridY = row
+        if let rot = PieceRotation(rawValue: rotation) {
             self.rotation = rot
         }
     }
     
-    func randomPosition(maxCol: Int, maxRow: Int)
-    {
-        self.item.gridX = Int(arc4random()%UInt32(maxCol))
-        self.item.gridY = Int(arc4random()%UInt32(maxRow))
+    func randomPosition(maxCol: Int, maxRow: Int) {
+        item.gridX = Int(arc4random()%UInt32(maxCol))
+        item.gridY = Int(arc4random()%UInt32(maxRow))
     }
     
-    func move(by: CGPoint)
-    {
-        self.isMoving = true
-        self.frame = self.frame.offsetBy(dx: by.x, dy: by.y)
+    func move(by: CGPoint) {
+        isMoving = true
+        frame = frame.offsetBy(dx: by.x, dy: by.y)
     }
     
-    func snapToGrid(_ dispatch: Bool = true)
-    {
-        self.isMoving = false
-        self.item.snapToNearestGridCell()
-        if dispatch
-        {
-            self.dispatchSnap()
+    func snapToGrid(_ dispatch: Bool = true, group: Bool = false) {
+        isMoving = false
+        if !group {
+            item.snapToNearestGridCell()
+        }
+        if dispatch {
+            dispatchSnap()
         }
     }
     
-    func dispatchSnap()
-    {
-        self.output?.didSnap(piece: self)
+    func snapToGrid(_ dispatch: Bool = true, dx: Int, dy: Int) {
+        isMoving = false
+        item.gridX += dx
+        item.gridY += dy
+        if dispatch {
+            dispatchSnap()
+        }
+    }
+    
+    func dispatchSnap() {
+        output?.didSnap(piece: self)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    var render: UIImage?
-    {
-        UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 0.0)
-        if self.drawHierarchy(in: self.bounds, afterScreenUpdates: true)
-        {
-            let img = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            return img
-        }
-        return nil
-    }
 }
 
-extension Piece: UIGestureRecognizerDelegate
-{
+extension Piece: UIGestureRecognizerDelegate {
     
 }

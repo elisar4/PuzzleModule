@@ -3,17 +3,14 @@
 
 import UIKit
 
-class PuzzleDataSource
-{
-    func unsub()
-    {
-        self.proxys.forEach { (im) in
-            im.image = nil
-        }
-        
-        self.pcs.removeAll()
-        self.proxys.removeAll()
-        self.pcsItms.removeAll()
+class PuzzleDataSource {
+    
+    func unsub() {
+        proxys.forEach({$0.unsub()})
+        pcs.forEach({$0.unsub()})
+        pcs.removeAll()
+        proxys.removeAll()
+        pcsItms.removeAll()
     }
     
     let difficulty: EAPuzzleDifficulty
@@ -24,133 +21,77 @@ class PuzzleDataSource
     
     var pcsItms: [PieceItem] = []
     var pcs: [Piece] = []
-    var proxys: [UIImageView] = []
+    var proxys: [PieceProxy] = []
     
     init(withPiecePaths paths: [[CGPath]],
+         frames: [[CGRect]],
          difficulty: EAPuzzleDifficulty,
          scale: CGFloat,
          originSize: CGFloat,
          boardSize: EAPuzzleBoard,
-         puzzleImage: UIImage)
-    {
+         puzzleImage: UIImage) {
         self.scale = scale
         self.originSize = originSize
         self.difficulty = difficulty
         self.boardSize = boardSize
         self.puzzleImage = puzzleImage
-        self.pcsItms = self.buildItems(withColumns: difficulty.width, rows: difficulty.height, scale: scale, originSize: originSize, rotation: difficulty.rotation, paths: paths)
+        self.pcsItms = buildItems(withColumns: difficulty.width, rows: difficulty.height, scale: scale, originSize: originSize, rotation: difficulty.rotation, paths: paths, frames: frames)
     }
     
-    func buildItems(withColumns columns: Int, rows: Int, scale: CGFloat, originSize: CGFloat, rotation: Bool, paths: [[CGPath]]) -> [PieceItem]
-    {
+    func buildItems(withColumns columns: Int, rows: Int, scale: CGFloat, originSize: CGFloat, rotation: Bool, paths: [[CGPath]], frames: [[CGRect]]) -> [PieceItem] {
         let scaledSize = originSize * scale
         var pieceItems: [PieceItem] = []
-        for r in 0..<rows
-        {
-            for c in 0..<columns
-            {
+        for r in 0..<rows {
+            for c in 0..<columns {
                 let name = "\(r)-\(c)"
                 let path = paths[r][c]
-                pieceItems.append(PieceItem(uid: name, row: r, col: c, path: path, scale: scale, size: scaledSize, fixed: !rotation))
+                pieceItems.append(PieceItem(uid: name, row: r, col: c, path: path, scale: scale, size: scaledSize, fixed: !rotation, originFrame: frames[r][c]))
             }
         }
         return pieceItems
     }
     
-    func getPieceItemImageViewProxy(pieceItem: PieceItem) -> UIImageView
-    {
-        if let p = self.proxys.filter({$0.tag == pieceItem.uidInt}).first
-        {
+    func getPieceItemImageViewProxy(pieceItem: PieceItem) -> UIImageView {
+        if let p = proxys.first(where: {$0.uid == pieceItem.uidInt}) {
+            return p.img
+        }
+        let proxy = PieceProxy(withItem: pieceItem, originImage: puzzleImage)
+        proxy.uid = pieceItem.uidInt
+        proxy.img.tag = pieceItem.uidInt
+        proxys.append(proxy)
+        return proxy.img
+    }
+    
+    func getPiece(forItem: PieceItem) -> Piece {
+        if let p = pcs.first(where: {$0.item.uid == forItem.uid}) {
             return p
         }
-        let i = self.getPieceItemImageProxy(pieceItem: pieceItem)
-        let img = UIImageView(image: i)
-        img.tag = pieceItem.uidInt
-        self.proxys.append(img)
-        //img.mAnchor = CGPoint.zero
-        //img.transform = pieceItem.rotationTransform
-        return img
-    }
-    
-    func getPieceItemImageProxy(pieceItem: PieceItem) -> UIImage?
-    {
-        let p = getPiece(forItem: pieceItem)
-        return p.render
-    }
-    
-    func getPieceItemProxy(pieceItem: PieceItem) -> UIView?
-    {
-        let p = getPiece(forItem: pieceItem)
-        let v = p.img.snapshotView(afterScreenUpdates: true)
-        v?.layer.transform = p.img.layer.transform
-        return v
-    }
-    
-    func getPiece(forItem: PieceItem) -> Piece
-    {
-        if let p = self.pcs.filter({$0.item.uid == forItem.uid}).first
-        {
-            return p
-        }
-        let p = Piece(withItem: forItem, originImage: self.puzzleImage)
-        self.pcs.append(p)
+        let p = Piece(withItem: forItem, originImage: puzzleImage)
+        pcs.append(p)
         return p
     }
     
-    func getPieces(forItems: [PieceItem]) -> [Piece]
-    {
-        return forItems.map({ self.getPiece(forItem: $0) })
-    }
-    
-    func getPieceItemsByPieceStates(_ states: [PieceState]) -> [PieceItem]
-    {
-        let ids = states.map { (ps) -> String in
-            return ps.uid
-        }
-        return self.getPieceItemsByIds(ids)
-    }
-    
-    func getPieceItemsByIds(_ ids: [String]) -> [PieceItem]
-    {
-        var data: [PieceItem] = []
-        for uid in ids
-        {
-            let item = self.pcsItms.filter({ (itm) -> Bool in
-                return itm.uid == uid
-            })
-            if let i = item.first
-            {
-                data.append(i)
+    func getPieceItemsByPieceStates(_ states: [PieceState]) -> [PieceItem] {
+        let ids = states.map({$0.uid})
+        var result: [PieceItem] = []
+        for uid in ids {
+            if let item = pcsItms.first(where: {$0.uid == uid}) {
+                result.append(item)
             }
         }
-        return data
+        return result
     }
     
-    func getPieceItemById(_ uid: String) -> PieceItem?
-    {
-        let item = self.pcsItms.filter({ (itm) -> Bool in
-            return itm.uid == uid
-        })
-        if let i = item.first
-        {
-            return i
-        }
-        return nil
+    func getPieceItemById(_ uid: String) -> PieceItem? {
+        return pcsItms.first(where: {$0.uid == uid})
     }
     
-    func getPieceItems(forBoardColumn c: Int, boardRow r: Int) -> [PieceItem]
-    {
+    func getPieceItems(forBoardColumn c: Int, boardRow r: Int) -> [PieceItem] {
         let boundMNC = boardSize.verticalSize.width * c
         let boundMXC = boundMNC + boardSize.verticalSize.width
         let boundMNR = boardSize.verticalSize.height * r
         let boundMXR = boundMNR + boardSize.verticalSize.height
-        print(boundMNC, boundMXC, boundMNR, boundMXR)
-        let data = self.pcsItms.filter { (item) -> Bool in
-            return (item.col >= boundMNC
-                && item.col < boundMXC
-                && item.row >= boundMNR
-                && item.row < boundMXR)
-        }
-        return data
+        //print(boundMNC, boundMXC, boundMNR, boundMXR)
+        return pcsItms.filter({($0.col >= boundMNC && $0.col < boundMXC && $0.row >= boundMNR && $0.row < boundMXR)})
     }
 }

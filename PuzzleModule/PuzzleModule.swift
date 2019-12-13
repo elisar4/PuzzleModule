@@ -19,13 +19,18 @@ import UIKit
 
 @objc public class PuzzleModule: NSObject
 {
+    static var insets: UIEdgeInsets = .zero
+    
     @objc public static func puzzle(atViewController: UIViewController,
                               withDelegate: PuzzleOutput,
                               puzzleImage: UIImage,
                               puzzleRotationEnabled: Bool,
                               puzzleRows: Int,
                               puzzleColumns: Int,
+                              boardRows: Int,
+                              boardColumns: Int,
                               puzzlePieces: Array<Array<UIBezierPath>>,
+                              puzzleFrames: Array<Array<CGRect>>,
                               puzzleSize: CGFloat,
                               puzzleInsets: UIEdgeInsets,
                               puzzleState: PuzzleState?,
@@ -39,6 +44,8 @@ import UIKit
         puzzle.output = withDelegate
         
         puzzle.setBGColors(boardBGColor, paletteBGColor)
+        
+        insets = puzzleInsets
         
         puzzle.view.fillSuperView(puzzleInsets)
         
@@ -56,9 +63,12 @@ import UIKit
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.01,
                                       execute: {
             puzzle.configure(withPaths: pieces,
+                             frames: puzzleFrames,
                              image: puzzleImage,
                              difficulty: difficulty,
                              originSize: puzzleSize,
+                             w: boardColumns,
+                             h: boardRows,
                              puzzleState: puzzleState,
                              shuffle: shuffle,
                              boardBGColor: boardBGColor,
