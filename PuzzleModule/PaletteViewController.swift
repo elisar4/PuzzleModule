@@ -82,7 +82,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func didGrabItem(_ pieceItem: PieceItem) {
-        if let index = data.index(where: {$0.uid == pieceItem.uid}) {
+        if let index = data.firstIndex(where: {$0.uid == pieceItem.uid}) {
             collectionView?.performBatchUpdates({ [weak self] in
                 self?.data.remove(at: index)
                 self?.collectionView?.deleteItems(at: [IndexPath(row: index, section: 0)])
@@ -96,7 +96,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
             return
         }
         
-        if let index = data.index(where: {$0.uid == piece.item.uid}) {
+        if let index = data.firstIndex(where: {$0.uid == piece.item.uid}) {
             let ip = IndexPath(row: index, section: 0)
             if let cell = cv.cellForItem(at: ip) {
                 view.isUserInteractionEnabled = false
@@ -128,7 +128,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
             }
             
             cv.performBatchUpdates({
-                let ind = self.data.index(where: {$0.uidInt == piece.item.uidInt}) ?? ip.row
+                let ind = self.data.firstIndex(where: {$0.uidInt == piece.item.uidInt}) ?? ip.row
                 if ind != ip.row {
                     print("swap")
                     // swap
@@ -182,7 +182,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
             || pt.x > cv.contentOffset.x + cv.bounds.width
             || pt.y > cv.contentOffset.y + cv.bounds.height {
             // out of bounds
-            if let ind = data.index(where: {$0.uidInt == piece.item.uidInt}) {
+            if let ind = data.firstIndex(where: {$0.uidInt == piece.item.uidInt}) {
                 let ipToDelete = IndexPath(row: ind, section: 0)
                 let size = collectionView(cv, layout: collectionViewLayout, sizeForItemAt: ipToDelete)
                 let curX = cv.bounds.width + cv.contentOffset.x
@@ -215,7 +215,7 @@ class PaletteViewController: UICollectionViewController, UICollectionViewDelegat
             }
             
             cv.performBatchUpdates({ [weak self] in
-                let ind = self?.data.index(where: {$0.uidInt == piece.item.uidInt}) ?? ip.row
+                let ind = self?.data.firstIndex(where: {$0.uidInt == piece.item.uidInt}) ?? ip.row
                 if ind != ip.row {
                     // swap
                     self?.data.remove(at: ind)

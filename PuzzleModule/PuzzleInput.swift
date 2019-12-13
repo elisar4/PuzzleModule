@@ -1,7 +1,7 @@
 //  PuzzleInput.swift
 //  Created by Vladimir Roganov on 06/12/2018.
 
-import Foundation
+import UIKit
 
 @objc protocol PuzzleInput: class {
     func configure(withPaths: [[CGPath]], frames: [[CGRect]], image: UIImage, difficulty: EAPuzzleDifficulty, originSize: CGFloat, w: Int, h: Int, puzzleState: PuzzleState?, shuffle: Bool, boardBGColor: UIColor?, paletteBGColor: UIColor?)

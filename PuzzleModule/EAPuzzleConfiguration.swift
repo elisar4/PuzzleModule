@@ -2,6 +2,7 @@
 //  Created by Vladimir Roganov on 29.04.17.
 
 import Foundation
+import CoreGraphics
 
 @objc public class PieceState: NSObject, NSCoding {
     public var uid: String = ""

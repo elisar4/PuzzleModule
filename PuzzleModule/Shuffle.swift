@@ -1,7 +1,7 @@
 //  Shuffle.swift
 //  Created by Vladimir Roganov on 06/12/2018.
 
-import Foundation
+import CoreGraphics
 
 extension MutableCollection where Indices.Iterator.Element == Index {
     /// Shuffles the contents of this collection.

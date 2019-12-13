@@ -1,7 +1,7 @@
 //  PieceOutput.swift
 //  Created by Vladimir Roganov on 06/12/2018.
 
-import Foundation
+import UIKit
 
 protocol PieceOutput {
     func pickSingleEvent()
@@ -81,7 +81,7 @@ extension PuzzleViewController: PieceOutput {
                 if let gr1 = piece.group {
                     if let gr2 = p.group {
                         let removedGroup = gr1.combine(withGroup: gr2)
-                        if let ind = gr.index(where: { $0.uid == removedGroup.uid }) {
+                        if let ind = gr.firstIndex(where: { $0.uid == removedGroup.uid }) {
                             gr.remove(at: ind)
                         }
                         shouldRepeat = true
