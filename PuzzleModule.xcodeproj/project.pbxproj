@@ -13,7 +13,6 @@
 		E95744D321B9AC3C002B2864 /* PaletteOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744D221B9AC3C002B2864 /* PaletteOutput.swift */; };
 		E95744D521B9AD3B002B2864 /* PieceOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744D421B9AD3B002B2864 /* PieceOutput.swift */; };
 		E957B5A91ECEE720000AABB3 /* PuzzleModule.h in Headers */ = {isa = PBXBuildFile; fileRef = E957B5A71ECEE720000AABB3 /* PuzzleModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E957B5BE1ECEE7AE000AABB3 /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5AF1ECEE7AE000AABB3 /* AnimationHelper.swift */; };
 		E957B5BF1ECEE7AE000AABB3 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B01ECEE7AE000AABB3 /* BoardViewController.swift */; };
 		E957B5C01ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B11ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift */; };
 		E957B5C11ECEE7AE000AABB3 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B21ECEE7AE000AABB3 /* PaletteViewController.swift */; };
@@ -28,6 +27,7 @@
 		E957B5CB1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5BC1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift */; };
 		E957B5CC1ECEE7AE000AABB3 /* UIView+EAGeom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5BD1ECEE7AE000AABB3 /* UIView+EAGeom.swift */; };
 		E957B5CE1ECEE7E3000AABB3 /* PuzzleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5CD1ECEE7E3000AABB3 /* PuzzleModule.swift */; };
+		E9DF2D5323A4400000F443AF /* CATransaction+Instant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DF2D5223A4400000F443AF /* CATransaction+Instant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +39,6 @@
 		E957B5A41ECEE720000AABB3 /* PuzzleModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PuzzleModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E957B5A71ECEE720000AABB3 /* PuzzleModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleModule.h; sourceTree = "<group>"; };
 		E957B5A81ECEE720000AABB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E957B5AF1ECEE7AE000AABB3 /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
 		E957B5B01ECEE7AE000AABB3 /* BoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		E957B5B11ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAPuzzleConfiguration.swift; sourceTree = "<group>"; };
 		E957B5B21ECEE7AE000AABB3 /* PaletteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +53,7 @@
 		E957B5BC1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutHelper.swift"; sourceTree = "<group>"; };
 		E957B5BD1ECEE7AE000AABB3 /* UIView+EAGeom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+EAGeom.swift"; sourceTree = "<group>"; };
 		E957B5CD1ECEE7E3000AABB3 /* PuzzleModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleModule.swift; sourceTree = "<group>"; };
+		E9DF2D5223A4400000F443AF /* CATransaction+Instant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CATransaction+Instant.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +99,7 @@
 		E9EA3F391ED1A2EC0075A390 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E957B5AF1ECEE7AE000AABB3 /* AnimationHelper.swift */,
+				E9DF2D5223A4400000F443AF /* CATransaction+Instant.swift */,
 				E957B5BA1ECEE7AE000AABB3 /* UIImage+ResizedImage.swift */,
 				E957B5BB1ECEE7AE000AABB3 /* UIView+AnchorPoint.swift */,
 				E957B5BC1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift */,
@@ -187,10 +187,11 @@
 			};
 			buildConfigurationList = E957B59E1ECEE720000AABB3 /* Build configuration list for PBXProject "PuzzleModule" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = E957B59A1ECEE720000AABB3;
 			productRefGroup = E957B5A51ECEE720000AABB3 /* Products */;
@@ -226,7 +227,6 @@
 				E957B5C71ECEE7AE000AABB3 /* PuzzleDataSource.swift in Sources */,
 				E95744D321B9AC3C002B2864 /* PaletteOutput.swift in Sources */,
 				E95744CF21B9AA6C002B2864 /* PuzzleInput.swift in Sources */,
-				E957B5BE1ECEE7AE000AABB3 /* AnimationHelper.swift in Sources */,
 				E94EDD162237488C00DD9AA8 /* PaletteCell.swift in Sources */,
 				E957B5C31ECEE7AE000AABB3 /* PieceGroup.swift in Sources */,
 				E957B5C81ECEE7AE000AABB3 /* PuzzleViewController.swift in Sources */,
@@ -234,6 +234,7 @@
 				E957B5BF1ECEE7AE000AABB3 /* BoardViewController.swift in Sources */,
 				E957B5C01ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift in Sources */,
 				E957B5CE1ECEE7E3000AABB3 /* PuzzleModule.swift in Sources */,
+				E9DF2D5323A4400000F443AF /* CATransaction+Instant.swift in Sources */,
 				E957B5C91ECEE7AE000AABB3 /* UIImage+ResizedImage.swift in Sources */,
 				E957B5C61ECEE7AE000AABB3 /* PieceProxy.swift in Sources */,
 				E95744D121B9ABD3002B2864 /* Shuffle.swift in Sources */,
