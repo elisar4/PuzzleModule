@@ -258,12 +258,11 @@ class BoardViewController: UIViewController, BoardInput {
     func setBoardPosition(col: Int, row: Int,
                           isColLast: Bool, isRowLast: Bool,
                           puzzleW: Int, puzzleH: Int,
-                          animated: Bool = true, completion: (()->())? = nil) {
+                          animated: Bool = true,
+                          completion: (() -> Void)? = nil) {
         if self.col == col && self.row == row {
-            return;
+            return
         }
-        
-        //print("\(self.col),\(self.row)==>\(col),\(row)")
         
         if animating {
             return
@@ -282,31 +281,31 @@ class BoardViewController: UIViewController, BoardInput {
         let isRowFirst = row == 0
         let isCenteringX = isSingleCol || (!isColFirst && !isColLast)
         let isCenteringY = isSingleRow || (!isRowFirst && !isRowLast)
-        let pw = originSize*(CGFloat(bw)+0.5)
-        let ph = originSize*(CGFloat(bh)+0.5)
+        let pw = originSize * (CGFloat(bw) + 0.5)
+        let ph = originSize * (CGFloat(bh) + 0.5)
         
         let xOff: CGFloat
         if isSingleCol {
-            xOff = (view.bounds.width-(originSize*(CGFloat(bw))))*0.5
+            xOff = (view.bounds.width - (originSize * (CGFloat(bw)))) * 0.5
         } else if isCenteringX {
             let rowOdd = CGFloat(row).remainder(dividingBy: 2.0) == 0.0
-            let os = rowOdd ? originSize*0.35 : originSize*0.1
-            xOff = (view.bounds.width-pw)*0.5 + os
+            let os = rowOdd ? originSize * 0.35 : originSize * 0.1
+            xOff = (view.bounds.width - pw) * 0.5 + os
         } else if isColFirst {
-            xOff = view.bounds.width-pw
+            xOff = view.bounds.width - pw
         } else {
-            xOff = view.bounds.width-pw+originSize*0.5
+            xOff = view.bounds.width - pw + originSize * 0.5
         }
         
         let yOff: CGFloat
         if isSingleRow {
-            yOff = (view.bounds.height-(originSize*(CGFloat(bh))))*0.5
+            yOff = (view.bounds.height - (originSize * (CGFloat(bh)))) * 0.5
         } else if isCenteringY {
-            yOff = (view.bounds.height-ph)*0.5+originSize*0.35
+            yOff = (view.bounds.height - ph) * 0.5 + originSize * 0.35
         } else if isRowFirst {
-            yOff = view.bounds.height-ph
+            yOff = view.bounds.height - ph
         } else {
-            yOff = view.bounds.height-ph//+originSize*0.5
+            yOff = view.bounds.height - ph//+originSize*0.5
         }
         
         let cp = CGPoint(x: -CGFloat(bw * col) * originSize + xOff,
@@ -367,7 +366,7 @@ class BoardViewController: UIViewController, BoardInput {
         border.strokeColor = UIColor(white: 1.0, alpha: 0.25).cgColor
     }
     
-    func setFinishedState(withCompletion: (()->())?) {
+    func setFinishedState(withCompletion: (() -> Void)?) {
         let cx = view.bounds.width * 0.5
         let cy = view.bounds.height * 0.5
         let scale = view.bounds.width / bgimg.bounds.width

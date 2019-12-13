@@ -3,8 +3,7 @@
 
 import UIKit
 
-enum PieceRotation: Int
-{
+enum PieceRotation: Int {
     case origin = 0, right = 1, left = 2, upside = 3 
     
     var nextSide: PieceRotation {
@@ -100,18 +99,18 @@ class Piece: UIView, PieceItemOutput {
                 self.isRotating = false
             }
         } else {
-            self.rotation = to
-            self.output?.didRotate(piece: self)
-            self.isRotating = false
+            rotation = to
+            output?.didRotate(piece: self)
+            isRotating = false
         }
     }
     
     func animateRotationFromPiece(_ piece: Piece, to: PieceRotation, lx: Int, ly: Int) {
-        let oldT = self.layer.transform
-        let oldAnchor = self.mAnchor
+        let oldT = layer.transform
+        let oldAnchor = mAnchor
         
-        let ap = self.convert(piece.item.a, from: piece)
-        self.mAnchor = CGPoint(x: ap.x / (self.frame.width), y: ap.y / (self.frame.height))
+        let ap = convert(piece.item.a, from: piece)
+        mAnchor = CGPoint(x: ap.x / (frame.width), y: ap.y / (frame.height))
         
         UIView.animate(withDuration: 0.25, animations: {
             self.layer.transform = CATransform3DRotate(CATransform3DIdentity, PieceRotation.right.angle, 0.0, 0.0, 1.0)
@@ -151,18 +150,18 @@ class Piece: UIView, PieceItemOutput {
     }
     
     func canGroup(withPiece piece: Piece) -> Bool {
-        if piece.item.uid == self.item.uid {
+        if piece.item.uid == item.uid {
             return false
         }
         
-        if piece.rotation != self.rotation {
+        if piece.rotation != rotation {
             return false
         }
         
         if piece.group?.containsPiece(self) ?? false {
             return false
         }
-        return self.item.canGroup(withItem: piece.item, atRotation: self.rotation)
+        return item.canGroup(withItem: piece.item, atRotation: rotation)
     }
     
     init(withItem item: PieceItem, originImage: UIImage) {
@@ -236,58 +235,66 @@ class Piece: UIView, PieceItemOutput {
         if isRotating {
             return
         }
-        if sender.state == .began {
-            output?.pickSingleEvent()
-            self.updateLastAction()
-            self.layer.zPosition = 1500000.0
-            self.group?.pieces.forEach({ (p) in
-                p.layer.zPosition = 1500000.0
-            })
-            if self.group == nil {
-                self.output?.didPickSinglePiece(self)
-            }
-        } else if sender.state == .changed {
-            //move
-            let translation = sender.translation(in: self.superview)
-            
-            self.move(by: translation)
-            
-            self.group?.didMovePiece(piece: self, by: translation)
-            
-            sender.setTranslation(CGPoint.zero, in: self)
-            
-            if self.group == nil {
-                self.output?.didMoveSinglePiece(self)
-            }
-        } else if sender.state == .ended
-            || sender.state == .cancelled
-            || sender.state == .failed {
-            output?.dropSingleEvent()
-            if self.group == nil {
-                if self.output?.didDropSinglePiece(self) ?? false {
-                    return
-                }
-            }
-            
-            let LGX = item.gridX
-            let LGY = item.gridY
-            let gr = group
-            
-            let translation = self.output?.correctedSnapPoint(forPiece: self) ?? self.item.deltaXY(x: self.item.nearestGX, y: self.item.nearestGY)
-            UIView.animate(withDuration: 0.15, animations: {
-                self.move(by: translation)
-                gr?.didMovePiece(piece: self, by: translation)
-            }, completion: { (finished) in
-                if finished {
-                    self.isMoving = false
-                    self.item.snapToNearestGridCell()
-                    let dx = self.item.gridX - LGX
-                    let dy = self.item.gridY - LGY
-                    gr?.snapToGrid(piece: self.item.uid, dx: dx, dy: dy)
-                    self.dispatchSnap()
-                }
-            })
+        switch sender.state {
+        case .began: beginPan()
+        case .changed: movePan(sender)
+        case .ended, .cancelled, .failed: endPan()
+        default: break
         }
+    }
+    
+    private func beginPan() {
+        output?.pickSingleEvent()
+        updateLastAction()
+        layer.zPosition = 1500000.0
+        group?.pieces.forEach({ (p) in
+            p.layer.zPosition = 1500000.0
+        })
+        if group == nil {
+            output?.didPickSinglePiece(self)
+        }
+    }
+    
+    private func movePan(_ sender: UIPanGestureRecognizer) {
+        let translation = sender.translation(in: self.superview)
+        
+        self.move(by: translation)
+        
+        self.group?.didMovePiece(piece: self, by: translation)
+        
+        sender.setTranslation(CGPoint.zero, in: self)
+        
+        if self.group == nil {
+            self.output?.didMoveSinglePiece(self)
+        }
+    }
+    
+    private func endPan() {
+        output?.dropSingleEvent()
+        if group == nil {
+            if output?.didDropSinglePiece(self) ?? false {
+                return
+            }
+        }
+        
+        let LGX = item.gridX
+        let LGY = item.gridY
+        let gr = group
+        
+        let translation = output?.correctedSnapPoint(forPiece: self) ?? item.deltaXY(x: item.nearestGX, y: item.nearestGY)
+        UIView.animate(withDuration: 0.15, animations: {
+            self.move(by: translation)
+            gr?.didMovePiece(piece: self, by: translation)
+        }, completion: { (finished) in
+            if finished {
+                self.isMoving = false
+                self.item.snapToNearestGridCell()
+                let dx = self.item.gridX - LGX
+                let dy = self.item.gridY - LGY
+                gr?.snapToGrid(piece: self.item.uid, dx: dx, dy: dy)
+                self.dispatchSnap()
+            }
+        })
     }
     
     func showLockedEffect() {
@@ -304,11 +311,6 @@ class Piece: UIView, PieceItemOutput {
         if let rot = PieceRotation(rawValue: rotation) {
             self.rotation = rot
         }
-    }
-    
-    func randomPosition(maxCol: Int, maxRow: Int) {
-        item.gridX = Int(arc4random()%UInt32(maxCol))
-        item.gridY = Int(arc4random()%UInt32(maxRow))
     }
     
     func move(by: CGPoint) {
@@ -344,6 +346,7 @@ class Piece: UIView, PieceItemOutput {
     }
 }
 
+// TODO: check if this extension is needed:
 extension Piece: UIGestureRecognizerDelegate {
     
 }

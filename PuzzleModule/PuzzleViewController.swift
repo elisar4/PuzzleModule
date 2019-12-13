@@ -27,8 +27,8 @@ public class PuzzleViewController: UIViewController {
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        layout.itemSize = CGSize(width: self.paletteHeight-10,
-                                 height: self.paletteHeight-10)
+        layout.itemSize = CGSize(width: self.paletteHeight - 10,
+                                 height: self.paletteHeight - 10)
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
         
@@ -41,15 +41,12 @@ public class PuzzleViewController: UIViewController {
     var boardSize: CGSize {
         let ins = PuzzleModule.insets
         let s = UIScreen.main.bounds
-        return CGSize(width: s.width-ins.left-ins.right,
-                      height: s.height-paletteHeight-ins.top-ins.bottom)
+        return CGSize(width: s.width - ins.left - ins.right,
+                      height: s.height - paletteHeight - ins.top - ins.bottom)
     }
     
     lazy var boardController: BoardViewController = {
-        
-        let board = BoardViewController()
-        
-        return board
+        return BoardViewController()
     }()
     
     var inPlaceCount: Int {
@@ -104,20 +101,24 @@ public class PuzzleViewController: UIViewController {
     
     @objc func checkCompletion() {
         DispatchQueue.main.async {
-            if self.gr.count == 1 {
-                if self.paletteController.data.count == 0 {
-                    if self.pcs.count == self.gr[0].pieces.count {
-                        let items = self.lastDataSource.getPieceItems(forBoardColumn: self.boardController.col, boardRow: self.boardController.row)
-                        if self.boardController.isAllItemsOnBoard(items) {
-                            if self.sectionTransition {
-                                return;
-                            }
-                            self.sectionTransition = true
-                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2,
-                                                          execute: {
-                                                            self.didCompleteSection()
-                            })
+            self._checkCompletion()
+        }
+    }
+    
+    private func _checkCompletion() {
+        if gr.count == 1 {
+            if paletteController.data.count == 0 {
+                if pcs.count == gr[0].pieces.count {
+                    let items = lastDataSource.getPieceItems(forBoardColumn: boardController.col,
+                                                             boardRow: boardController.row)
+                    if boardController.isAllItemsOnBoard(items) {
+                        if sectionTransition {
+                            return
                         }
+                        sectionTransition = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                            self.didCompleteSection()
+                        })
                     }
                 }
             }
@@ -193,15 +194,17 @@ public class PuzzleViewController: UIViewController {
     }
     
     func remakeTimer() {
+        timer?.invalidate()
+        timer = nil
+        
         view.gestureRecognizers?.forEach({ (gr) in
             self.view.removeGestureRecognizer(gr)
         })
+        
         let pan = UIPanGestureRecognizer(target: self, action: #selector(PuzzleViewController.didPanTouchView(_:)))
         pan.cancelsTouchesInView = false
         view.addGestureRecognizer(pan)
         
-        timer?.invalidate()
-        timer = nil
         timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PuzzleViewController.checkCompletion), userInfo: nil, repeats: true)
     }
     
@@ -214,7 +217,7 @@ public class PuzzleViewController: UIViewController {
             paletteController.setDataItems(items)//no shuffle
         }
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
             
             let dur = (col+row == 0) ? 0.0 : 1.25
             
@@ -238,10 +241,7 @@ public class PuzzleViewController: UIViewController {
     func hasUncompletedPieces(_ pieceItems: [PieceItem]) -> Bool {
         if pieceItems.count > 0 {
             let pss = pieceItems.filter({ (pi) -> Bool in
-                return pi.dx != 0
-                    || pi.dy != 0
-                    || pi.rotation != .origin
-                    || !pi.locked
+                return pi.isUncompleted
             })
             return pss.count > 0
         }
@@ -254,11 +254,12 @@ public class PuzzleViewController: UIViewController {
             setBoardPosition(nxt.0, row: nxt.1)
         } else {
             // Puzzle comleted
+            timer?.invalidate()
+            timer = nil
+            
             view.gestureRecognizers?.forEach({ (gr) in
                 self.view.removeGestureRecognizer(gr)
             })
-            timer?.invalidate()
-            timer = nil
             
             boardController.setFinishedState(withCompletion: {
                 self.output?.didCompletePuzzle()
@@ -270,10 +271,10 @@ public class PuzzleViewController: UIViewController {
         let col = fromCol + ((fromRow%2==0) ? 1 : -1)
         let row = fromRow
         
-        if self.hasUncompletedPieces(atCol: col, row: row) {
+        if hasUncompletedPieces(atCol: col, row: row) {
             return (col, row)
-        } else if self.hasUncompletedPieces(atCol: fromCol, row: row+1) {
-            return (fromCol, row+1)
+        } else if hasUncompletedPieces(atCol: fromCol, row: row + 1) {
+            return (fromCol, row + 1)
         }
         
         return nil

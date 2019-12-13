@@ -91,7 +91,6 @@ class PuzzleDataSource {
         let boundMXC = boundMNC + boardSize.verticalSize.width
         let boundMNR = boardSize.verticalSize.height * r
         let boundMXR = boundMNR + boardSize.verticalSize.height
-        //print(boundMNC, boundMXC, boundMNR, boundMXR)
         return pcsItms.filter({($0.col >= boundMNC && $0.col < boundMXC && $0.row >= boundMNR && $0.row < boundMXR)})
     }
 }

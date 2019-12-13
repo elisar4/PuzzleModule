@@ -17,8 +17,8 @@ import UIKit
 //feature: section navigation via zoom
 //
 
-@objc public class PuzzleModule: NSObject
-{
+@objc public class PuzzleModule: NSObject {
+    
     static var insets: UIEdgeInsets = .zero
     
     @objc public static func puzzle(atViewController: UIViewController,
@@ -36,8 +36,7 @@ import UIKit
                               puzzleState: PuzzleState?,
                               shuffle: Bool,
                               boardBGColor: UIColor?,
-                              paletteBGColor: UIColor?) -> PuzzleViewController
-    {
+                              paletteBGColor: UIColor?) -> PuzzleViewController {
         let puzzle = PuzzleViewController()
         atViewController.addChild(puzzle)
         atViewController.view.addSubview(puzzle.view)
@@ -59,8 +58,7 @@ import UIKit
             })
         }
         
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.01,
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01,
                                       execute: {
             puzzle.configure(withPaths: pieces,
                              frames: puzzleFrames,

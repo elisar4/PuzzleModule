@@ -3,23 +3,21 @@
 
 import UIKit
 
-extension UIView
-{
+extension UIView {
     
     var mAnchorXY: CGPoint {
         get {
-            return self.layer.anchorPoint
+            return layer.anchorPoint
         }
         set {
-            let ax = newValue.x / self.bounds.width
-            let ay = newValue.y / self.bounds.height
-            self.mAnchor = CGPoint(x: ax, y: ay)
+            mAnchor = CGPoint(x: newValue.x / bounds.width,
+                              y: newValue.y / bounds.height)
         }
     }
     
     var mAnchor: CGPoint {
         get {
-            return self.layer.anchorPoint
+            return layer.anchorPoint
         }
         set {
             CATransaction.instant {

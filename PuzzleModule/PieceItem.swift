@@ -17,6 +17,10 @@ class PieceItem {
     
     var inPalette: Bool = true
     
+    var isUncompleted: Bool {
+        return dx != 0 || dy != 0 || rotation != .origin || !locked
+    }
+    
     var rotationTransform: CGAffineTransform {
         var t = CGAffineTransform.identity
         t = t.translatedBy(x: ax, y: ay)
@@ -28,7 +32,7 @@ class PieceItem {
     var gridX: Int = 0 {
         didSet {
             if let out = output {
-                out.frame = out.frame.rect(withX: size * CGFloat(dx) + ox*scale)
+                out.frame = out.frame.rect(withX: size * CGFloat(dx) + ox * scale)
             }
         }
     }
@@ -36,15 +40,15 @@ class PieceItem {
     var gridY: Int = 0 {
         didSet {
             if let out = output {
-                out.frame = out.frame.rect(withY: size * CGFloat(dy) + oy*scale)
+                out.frame = out.frame.rect(withY: size * CGFloat(dy) + oy * scale)
             }
         }
     }
     
     func targetFrame(x: Int, y: Int) -> CGRect {
         if let out = output {
-            let fx = CGFloat(x-col)*size+ox*scale
-            let fy = CGFloat(y-row)*size+oy*scale
+            let fx = CGFloat(x - col) * size + ox * scale
+            let fy = CGFloat(y - row) * size + oy * scale
             return CGRect(x: fx, y: fy, width: out.frame.width, height: out.frame.height)
         }
         return .zero
@@ -52,10 +56,10 @@ class PieceItem {
     
     func deltaXY(x: Int, y: Int) -> CGPoint {
         if let out = output {
-            let fx = CGFloat(x-col)*size+ox*scale
-            let fy = CGFloat(y-row)*size+oy*scale
-            return CGPoint(x: fx-out.frame.origin.x,
-                           y: fy-out.frame.origin.y)
+            let fx = CGFloat(x - col) * size + ox * scale
+            let fy = CGFloat(y - row) * size + oy * scale
+            return CGPoint(x: fx - out.frame.origin.x,
+                           y: fy - out.frame.origin.y)
         }
         return .zero
     }
@@ -103,8 +107,8 @@ class PieceItem {
     
     func nearestGridPoint() -> CGPoint {
         if let out = output {
-            var fr = out.frame.rect(withX: size * CGFloat(dx) + ox*scale)
-            fr = fr.rect(withY: size * CGFloat(dy) + oy*scale)
+            var fr = out.frame.rect(withX: size * CGFloat(dx) + ox * scale)
+            fr = fr.rect(withY: size * CGFloat(dy) + oy * scale)
             return fr.origin
         }
         return .zero
@@ -162,11 +166,12 @@ class PieceItem {
     }
     
     var anchor: CGPoint {
-        return CGPoint(x: ax/(ow*scale), y: ay/(oh*scale))
+        return CGPoint(x: ax / (ow * scale), y: ay / (oh * scale))
     }
     
     var uidInt: Int {
-        return self.uid.hashValue
+        // TODO: fix this to exclude hash overlapping (could cause bugs)
+        return uid.hashValue
     }
     
     //MARK: - Init
@@ -203,10 +208,10 @@ class PieceItem {
         self.fixed = fixed
         self.path = path
         self.oframe = originFrame
-        self.oframeScaled = CGRect(x: originFrame.origin.x*scale,
-                                   y: originFrame.origin.y*scale,
-                                   width: originFrame.width*scale,
-                                   height: originFrame.height*scale)
+        self.oframeScaled = CGRect(x: originFrame.origin.x * scale,
+                                   y: originFrame.origin.y * scale,
+                                   width: originFrame.width * scale,
+                                   height: originFrame.height * scale)
         self.ox = oframe.origin.x
         self.oy = oframe.origin.y
         self.ow = oframe.size.width
@@ -215,8 +220,8 @@ class PieceItem {
         self.size = size
         self.scaledSize = size * scale
         
-        self.ax = (CGFloat(col)+0.5)*size - ox*scale
-        self.ay = (CGFloat(row)+0.5)*size - oy*scale
+        self.ax = (CGFloat(col) + 0.5) * size - ox * scale
+        self.ay = (CGFloat(row) + 0.5) * size - oy * scale
         self.a = CGPoint(x: ax, y: ay)
         
         if !fixed {

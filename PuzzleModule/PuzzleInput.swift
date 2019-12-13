@@ -63,28 +63,28 @@ extension PuzzleViewController: PuzzleInput {
         
         let bs = self.boardSize
         
-        let www = bs.width/(pieces+0.5)
-        let hhh = bs.height/(vPieces+0.5)
+        let www = bs.width / (pieces + 0.5)
+        let hhh = bs.height / (vPieces + 0.5)
         
         let scale: CGFloat
         if www <= hhh {
-            scale = www/originSize
+            scale = www / originSize
         } else {
-            scale = hhh/originSize
+            scale = hhh / originSize
         }
         
-        let s = (originSize*scale) * CGFloat(difficulty.width) / image.size.width
+        let s = (originSize * scale) * CGFloat(difficulty.width) / image.size.width
         
         let img = image.resizedImage(scale: s)
         
         let dataSource = PuzzleDataSource(withPiecePaths: withPaths, frames: frames, difficulty: difficulty, scale: scale, originSize: originSize, boardSize: boardSize, puzzleImage: self.imgWithBorder(img))
         lastDataSource = dataSource
         
-        boardController.setBoardSize(boardSize, originSize: originSize*scale)
+        boardController.setBoardSize(boardSize, originSize: originSize * scale)
         
         boardController.setBackgroundImage(img, withMaxCols: difficulty.width, maxRows: difficulty.height)
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
             
             if let state = puzzleState {
                 // load puzzle

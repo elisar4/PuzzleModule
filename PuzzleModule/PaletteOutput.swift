@@ -66,7 +66,7 @@ extension PuzzleViewController: PaletteOutput {
                 if finished {
                     DispatchQueue.main.async {
                         p.dispatchSnap()
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.08, execute: {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08, execute: {
                             self.boardController.view.window?.isUserInteractionEnabled = true
                         })
                     }

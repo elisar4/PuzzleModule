@@ -17,7 +17,6 @@ protocol PieceOutput {
 
 extension PuzzleViewController: PieceOutput {
     
-    
     func pickSingleEvent() {
         output?.pickPiece()
     }
@@ -41,17 +40,16 @@ extension PuzzleViewController: PieceOutput {
             }
             paletteController.didGrabItem(p.item)
             
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.08, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08, execute: {
                 self.view.window?.isUserInteractionEnabled = true
             })
             
-            output?.didUpdate(progress: self.currentProgress)
+            output?.didUpdate(progress: currentProgress)
             return false
         } else {
             //else -> return to palette
-            print("did return")
             paletteController.didReturnToPalette(piece)
-            output?.didUpdate(progress: self.currentProgress)
+            output?.didUpdate(progress: currentProgress)
             output?.returnToPalette()
             return true
         }
@@ -168,9 +166,8 @@ extension PuzzleViewController: PieceOutput {
                                 return;
                             }
                             sectionTransition = true
-                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2,
-                                                          execute: {
-                                                            self.didCompleteSection()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                                self.didCompleteSection()
                             })
                         }
                     }
