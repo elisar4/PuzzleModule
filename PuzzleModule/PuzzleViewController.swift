@@ -2,6 +2,7 @@
 //  Created by Vladimir Roganov on 01.05.17.
 
 import UIKit
+import SpriteKit
 
 @objc public protocol PuzzleOutput: class {
     func didCompletePuzzle()
@@ -82,6 +83,21 @@ public class PuzzleViewController: UIViewController {
         
         view.backgroundColor = .black
         
+        loadSKModule()
+    }
+    
+    private func loadSKModule() {
+        let scene = SKScene(size: view.bounds.size)
+        let skView = view as! SKView
+        skView.showsFPS = true
+        skView.showsNodeCount = true
+        skView.ignoresSiblingOrder = true
+        skView.backgroundColor = UIColor.systemTeal
+        scene.scaleMode = .resizeFill
+        skView.presentScene(scene)
+    }
+    
+    private func loadUIKitModule() {
         addChild(boardController)
         view.addSubview(boardController.view)
         
