@@ -19,6 +19,13 @@ class SKMainScene: SKScene {
         defaultInit()
     }
     
+    override func didChangeSize(_ oldSize: CGSize) {
+        super.didChangeSize(oldSize)
+        let h = size.height - Self.PaletteHeight
+        board.size = CGSize(width: size.width, height: h)
+        board.didUpdateSize()
+    }
+    
     private func defaultInit() {
         backgroundColor = UIColor.black
         scaleMode = .resizeFill
