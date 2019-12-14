@@ -9,10 +9,10 @@ class SKMainScene: SKScene {
     
     lazy var board: SKBoardNode = {
         let h = self.size.height - Self.PaletteHeight
-        return SKBoardNode(texture: nil, color: UIColor.systemRed, size: CGSize(width: self.size.width, height: h))
+        return SKBoardNode(texture: nil, color: UIColor.systemRed.withAlphaComponent(0.5), size: CGSize(width: self.size.width, height: h))
     } ()
     
-    let palette = SKPaletteNode(texture: nil, color: UIColor.systemPink, size: CGSize(width: UIScreen.main.bounds.width, height: SKMainScene.PaletteHeight))
+    let palette = SKPaletteNode(texture: nil, color: UIColor.systemPink.withAlphaComponent(0.5), size: CGSize(width: UIScreen.main.bounds.width, height: SKMainScene.PaletteHeight))
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -20,7 +20,7 @@ class SKMainScene: SKScene {
     }
     
     private func defaultInit() {
-        backgroundColor = UIColor.systemOrange
+        backgroundColor = UIColor.black
         scaleMode = .resizeFill
         
         addChild(board)
