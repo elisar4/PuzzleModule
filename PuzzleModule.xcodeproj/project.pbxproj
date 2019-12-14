@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		E96E3DCA23A56144001E9E4C /* SKBoardNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96E3DC923A56144001E9E4C /* SKBoardNode.swift */; };
+		E96E3DCC23A578E1001E9E4C /* SKPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96E3DCB23A578E0001E9E4C /* SKPiece.swift */; };
 		OBJ_49 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* BoardViewController.swift */; };
 		OBJ_50 /* CATransaction+Instant.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* CATransaction+Instant.swift */; };
 		OBJ_51 /* EAPuzzleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* EAPuzzleConfiguration.swift */; };
@@ -69,6 +70,7 @@
 
 /* Begin PBXFileReference section */
 		E96E3DC923A56144001E9E4C /* SKBoardNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKBoardNode.swift; sourceTree = "<group>"; };
+		E96E3DCB23A578E0001E9E4C /* SKPiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPiece.swift; sourceTree = "<group>"; };
 		OBJ_12 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_14 /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		OBJ_15 /* CATransaction+Instant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CATransaction+Instant.swift"; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				E96E3DC923A56144001E9E4C /* SKBoardNode.swift */,
 				OBJ_29 /* SKMainScene.swift */,
 				OBJ_30 /* SKPaletteNode.swift */,
+				E96E3DCB23A578E0001E9E4C /* SKPiece.swift */,
 				OBJ_31 /* Shuffle.swift */,
 				OBJ_32 /* UIImage+ResizedImage.swift */,
 				OBJ_33 /* UIView+AnchorPoint.swift */,
@@ -308,6 +311,7 @@
 				OBJ_65 /* SKPaletteNode.swift in Sources */,
 				OBJ_66 /* Shuffle.swift in Sources */,
 				OBJ_67 /* UIImage+ResizedImage.swift in Sources */,
+				E96E3DCC23A578E1001E9E4C /* SKPiece.swift in Sources */,
 				OBJ_68 /* UIView+AnchorPoint.swift in Sources */,
 				OBJ_69 /* UIView+AutoLayoutHelper.swift in Sources */,
 				OBJ_70 /* UIView+EAGeom.swift in Sources */,

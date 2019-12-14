@@ -4,12 +4,19 @@
 import Foundation
 import CoreGraphics
 
-protocol PieceItemOutput: class {
-    var frame: CGRect {get set}
+protocol PieceItemOutput2: class {
+    //var frame: CGRect {get set}
+//    var pSize: CGSize {get set}
+//    var pPosition: CGPoint {get set}
+}
+
+protocol PieceItemOut: class {
+    var point: CGPoint {get set}
+    var psize: CGSize {get set}
 }
 
 class PieceItem {
-    weak var output: PieceItemOutput?
+    weak var output: PieceItemOut?
     
     var rotation: PieceRotation = .origin
     
@@ -32,7 +39,8 @@ class PieceItem {
     var gridX: Int = 0 {
         didSet {
             if let out = output {
-                out.frame = out.frame.rect(withX: size * CGFloat(dx) + ox * scale)
+                out.point = CGPoint(x: size * CGFloat(dx) + ox * scale, y: out.point.y)
+                //out.frame = out.frame.rect(withX: size * CGFloat(dx) + ox * scale)
             }
         }
     }
@@ -40,7 +48,8 @@ class PieceItem {
     var gridY: Int = 0 {
         didSet {
             if let out = output {
-                out.frame = out.frame.rect(withY: size * CGFloat(dy) + oy * scale)
+                out.point = CGPoint(x: out.point.x, y: size * CGFloat(dy) + oy * scale)
+                //out.frame = out.frame.rect(withY: size * CGFloat(dy) + oy * scale)
             }
         }
     }
@@ -49,7 +58,7 @@ class PieceItem {
         if let out = output {
             let fx = CGFloat(x - col) * size + ox * scale
             let fy = CGFloat(y - row) * size + oy * scale
-            return CGRect(x: fx, y: fy, width: out.frame.width, height: out.frame.height)
+            return CGRect(x: fx, y: fy, width: out.psize.width, height: out.psize.height)
         }
         return .zero
     }
@@ -58,8 +67,7 @@ class PieceItem {
         if let out = output {
             let fx = CGFloat(x - col) * size + ox * scale
             let fy = CGFloat(y - row) * size + oy * scale
-            return CGPoint(x: fx - out.frame.origin.x,
-                           y: fy - out.frame.origin.y)
+            return CGPoint(x: fx - out.point.x, y: fy - out.point.y)
         }
         return .zero
     }
@@ -80,14 +88,14 @@ class PieceItem {
 //    let ngy = (gyf < 0) ? Int(gyf - 0.5) : Int(gyf + 0.5)
     var nearestGX: Int {
         if let out = output {
-            return Int((out.frame.origin.x + ax) / size)
+            return Int((out.point.x + ax) / size)
         }
         return 0
     }
     
     var nearestGY: Int {
         if let out = output {
-            return Int((out.frame.origin.y + ay) / size)
+            return Int((out.point.y + ay) / size)
         }
         return 0
     }
@@ -100,18 +108,19 @@ class PieceItem {
         if let out = output {
             let nX = size * CGFloat(col - self.col) + ax
             let nY = size * CGFloat(row - self.row) + ay
-            return CGPoint(x: nX - out.frame.origin.x, y: nY - out.frame.origin.y)
+            return CGPoint(x: nX - out.point.x, y: nY - out.point.y)
         }
         return CGPoint.zero
     }
     
     func nearestGridPoint() -> CGPoint {
-        if let out = output {
-            var fr = out.frame.rect(withX: size * CGFloat(dx) + ox * scale)
-            fr = fr.rect(withY: size * CGFloat(dy) + oy * scale)
-            return fr.origin
-        }
-        return .zero
+//        if let out = output {
+//            var fr = out.frame.rect(withX: size * CGFloat(dx) + ox * scale)
+//            fr = fr.rect(withY: size * CGFloat(dy) + oy * scale)
+//            return fr.origin
+            return CGPoint(x: size * CGFloat(dx) + ox * scale, y: size * CGFloat(dy) + oy * scale)
+//        }
+//        return .zero
     }
     
     func snapToNearestGridCell() {
@@ -189,6 +198,7 @@ class PieceItem {
     let oframe: CGRect
     
     let oframeScaled: CGRect
+    let ofDelta: CGPoint
     
     let ax: CGFloat
     let ay: CGFloat
@@ -208,10 +218,21 @@ class PieceItem {
         self.fixed = fixed
         self.path = path
         self.oframe = originFrame
-        self.oframeScaled = CGRect(x: originFrame.origin.x * scale,
-                                   y: originFrame.origin.y * scale,
-                                   width: originFrame.width * scale,
-                                   height: originFrame.height * scale)
+        let _ox = originFrame.origin.x * scale
+        let _oy = originFrame.origin.y * scale
+        let ofs = CGRect(x: originFrame.origin.x * scale,
+                         y: originFrame.origin.y * scale,
+                         width: originFrame.width * scale,
+                         height: originFrame.height * scale)
+        self.ofDelta = CGPoint(x: ofs.minX-CGFloat(Int(originFrame.origin.x * scale)),
+                               y: ofs.minY-CGFloat(Int(originFrame.origin.y * scale)))
+        let _ow = Int((originFrame.width * scale + 0.5).rounded()) + Int(ofDelta.x.rounded(.up))
+        let _oh = Int((originFrame.height * scale + 0.5).rounded()) + Int(ofDelta.y.rounded(.up))
+        self.oframeScaled = CGRect(x: Int(originFrame.origin.x * scale),
+                                   y: Int(originFrame.origin.y * scale),
+                                   width: _ow + 1,
+                                   height: _oh + 1)
+//        print(ofDelta)
         self.ox = oframe.origin.x
         self.oy = oframe.origin.y
         self.ow = oframe.size.width

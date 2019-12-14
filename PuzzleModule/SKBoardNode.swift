@@ -9,7 +9,7 @@ class SKPieceContainer: SKSpriteNode {
 
 class SKBoardNode: SKSpriteNode {
     
-    let container = SKPieceContainer(texture: nil, color: UIColor.yellow.withAlphaComponent(0.5), size: CGSize(width: 3800, height: 3800))
+    let container = SKPieceContainer(texture: nil, color: UIColor.yellow.withAlphaComponent(0.15), size: CGSize(width: 3800, height: 3800))
     
     var board: EAPuzzleBoard?
     var originSize: CGFloat = 0.0
@@ -54,6 +54,14 @@ class SKBoardNode: SKSpriteNode {
         
     }
     
+    func addPiece(_ piece: SKPiece) {
+        container.addChild(piece)
+    }
+    
+    func removePiece(_ piece: SKPiece) {
+        piece.removeFromParent()
+    }
+    
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
         
@@ -61,9 +69,10 @@ class SKBoardNode: SKSpriteNode {
         border.fillColor = UIColor.clear
         border.lineWidth = 7.5
         border.zPosition = 500
+        border.lineJoin = .miter
         
         bgNode.anchorPoint = CGPoint(x: 0, y: 1)
-        bgNode.alpha = 1.0
+        bgNode.alpha = 0.15
         
         //backgroundColor = UIColor(white: 80.0/255.0, alpha: 1.0)
         addChild(base)

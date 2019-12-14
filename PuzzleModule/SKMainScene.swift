@@ -9,7 +9,7 @@ class SKMainScene: SKScene {
     
     lazy var board: SKBoardNode = {
         let h = self.size.height - Self.PaletteHeight
-        return SKBoardNode(texture: nil, color: UIColor.systemRed.withAlphaComponent(0.5), size: CGSize(width: self.size.width, height: h))
+        return SKBoardNode(texture: nil, color: UIColor.black, size: CGSize(width: self.size.width, height: h))
     } ()
     
     let palette = SKPaletteNode(texture: nil, color: UIColor.systemPink.withAlphaComponent(0.5), size: CGSize(width: UIScreen.main.bounds.width, height: SKMainScene.PaletteHeight))

@@ -20,7 +20,8 @@ class PuzzleDataSource {
     let scale: CGFloat
     
     var pcsItms: [PieceItem] = []
-    var pcs: [Piece] = []
+//    var pcs: [Piece] = []
+    var pcs: [SKPiece] = []
     var proxys: [PieceProxy] = []
     
     init(withPiecePaths paths: [[CGPath]],
@@ -62,11 +63,11 @@ class PuzzleDataSource {
         return proxy.img
     }
     
-    func getPiece(forItem: PieceItem) -> Piece {
+    func getPiece(forItem: PieceItem) -> SKPiece {
         if let p = pcs.first(where: {$0.item.uid == forItem.uid}) {
             return p
         }
-        let p = Piece(withItem: forItem, originImage: puzzleImage)
+        let p = SKPiece(withItem: forItem, originImage: puzzleImage)
         pcs.append(p)
         return p
     }

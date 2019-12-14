@@ -10,7 +10,7 @@ protocol PieceOutput {
     func didPickSinglePiece(_ piece: Piece)
     func didDropSinglePiece(_ piece: Piece) -> Bool
     func didSnap(piece: Piece)
-    func didSnap(piece: Piece, initialLoad: Bool)
+    func didSnap(piece: SKPiece, initialLoad: Bool)
     func didRotate(piece: Piece)
     func correctedSnapPoint(forPiece: Piece) -> CGPoint
 }
@@ -34,10 +34,10 @@ extension PuzzleViewController: PieceOutput {
             
             //if piece on board -> insert piece on board view
             boardController.addPiece(p)
-            if !pcs.contains(p) {
-                pcs.append(p)
-                p.output = self
-            }
+//            if !pcs.contains(p) {
+//                pcs.append(p)
+//                p.output = self
+//            }
             paletteController.didGrabItem(p.item)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.08, execute: {
@@ -67,57 +67,57 @@ extension PuzzleViewController: PieceOutput {
         }
     }
     
-    func processGroup(_ piece: Piece, initialLoad: Bool = false) {
+    func processGroup(_ piece: SKPiece, initialLoad: Bool = false) {
         let maxDist = (lastDataSource.originSize * lastDataSource.scale) * 3
         var shouldRepeat = false
         for p in pcs {
-            let dist = piece.center.distance(toPoint: p.center)
+            let dist = piece.position.distance(toPoint: p.position)
             if dist > maxDist {
                 continue
             }
-            if piece.canGroup(withPiece: p) {
-                if let gr1 = piece.group {
-                    if let gr2 = p.group {
-                        let removedGroup = gr1.combine(withGroup: gr2)
-                        if let ind = gr.firstIndex(where: { $0.uid == removedGroup.uid }) {
-                            gr.remove(at: ind)
-                        }
-                        shouldRepeat = true
-                    } else {
-                        gr1.append(piece: p)
-                        shouldRepeat = true
-                    }
-                } else if let gr2 = p.group {
-                    gr2.append(piece: piece)
-                    shouldRepeat = true
-                } else {
-                    gr.append(PieceGroup(withPieces: [piece, p]))
-                    shouldRepeat = true
-                }
-                
-                if !initialLoad {
-                    if let wnd = view.window {
-                        let pt = piece.convert(piece.blinkPoint(p), to: wnd)
-                        let bl = UIView()
-                        bl.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
-                        bl.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
-                        bl.layer.cornerRadius = 4
-                        bl.center = pt
-                        wnd.addSubview(bl)
-                        
-                        UIView.animate(withDuration: 0.445, animations: {
-                            bl.transform = CGAffineTransform(scaleX: 17.0, y: 17.0)
-                            bl.alpha = 0.0
-                        }) { (finished) in
-                            if finished {
-                                bl.removeFromSuperview()
-                            }
-                        }
-                    }
-                    
-                    output?.groupPiece()
-                }
-            }
+//            if piece.canGroup(withPiece: p) {
+//                if let gr1 = piece.group {
+//                    if let gr2 = p.group {
+//                        let removedGroup = gr1.combine(withGroup: gr2)
+//                        if let ind = gr.firstIndex(where: { $0.uid == removedGroup.uid }) {
+//                            gr.remove(at: ind)
+//                        }
+//                        shouldRepeat = true
+//                    } else {
+//                        gr1.append(piece: p)
+//                        shouldRepeat = true
+//                    }
+//                } else if let gr2 = p.group {
+//                    gr2.append(piece: piece)
+//                    shouldRepeat = true
+//                } else {
+//                    gr.append(PieceGroup(withPieces: [piece, p]))
+//                    shouldRepeat = true
+//                }
+//
+//                if !initialLoad {
+//                    if let wnd = view.window {
+//                        let pt = piece.convert(piece.blinkPoint(p), to: wnd)
+//                        let bl = UIView()
+//                        bl.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+//                        bl.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+//                        bl.layer.cornerRadius = 4
+//                        bl.center = pt
+//                        wnd.addSubview(bl)
+//
+//                        UIView.animate(withDuration: 0.445, animations: {
+//                            bl.transform = CGAffineTransform(scaleX: 17.0, y: 17.0)
+//                            bl.alpha = 0.0
+//                        }) { (finished) in
+//                            if finished {
+//                                bl.removeFromSuperview()
+//                            }
+//                        }
+//                    }
+//
+//                    output?.groupPiece()
+//                }
+//            }
         }
         
         if shouldRepeat {
@@ -134,7 +134,7 @@ extension PuzzleViewController: PieceOutput {
         
         let individualPieces = pcs.filter { $0.group == nil }
         for p in individualPieces {
-            p.layer.zPosition = p.lastAction
+            p.zPosition = p.lastAction
         }
         
 //        let zSorted = pcs.sorted { $0.layer.zPosition < $1.layer.zPosition }
@@ -144,10 +144,10 @@ extension PuzzleViewController: PieceOutput {
     }
     
     func didSnap(piece: Piece) {
-        didSnap(piece: piece, initialLoad: false)
+//        didSnap(piece: piece, initialLoad: false)
     }
     
-    func didSnap(piece: Piece, initialLoad: Bool) {
+    func didSnap(piece: SKPiece, initialLoad: Bool) {
         processGroup(piece, initialLoad: initialLoad)
         //        for p in self.pcs
         //        {
@@ -178,7 +178,7 @@ extension PuzzleViewController: PieceOutput {
     
     func didRotate(piece: Piece) {
         for p in pcs {
-            processGroup(p)
+//            processGroup(p)
         }
         updateZIndexes()
     }

@@ -16,7 +16,7 @@ import SpriteKit
 public class PuzzleViewController: UIViewController {
     
     weak var output: PuzzleOutput?
-    var pcs: [Piece] = []
+    var pcs: [SKPiece] = []
     var gr: [PieceGroup] = []
     var blockCounter: Int = 0
     
@@ -191,7 +191,8 @@ public class PuzzleViewController: UIViewController {
         for stateItem in state.boardPieces {
             if let item = lastDataSource.getPieceItemById(stateItem.uid) {
                 let p = lastDataSource.getPiece(forItem: item)
-                boardController.addPiece(p)
+//                boardController.addPiece(p)
+                scene.board.addPiece(p)
                 pcs.append(p)
                 p.setPosition(col: stateItem.curX, row: stateItem.curY, rotation: stateItem.rotation)
                 p.output = self
@@ -227,6 +228,17 @@ public class PuzzleViewController: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PuzzleViewController.checkCompletion), userInfo: nil, repeats: true)
     }
     
+    private func setInPlace(items: [PieceItem]) {
+        for item in items {
+            let p = lastDataSource.getPiece(forItem: item)
+            scene.board.addPiece(p)
+            pcs.append(p)
+            p.setPosition(col: item.col, row: item.row, rotation: PieceRotation.origin.rawValue)
+            p.output = self
+            self.didSnap(piece: p, initialLoad: true)
+        }
+    }
+    
     func setBoardPosition(_ col: Int, row: Int) {
         let items = lastDataSource.getPieceItems(forBoardColumn: col, boardRow: row)
         
@@ -235,6 +247,8 @@ public class PuzzleViewController: UIViewController {
         } else {
             paletteController.setDataItems(items)//no shuffle
         }
+        
+        setInPlace(items: Array(items.prefix(upTo: 27)))
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
             
@@ -246,7 +260,9 @@ public class PuzzleViewController: UIViewController {
             self.boardController.setBoardPosition(col: col, row: row,
                                                   isColLast: cl, isRowLast: rw,
                                                   puzzleW: self.lastDataSource.difficulty.width,
-                                                  puzzleH: self.lastDataSource.difficulty.height, animated: dur>0, completion: { () in
+                                                  puzzleH: self.lastDataSource.difficulty.height,
+                                                  animated: dur>0,
+                                                  completion: { () in
                                                   self.sectionTransition = false
             })
         })

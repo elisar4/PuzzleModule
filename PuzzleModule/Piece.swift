@@ -25,7 +25,12 @@ enum PieceRotation: Int {
     }
 }
 
-class Piece: UIView, PieceItemOutput {
+class Piece: UIView, PieceItemOut {
+    
+    var psize: CGSize = .zero
+    
+    var point: CGPoint = .zero
+    
     
     public func unsub() {
         gestureRecognizers?.forEach({ (gr) in
