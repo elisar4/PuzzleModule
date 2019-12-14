@@ -80,21 +80,26 @@ extension PuzzleViewController: PuzzleInput {
         let dataSource = PuzzleDataSource(withPiecePaths: withPaths, frames: frames, difficulty: difficulty, scale: scale, originSize: originSize, boardSize: boardSize, puzzleImage: self.imgWithBorder(img))
         lastDataSource = dataSource
         
-        boardController.setBoardSize(boardSize, originSize: originSize * scale)
+        //boardController.setBoardSize(boardSize, originSize: originSize * scale)
+        scene.board.setBoardSize(boardSize, originSize: originSize * scale)
         
-        boardController.setBackgroundImage(img, withMaxCols: difficulty.width, maxRows: difficulty.height)
+        //boardController.setBackgroundImage(img, withMaxCols: difficulty.width, maxRows: difficulty.height)
+        scene.board.setBackgroundImage(img, withMaxCols: difficulty.width, maxRows: difficulty.height)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
-            
-            if let state = puzzleState {
-                // load puzzle
-                self.loadState(state)
-            } else {
-                // new puzzle
-                self.setBoardPosition(0, row: 0)
-            }
-            self.remakeTimer()
+            self.initOrLoad(state: puzzleState)
         })
+    }
+    
+    private func initOrLoad(state: PuzzleState?) {
+        if let state = state {
+            // load puzzle
+            loadState(state)
+        } else {
+            // new puzzle
+            setBoardPosition(0, row: 0)
+        }
+        remakeTimer()
     }
     
     private func imgWithBorder(_ image: UIImage) -> UIImage {

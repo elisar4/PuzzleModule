@@ -86,8 +86,11 @@ public class PuzzleViewController: UIViewController {
         loadSKModule()
     }
     
+    lazy var scene: SKMainScene = {
+        return SKMainScene(size: self.view.bounds.size)
+    } ()
+    
     private func loadSKModule() {
-        let scene = SKMainScene(size: view.bounds.size)
         let skView = SKView(frame: view.bounds)
         skView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(skView)
