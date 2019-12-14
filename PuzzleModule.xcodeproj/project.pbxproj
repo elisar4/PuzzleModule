@@ -6,158 +6,210 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		"PuzzleModule::PuzzleModulePackageTests::ProductTarget" /* PuzzleModulePackageTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = OBJ_79 /* Build configuration list for PBXAggregateTarget "PuzzleModulePackageTests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				OBJ_82 /* PBXTargetDependency */,
+			);
+			name = PuzzleModulePackageTests;
+			productName = PuzzleModulePackageTests;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		E94EDD162237488C00DD9AA8 /* PaletteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94EDD152237488C00DD9AA8 /* PaletteCell.swift */; };
-		E95744CF21B9AA6C002B2864 /* PuzzleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744CE21B9AA6C002B2864 /* PuzzleInput.swift */; };
-		E95744D121B9ABD3002B2864 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744D021B9ABD3002B2864 /* Shuffle.swift */; };
-		E95744D321B9AC3C002B2864 /* PaletteOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744D221B9AC3C002B2864 /* PaletteOutput.swift */; };
-		E95744D521B9AD3B002B2864 /* PieceOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95744D421B9AD3B002B2864 /* PieceOutput.swift */; };
-		E957B5A91ECEE720000AABB3 /* PuzzleModule.h in Headers */ = {isa = PBXBuildFile; fileRef = E957B5A71ECEE720000AABB3 /* PuzzleModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E957B5BF1ECEE7AE000AABB3 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B01ECEE7AE000AABB3 /* BoardViewController.swift */; };
-		E957B5C01ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B11ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift */; };
-		E957B5C11ECEE7AE000AABB3 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B21ECEE7AE000AABB3 /* PaletteViewController.swift */; };
-		E957B5C21ECEE7AE000AABB3 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B31ECEE7AE000AABB3 /* Piece.swift */; };
-		E957B5C31ECEE7AE000AABB3 /* PieceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B41ECEE7AE000AABB3 /* PieceGroup.swift */; };
-		E957B5C41ECEE7AE000AABB3 /* PieceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B51ECEE7AE000AABB3 /* PieceItem.swift */; };
-		E957B5C61ECEE7AE000AABB3 /* PieceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B71ECEE7AE000AABB3 /* PieceProxy.swift */; };
-		E957B5C71ECEE7AE000AABB3 /* PuzzleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B81ECEE7AE000AABB3 /* PuzzleDataSource.swift */; };
-		E957B5C81ECEE7AE000AABB3 /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5B91ECEE7AE000AABB3 /* PuzzleViewController.swift */; };
-		E957B5C91ECEE7AE000AABB3 /* UIImage+ResizedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5BA1ECEE7AE000AABB3 /* UIImage+ResizedImage.swift */; };
-		E957B5CA1ECEE7AE000AABB3 /* UIView+AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5BB1ECEE7AE000AABB3 /* UIView+AnchorPoint.swift */; };
-		E957B5CB1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5BC1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift */; };
-		E957B5CC1ECEE7AE000AABB3 /* UIView+EAGeom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5BD1ECEE7AE000AABB3 /* UIView+EAGeom.swift */; };
-		E957B5CE1ECEE7E3000AABB3 /* PuzzleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E957B5CD1ECEE7E3000AABB3 /* PuzzleModule.swift */; };
-		E9DF2D5323A4400000F443AF /* CATransaction+Instant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DF2D5223A4400000F443AF /* CATransaction+Instant.swift */; };
+		OBJ_49 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* BoardViewController.swift */; };
+		OBJ_50 /* CATransaction+Instant.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* CATransaction+Instant.swift */; };
+		OBJ_51 /* EAPuzzleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* EAPuzzleConfiguration.swift */; };
+		OBJ_52 /* PaletteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* PaletteCell.swift */; };
+		OBJ_53 /* PaletteOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* PaletteOutput.swift */; };
+		OBJ_54 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* PaletteViewController.swift */; };
+		OBJ_55 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Piece.swift */; };
+		OBJ_56 /* PieceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* PieceGroup.swift */; };
+		OBJ_57 /* PieceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* PieceItem.swift */; };
+		OBJ_58 /* PieceOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* PieceOutput.swift */; };
+		OBJ_59 /* PieceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* PieceProxy.swift */; };
+		OBJ_60 /* PuzzleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* PuzzleDataSource.swift */; };
+		OBJ_61 /* PuzzleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* PuzzleInput.swift */; };
+		OBJ_62 /* PuzzleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* PuzzleModule.swift */; };
+		OBJ_63 /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* PuzzleViewController.swift */; };
+		OBJ_64 /* SKMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* SKMainScene.swift */; };
+		OBJ_65 /* SKPaletteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* SKPaletteNode.swift */; };
+		OBJ_66 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Shuffle.swift */; };
+		OBJ_67 /* UIImage+ResizedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* UIImage+ResizedImage.swift */; };
+		OBJ_68 /* UIView+AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* UIView+AnchorPoint.swift */; };
+		OBJ_69 /* UIView+AutoLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* UIView+AutoLayoutHelper.swift */; };
+		OBJ_70 /* UIView+EAGeom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* UIView+EAGeom.swift */; };
+		OBJ_77 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_88 /* PuzzleModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* PuzzleModuleTests.swift */; };
+		OBJ_89 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* XCTestManifests.swift */; };
+		OBJ_91 /* PuzzleModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "PuzzleModule::PuzzleModule::Product" /* PuzzleModule.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E9DF2D6F23A53B4B00F443AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "PuzzleModule::PuzzleModule";
+			remoteInfo = PuzzleModule;
+		};
+		E9DF2D7023A53B4C00F443AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "PuzzleModule::PuzzleModuleTests";
+			remoteInfo = PuzzleModuleTests;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		E94EDD152237488C00DD9AA8 /* PaletteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteCell.swift; sourceTree = "<group>"; };
-		E95744CE21B9AA6C002B2864 /* PuzzleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleInput.swift; sourceTree = "<group>"; };
-		E95744D021B9ABD3002B2864 /* Shuffle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
-		E95744D221B9AC3C002B2864 /* PaletteOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteOutput.swift; sourceTree = "<group>"; };
-		E95744D421B9AD3B002B2864 /* PieceOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceOutput.swift; sourceTree = "<group>"; };
-		E957B5A41ECEE720000AABB3 /* PuzzleModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PuzzleModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E957B5A71ECEE720000AABB3 /* PuzzleModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleModule.h; sourceTree = "<group>"; };
-		E957B5A81ECEE720000AABB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E957B5B01ECEE7AE000AABB3 /* BoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
-		E957B5B11ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAPuzzleConfiguration.swift; sourceTree = "<group>"; };
-		E957B5B21ECEE7AE000AABB3 /* PaletteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
-		E957B5B31ECEE7AE000AABB3 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
-		E957B5B41ECEE7AE000AABB3 /* PieceGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceGroup.swift; sourceTree = "<group>"; };
-		E957B5B51ECEE7AE000AABB3 /* PieceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceItem.swift; sourceTree = "<group>"; };
-		E957B5B71ECEE7AE000AABB3 /* PieceProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceProxy.swift; sourceTree = "<group>"; };
-		E957B5B81ECEE7AE000AABB3 /* PuzzleDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleDataSource.swift; sourceTree = "<group>"; };
-		E957B5B91ECEE7AE000AABB3 /* PuzzleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
-		E957B5BA1ECEE7AE000AABB3 /* UIImage+ResizedImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+ResizedImage.swift"; sourceTree = "<group>"; };
-		E957B5BB1ECEE7AE000AABB3 /* UIView+AnchorPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorPoint.swift"; sourceTree = "<group>"; };
-		E957B5BC1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutHelper.swift"; sourceTree = "<group>"; };
-		E957B5BD1ECEE7AE000AABB3 /* UIView+EAGeom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+EAGeom.swift"; sourceTree = "<group>"; };
-		E957B5CD1ECEE7E3000AABB3 /* PuzzleModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleModule.swift; sourceTree = "<group>"; };
-		E9DF2D5223A4400000F443AF /* CATransaction+Instant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CATransaction+Instant.swift"; sourceTree = "<group>"; };
+		OBJ_12 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		OBJ_14 /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
+		OBJ_15 /* CATransaction+Instant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CATransaction+Instant.swift"; sourceTree = "<group>"; };
+		OBJ_16 /* EAPuzzleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAPuzzleConfiguration.swift; sourceTree = "<group>"; };
+		OBJ_17 /* PaletteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteCell.swift; sourceTree = "<group>"; };
+		OBJ_18 /* PaletteOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteOutput.swift; sourceTree = "<group>"; };
+		OBJ_19 /* PaletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
+		OBJ_20 /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
+		OBJ_21 /* PieceGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceGroup.swift; sourceTree = "<group>"; };
+		OBJ_22 /* PieceItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceItem.swift; sourceTree = "<group>"; };
+		OBJ_23 /* PieceOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceOutput.swift; sourceTree = "<group>"; };
+		OBJ_24 /* PieceProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceProxy.swift; sourceTree = "<group>"; };
+		OBJ_25 /* PuzzleDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleDataSource.swift; sourceTree = "<group>"; };
+		OBJ_26 /* PuzzleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleInput.swift; sourceTree = "<group>"; };
+		OBJ_27 /* PuzzleModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleModule.swift; sourceTree = "<group>"; };
+		OBJ_28 /* PuzzleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
+		OBJ_29 /* SKMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMainScene.swift; sourceTree = "<group>"; };
+		OBJ_30 /* SKPaletteNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPaletteNode.swift; sourceTree = "<group>"; };
+		OBJ_31 /* Shuffle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
+		OBJ_32 /* UIImage+ResizedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ResizedImage.swift"; sourceTree = "<group>"; };
+		OBJ_33 /* UIView+AnchorPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorPoint.swift"; sourceTree = "<group>"; };
+		OBJ_34 /* UIView+AutoLayoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutHelper.swift"; sourceTree = "<group>"; };
+		OBJ_35 /* UIView+EAGeom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+EAGeom.swift"; sourceTree = "<group>"; };
+		OBJ_38 /* PuzzleModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleModuleTests.swift; sourceTree = "<group>"; };
+		OBJ_39 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		OBJ_43 /* PuzzleModule */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PuzzleModule; sourceTree = SOURCE_ROOT; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		"PuzzleModule::PuzzleModule::Product" /* PuzzleModule.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PuzzleModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"PuzzleModule::PuzzleModuleTests::Product" /* PuzzleModuleTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = PuzzleModuleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E957B5A01ECEE720000AABB3 /* Frameworks */ = {
+		OBJ_71 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_91 /* PuzzleModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E957B59A1ECEE720000AABB3 = {
+		OBJ_13 /* PuzzleModule */ = {
 			isa = PBXGroup;
 			children = (
-				E957B5A61ECEE720000AABB3 /* PuzzleModule */,
-				E957B5A51ECEE720000AABB3 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		E957B5A51ECEE720000AABB3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E957B5A41ECEE720000AABB3 /* PuzzleModule.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		E957B5A61ECEE720000AABB3 /* PuzzleModule */ = {
-			isa = PBXGroup;
-			children = (
-				E957B5A71ECEE720000AABB3 /* PuzzleModule.h */,
-				E957B5CD1ECEE7E3000AABB3 /* PuzzleModule.swift */,
-				E9EA3F3A1ED1A3730075A390 /* Puzzle */,
-				E9EA3F3B1ED1A37D0075A390 /* Piece */,
-				E9EA3F391ED1A2EC0075A390 /* Extensions */,
-				E957B5A81ECEE720000AABB3 /* Info.plist */,
+				OBJ_14 /* BoardViewController.swift */,
+				OBJ_15 /* CATransaction+Instant.swift */,
+				OBJ_16 /* EAPuzzleConfiguration.swift */,
+				OBJ_17 /* PaletteCell.swift */,
+				OBJ_18 /* PaletteOutput.swift */,
+				OBJ_19 /* PaletteViewController.swift */,
+				OBJ_20 /* Piece.swift */,
+				OBJ_21 /* PieceGroup.swift */,
+				OBJ_22 /* PieceItem.swift */,
+				OBJ_23 /* PieceOutput.swift */,
+				OBJ_24 /* PieceProxy.swift */,
+				OBJ_25 /* PuzzleDataSource.swift */,
+				OBJ_26 /* PuzzleInput.swift */,
+				OBJ_27 /* PuzzleModule.swift */,
+				OBJ_28 /* PuzzleViewController.swift */,
+				OBJ_29 /* SKMainScene.swift */,
+				OBJ_30 /* SKPaletteNode.swift */,
+				OBJ_31 /* Shuffle.swift */,
+				OBJ_32 /* UIImage+ResizedImage.swift */,
+				OBJ_33 /* UIView+AnchorPoint.swift */,
+				OBJ_34 /* UIView+AutoLayoutHelper.swift */,
+				OBJ_35 /* UIView+EAGeom.swift */,
 			);
 			path = PuzzleModule;
 			sourceTree = "<group>";
 		};
-		E9EA3F391ED1A2EC0075A390 /* Extensions */ = {
+		OBJ_36 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E9DF2D5223A4400000F443AF /* CATransaction+Instant.swift */,
-				E957B5BA1ECEE7AE000AABB3 /* UIImage+ResizedImage.swift */,
-				E957B5BB1ECEE7AE000AABB3 /* UIView+AnchorPoint.swift */,
-				E957B5BC1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift */,
-				E957B5BD1ECEE7AE000AABB3 /* UIView+EAGeom.swift */,
-				E95744D021B9ABD3002B2864 /* Shuffle.swift */,
+				OBJ_37 /* PuzzleModuleTests */,
 			);
-			name = Extensions;
+			name = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_37 /* PuzzleModuleTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_38 /* PuzzleModuleTests.swift */,
+				OBJ_39 /* XCTestManifests.swift */,
+			);
+			name = PuzzleModuleTests;
+			path = Tests/PuzzleModuleTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_40 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				"PuzzleModule::PuzzleModule::Product" /* PuzzleModule.framework */,
+				"PuzzleModule::PuzzleModuleTests::Product" /* PuzzleModuleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		OBJ_5 = {
+			isa = PBXGroup;
+			children = (
+				OBJ_6 /* Package.swift */,
+				OBJ_7 /* Sources */,
+				OBJ_36 /* Tests */,
+				OBJ_40 /* Products */,
+				OBJ_43 /* PuzzleModule */,
+			);
 			sourceTree = "<group>";
 		};
-		E9EA3F3A1ED1A3730075A390 /* Puzzle */ = {
+		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E957B5B91ECEE7AE000AABB3 /* PuzzleViewController.swift */,
-				E957B5B01ECEE7AE000AABB3 /* BoardViewController.swift */,
-				E957B5B21ECEE7AE000AABB3 /* PaletteViewController.swift */,
-				E957B5B11ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift */,
-				E957B5B81ECEE7AE000AABB3 /* PuzzleDataSource.swift */,
-				E95744CE21B9AA6C002B2864 /* PuzzleInput.swift */,
-				E95744D221B9AC3C002B2864 /* PaletteOutput.swift */,
-				E95744D421B9AD3B002B2864 /* PieceOutput.swift */,
-				E94EDD152237488C00DD9AA8 /* PaletteCell.swift */,
+				OBJ_8 /* PuzzleModule */,
 			);
-			name = Puzzle;
-			sourceTree = "<group>";
+			name = Sources;
+			sourceTree = SOURCE_ROOT;
 		};
-		E9EA3F3B1ED1A37D0075A390 /* Piece */ = {
+		OBJ_8 /* PuzzleModule */ = {
 			isa = PBXGroup;
 			children = (
-				E957B5B31ECEE7AE000AABB3 /* Piece.swift */,
-				E957B5B41ECEE7AE000AABB3 /* PieceGroup.swift */,
-				E957B5B51ECEE7AE000AABB3 /* PieceItem.swift */,
-				E957B5B71ECEE7AE000AABB3 /* PieceProxy.swift */,
+				OBJ_12 /* README.md */,
+				OBJ_13 /* PuzzleModule */,
 			);
-			name = Piece;
-			sourceTree = "<group>";
+			name = PuzzleModule;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		E957B5A11ECEE720000AABB3 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E957B5A91ECEE720000AABB3 /* PuzzleModule.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		E957B5A31ECEE720000AABB3 /* PuzzleModule */ = {
+		"PuzzleModule::PuzzleModule" /* PuzzleModule */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E957B5AC1ECEE720000AABB3 /* Build configuration list for PBXNativeTarget "PuzzleModule" */;
+			buildConfigurationList = OBJ_45 /* Build configuration list for PBXNativeTarget "PuzzleModule" */;
 			buildPhases = (
-				E957B59F1ECEE720000AABB3 /* Sources */,
-				E957B5A01ECEE720000AABB3 /* Frameworks */,
-				E957B5A11ECEE720000AABB3 /* Headers */,
-				E957B5A21ECEE720000AABB3 /* Resources */,
+				OBJ_48 /* Sources */,
+				OBJ_71 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -165,276 +217,368 @@
 			);
 			name = PuzzleModule;
 			productName = PuzzleModule;
-			productReference = E957B5A41ECEE720000AABB3 /* PuzzleModule.framework */;
+			productReference = "PuzzleModule::PuzzleModule::Product" /* PuzzleModule.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"PuzzleModule::PuzzleModuleTests" /* PuzzleModuleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_84 /* Build configuration list for PBXNativeTarget "PuzzleModuleTests" */;
+			buildPhases = (
+				OBJ_87 /* Sources */,
+				OBJ_90 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_92 /* PBXTargetDependency */,
+			);
+			name = PuzzleModuleTests;
+			productName = PuzzleModuleTests;
+			productReference = "PuzzleModule::PuzzleModuleTests::Product" /* PuzzleModuleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		"PuzzleModule::SwiftPMPackageDescription" /* PuzzleModulePackageDescription */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_73 /* Build configuration list for PBXNativeTarget "PuzzleModulePackageDescription" */;
+			buildPhases = (
+				OBJ_76 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PuzzleModulePackageDescription;
+			productName = PuzzleModulePackageDescription;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		E957B59B1ECEE720000AABB3 /* Project object */ = {
+		OBJ_1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1130;
-				ORGANIZATIONNAME = "Vladimir Roganov";
-				TargetAttributes = {
-					E957B5A31ECEE720000AABB3 = {
-						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = A2V64Z853W;
-						LastSwiftMigration = 1130;
-						ProvisioningStyle = Automatic;
-					};
-				};
+				LastSwiftMigration = 9999;
+				LastUpgradeCheck = 9999;
 			};
-			buildConfigurationList = E957B59E1ECEE720000AABB3 /* Build configuration list for PBXProject "PuzzleModule" */;
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "PuzzleModule" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
-			mainGroup = E957B59A1ECEE720000AABB3;
-			productRefGroup = E957B5A51ECEE720000AABB3 /* Products */;
+			mainGroup = OBJ_5;
+			productRefGroup = OBJ_40 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E957B5A31ECEE720000AABB3 /* PuzzleModule */,
+				"PuzzleModule::PuzzleModule" /* PuzzleModule */,
+				"PuzzleModule::SwiftPMPackageDescription" /* PuzzleModulePackageDescription */,
+				"PuzzleModule::PuzzleModulePackageTests::ProductTarget" /* PuzzleModulePackageTests */,
+				"PuzzleModule::PuzzleModuleTests" /* PuzzleModuleTests */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		E957B5A21ECEE720000AABB3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
+/* Begin PBXSourcesBuildPhase section */
+		OBJ_48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
 			files = (
+				OBJ_49 /* BoardViewController.swift in Sources */,
+				OBJ_50 /* CATransaction+Instant.swift in Sources */,
+				OBJ_51 /* EAPuzzleConfiguration.swift in Sources */,
+				OBJ_52 /* PaletteCell.swift in Sources */,
+				OBJ_53 /* PaletteOutput.swift in Sources */,
+				OBJ_54 /* PaletteViewController.swift in Sources */,
+				OBJ_55 /* Piece.swift in Sources */,
+				OBJ_56 /* PieceGroup.swift in Sources */,
+				OBJ_57 /* PieceItem.swift in Sources */,
+				OBJ_58 /* PieceOutput.swift in Sources */,
+				OBJ_59 /* PieceProxy.swift in Sources */,
+				OBJ_60 /* PuzzleDataSource.swift in Sources */,
+				OBJ_61 /* PuzzleInput.swift in Sources */,
+				OBJ_62 /* PuzzleModule.swift in Sources */,
+				OBJ_63 /* PuzzleViewController.swift in Sources */,
+				OBJ_64 /* SKMainScene.swift in Sources */,
+				OBJ_65 /* SKPaletteNode.swift in Sources */,
+				OBJ_66 /* Shuffle.swift in Sources */,
+				OBJ_67 /* UIImage+ResizedImage.swift in Sources */,
+				OBJ_68 /* UIView+AnchorPoint.swift in Sources */,
+				OBJ_69 /* UIView+AutoLayoutHelper.swift in Sources */,
+				OBJ_70 /* UIView+EAGeom.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		E957B59F1ECEE720000AABB3 /* Sources */ = {
+		OBJ_76 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				E957B5C41ECEE7AE000AABB3 /* PieceItem.swift in Sources */,
-				E957B5CA1ECEE7AE000AABB3 /* UIView+AnchorPoint.swift in Sources */,
-				E957B5C11ECEE7AE000AABB3 /* PaletteViewController.swift in Sources */,
-				E957B5CB1ECEE7AE000AABB3 /* UIView+AutoLayoutHelper.swift in Sources */,
-				E95744D521B9AD3B002B2864 /* PieceOutput.swift in Sources */,
-				E957B5CC1ECEE7AE000AABB3 /* UIView+EAGeom.swift in Sources */,
-				E957B5C71ECEE7AE000AABB3 /* PuzzleDataSource.swift in Sources */,
-				E95744D321B9AC3C002B2864 /* PaletteOutput.swift in Sources */,
-				E95744CF21B9AA6C002B2864 /* PuzzleInput.swift in Sources */,
-				E94EDD162237488C00DD9AA8 /* PaletteCell.swift in Sources */,
-				E957B5C31ECEE7AE000AABB3 /* PieceGroup.swift in Sources */,
-				E957B5C81ECEE7AE000AABB3 /* PuzzleViewController.swift in Sources */,
-				E957B5C21ECEE7AE000AABB3 /* Piece.swift in Sources */,
-				E957B5BF1ECEE7AE000AABB3 /* BoardViewController.swift in Sources */,
-				E957B5C01ECEE7AE000AABB3 /* EAPuzzleConfiguration.swift in Sources */,
-				E957B5CE1ECEE7E3000AABB3 /* PuzzleModule.swift in Sources */,
-				E9DF2D5323A4400000F443AF /* CATransaction+Instant.swift in Sources */,
-				E957B5C91ECEE7AE000AABB3 /* UIImage+ResizedImage.swift in Sources */,
-				E957B5C61ECEE7AE000AABB3 /* PieceProxy.swift in Sources */,
-				E95744D121B9ABD3002B2864 /* Shuffle.swift in Sources */,
+				OBJ_77 /* Package.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_87 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_88 /* PuzzleModuleTests.swift in Sources */,
+				OBJ_89 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		OBJ_82 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "PuzzleModule::PuzzleModuleTests" /* PuzzleModuleTests */;
+			targetProxy = E9DF2D7023A53B4C00F443AF /* PBXContainerItemProxy */;
+		};
+		OBJ_92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "PuzzleModule::PuzzleModule" /* PuzzleModule */;
+			targetProxy = E9DF2D6F23A53B4B00F443AF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		E957B5AA1ECEE720000AABB3 /* Debug */ = {
+		OBJ_3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+					"DEBUG=1",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
-		E957B5AB1ECEE720000AABB3 /* Release */ = {
+		OBJ_4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
-		E957B5AD1ECEE720000AABB3 /* Debug */ = {
+		OBJ_46 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = A2V64Z853W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = PuzzleModule/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.vladimir.roganov.PuzzleModule;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PuzzleModule.xcodeproj/PuzzleModule_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = PuzzleModule;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				TARGET_NAME = PuzzleModule;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
-		E957B5AE1ECEE720000AABB3 /* Release */ = {
+		OBJ_47 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PuzzleModule.xcodeproj/PuzzleModule_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = PuzzleModule;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = PuzzleModule;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		OBJ_74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5.1";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		OBJ_75 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5.1";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		OBJ_80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		OBJ_81 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		OBJ_85 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = A2V64Z853W;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = PuzzleModule/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.vladimir.roganov.PuzzleModule;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PuzzleModule.xcodeproj/PuzzleModuleTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				TARGET_NAME = PuzzleModuleTests;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		OBJ_86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PuzzleModule.xcodeproj/PuzzleModuleTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = PuzzleModuleTests;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E957B59E1ECEE720000AABB3 /* Build configuration list for PBXProject "PuzzleModule" */ = {
+		OBJ_2 /* Build configuration list for PBXProject "PuzzleModule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E957B5AA1ECEE720000AABB3 /* Debug */,
-				E957B5AB1ECEE720000AABB3 /* Release */,
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E957B5AC1ECEE720000AABB3 /* Build configuration list for PBXNativeTarget "PuzzleModule" */ = {
+		OBJ_45 /* Build configuration list for PBXNativeTarget "PuzzleModule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E957B5AD1ECEE720000AABB3 /* Debug */,
-				E957B5AE1ECEE720000AABB3 /* Release */,
+				OBJ_46 /* Debug */,
+				OBJ_47 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_73 /* Build configuration list for PBXNativeTarget "PuzzleModulePackageDescription" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_74 /* Debug */,
+				OBJ_75 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_79 /* Build configuration list for PBXAggregateTarget "PuzzleModulePackageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_80 /* Debug */,
+				OBJ_81 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_84 /* Build configuration list for PBXNativeTarget "PuzzleModuleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_85 /* Debug */,
+				OBJ_86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = E957B59B1ECEE720000AABB3 /* Project object */;
+	rootObject = OBJ_1 /* Project object */;
 }

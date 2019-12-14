@@ -87,16 +87,13 @@ public class PuzzleViewController: UIViewController {
     }
     
     private func loadSKModule() {
-        let scene = SKScene(size: view.bounds.size)
+        let scene = SKMainScene(size: view.bounds.size)
         let skView = SKView(frame: view.bounds)
         skView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(skView)
         skView.showsFPS = true
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
-        skView.backgroundColor = UIColor.systemTeal
-        scene.backgroundColor = UIColor.systemOrange
-        scene.scaleMode = .resizeFill
         skView.presentScene(scene)
     }
     
