@@ -95,6 +95,7 @@ public class PuzzleViewController: UIViewController {
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
         skView.backgroundColor = UIColor.systemTeal
+        scene.backgroundColor = UIColor.systemOrange
         scene.scaleMode = .resizeFill
         skView.presentScene(scene)
     }
