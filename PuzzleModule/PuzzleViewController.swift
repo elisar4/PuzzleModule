@@ -61,7 +61,7 @@ public class PuzzleViewController: UIViewController {
     }
     
     var allCount: Int {
-        return lastDataSource.pcsItms.count
+        return dataSource.pcsItms.count
     }
     
     public var currentProgress: CGFloat {
@@ -128,7 +128,7 @@ public class PuzzleViewController: UIViewController {
         if gr.count == 1 {
             if paletteController.data.count == 0 {
                 if pcs.count == gr[0].pieces.count {
-                    let items = lastDataSource.getPieceItems(forBoardColumn: boardController.col,
+                    let items = dataSource.getPieceItems(forBoardColumn: boardController.col,
                                                              boardRow: boardController.row)
                     if boardController.isAllItemsOnBoard(items) {
                         if sectionTransition {
@@ -171,7 +171,7 @@ public class PuzzleViewController: UIViewController {
     var lastImage: UIImage!
     var lastSize: CGFloat = 0.0
     var lastDifficulty: EAPuzzleDifficulty!
-    var lastDataSource: PuzzleDataSource!
+    var dataSource: PuzzleDataSource!
     var lastPaths: [[CGPath]] = []
     var lastFrames: [[CGRect]] = []
     var lastShuffled: Bool = true
@@ -185,12 +185,12 @@ public class PuzzleViewController: UIViewController {
         let row = state.boardPositionR
         
         let sorted = state.palettePieces.sorted { $0.paletteIndex < $1.paletteIndex }
-        let paletteItems = lastDataSource.getPieceItemsByPieceStates(sorted)
+        let paletteItems = dataSource.getPieceItemsByPieceStates(sorted)
         paletteController.setDataItems(paletteItems)
         
         for stateItem in state.boardPieces {
-            if let item = lastDataSource.getPieceItemById(stateItem.uid) {
-                let p = lastDataSource.getPiece(forItem: item)
+            if let item = dataSource.getPieceItemById(stateItem.uid) {
+                let p = dataSource.getPiece(forItem: item)
 //                boardController.addPiece(p)
                 scene.board.addPiece(p)
                 pcs.append(p)
@@ -199,8 +199,8 @@ public class PuzzleViewController: UIViewController {
             }
         }
         
-        let cl = (lastDataSource.boardSize.verticalSize.width * (col+1)) >= lastDataSource.difficulty.width
-        let rw = (lastDataSource.boardSize.verticalSize.height * (row+1)) >= lastDataSource.difficulty.height
+        let cl = (dataSource.boardSize.verticalSize.width * (col+1)) >= dataSource.difficulty.width
+        let rw = (dataSource.boardSize.verticalSize.height * (row+1)) >= dataSource.difficulty.height
         
 //        boardController.setBoardPosition(col: col, row: row,
 //                                         isColLast: cl, isRowLast: rw,
@@ -210,8 +210,8 @@ public class PuzzleViewController: UIViewController {
 
         scene.board.setBoardPosition(col: col, row: row,
                                      isColLast: cl, isRowLast: rw,
-                                     puzzleW: lastDataSource.difficulty.width,
-                                     puzzleH: lastDataSource.difficulty.height,
+                                     puzzleW: dataSource.difficulty.width,
+                                     puzzleH: dataSource.difficulty.height,
                                      animated: false)
         
         pcs.forEach({ (p) in
@@ -236,7 +236,7 @@ public class PuzzleViewController: UIViewController {
     
     private func setInPlace(items: [PieceItem]) {
         for item in items {
-            let p = lastDataSource.getPiece(forItem: item)
+            let p = dataSource.getPiece(forItem: item)
             scene.board.addPiece(p)
             pcs.append(p)
             p.setPosition(col: item.col, row: item.row, rotation: PieceRotation.origin.rawValue)
@@ -246,7 +246,7 @@ public class PuzzleViewController: UIViewController {
     }
     
     func setBoardPosition(_ col: Int, row: Int) {
-        let items = lastDataSource.getPieceItems(forBoardColumn: col, boardRow: row)
+        let items = dataSource.getPieceItems(forBoardColumn: col, boardRow: row)
         
         if lastShuffled {
             paletteController.setDataItems(items.shuffled())
@@ -260,13 +260,13 @@ public class PuzzleViewController: UIViewController {
             
             let dur = (col+row == 0) ? 0.0 : 1.25
             
-            let cl = (self.lastDataSource.boardSize.verticalSize.width * (col+1)) >= self.lastDataSource.difficulty.width
-            let rw = (self.lastDataSource.boardSize.verticalSize.height * (row+1)) >= self.lastDataSource.difficulty.height
+            let cl = (self.dataSource.boardSize.verticalSize.width * (col+1)) >= self.dataSource.difficulty.width
+            let rw = (self.dataSource.boardSize.verticalSize.height * (row+1)) >= self.dataSource.difficulty.height
             
             self.scene.board.setBoardPosition(col: col, row: row,
                                               isColLast: cl, isRowLast: rw,
-                                              puzzleW: self.lastDataSource.difficulty.width,
-                                              puzzleH: self.lastDataSource.difficulty.height,
+                                              puzzleW: self.dataSource.difficulty.width,
+                                              puzzleH: self.dataSource.difficulty.height,
                                               animated: dur>0) {
                 self.sectionTransition = false
             }
@@ -283,7 +283,7 @@ public class PuzzleViewController: UIViewController {
     }
     
     func hasUncompletedPieces(atCol: Int, row: Int) -> Bool {
-        let items = lastDataSource.getPieceItems(forBoardColumn: atCol, boardRow: row)
+        let items = dataSource.getPieceItems(forBoardColumn: atCol, boardRow: row)
         if items.count > 0 {
             let pss = items.filter({ (pi) -> Bool in
                 return pi.isUncompleted

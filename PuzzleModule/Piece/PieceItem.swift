@@ -63,8 +63,8 @@ class PieceItem {
     
     func deltaXY(x: Int, y: Int) -> CGPoint {
         if let out = output {
-            let fx = CGFloat(x - col) * size + ox * scale
-            let fy = CGFloat(y - row) * size + oy * scale
+            let fx = CGFloat(x - col) * size + ox * scale + ax
+            let fy = CGFloat(y - row) * size + oy * scale + ay
             return CGPoint(x: fx - out.point.x, y: fy - out.point.y)
         }
         return .zero

@@ -239,7 +239,8 @@ class SKBoardNode: SKSpriteNode {
                         //self.bgimg.transform = CGAffineTransform.identity
                         //self.pieceContainer.center = cp
                         //self.bgimg.center = cp
-            base.position = CGPoint(x: cp.x, y: s.height - cp.y)
+            
+            base.position = CGPoint(x: cp.x, y: s.height - cs.height - cp.y)
             self.animating = false
             completion?()
 //
@@ -254,7 +255,7 @@ class SKBoardNode: SKSpriteNode {
         } else {
 //            pieceContainer.center = cp
 //            bgimg.center = cp
-            base.position = CGPoint(x: cp.x, y: s.height - cp.y)
+            base.position = CGPoint(x: cp.x, y: s.height - cs.height - cp.y)
             animating = false
             completion?()
         }

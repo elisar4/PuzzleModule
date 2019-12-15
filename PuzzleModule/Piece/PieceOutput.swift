@@ -44,12 +44,12 @@ extension PuzzleViewController: PieceOutput {
                 self.view.window?.isUserInteractionEnabled = true
             })
             
-            output?.didUpdate(progress: currentProgress)
+            //output?.didUpdate(progress: currentProgress)
             return false
         } else {
             //else -> return to palette
             paletteController.didReturnToPalette(piece)
-            output?.didUpdate(progress: currentProgress)
+            //output?.didUpdate(progress: currentProgress)
             output?.returnToPalette()
             return true
         }
@@ -68,7 +68,7 @@ extension PuzzleViewController: PieceOutput {
     }
     
     func processGroup(_ piece: SKPiece, initialLoad: Bool = false) {
-        let maxDist = (lastDataSource.originSize * lastDataSource.scale) * 3
+        let maxDist = (dataSource.originSize * dataSource.scale) * 3
         var shouldRepeat = false
         for p in pcs {
             let dist = piece.position.distance(toPoint: p.position)
@@ -123,7 +123,7 @@ extension PuzzleViewController: PieceOutput {
         if shouldRepeat {
             processGroup(piece)
         } else {
-            output?.didUpdate(progress: 0.0)
+            //output?.didUpdate(progress: 0.0)
         }
     }
     
@@ -160,7 +160,7 @@ extension PuzzleViewController: PieceOutput {
             if gr[0].isLocked {
                 if paletteController.data.count == 0 {
                     if pcs.count == gr[0].pieces.count {
-                        let items = lastDataSource.getPieceItems(forBoardColumn: boardController.col, boardRow: boardController.row)
+                        let items = dataSource.getPieceItems(forBoardColumn: boardController.col, boardRow: boardController.row)
                         if boardController.isAllItemsOnBoard(items) {
                             if sectionTransition {
                                 return;

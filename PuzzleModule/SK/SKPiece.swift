@@ -266,16 +266,18 @@ class SKPiece: SKSpriteNode, PieceItemOut {
 //                return
 //            }
         }
+        
+        isMoving = true
 
         let LGX = item.gridX
         let LGY = item.gridY
         let gr = group
 
         let translation = output?.correctedSnapPoint(forPiece: self) ?? item.deltaXY(x: item.nearestGX, y: item.nearestGY)
-        let action = SKAction.run {
-            self.move(by: translation)
-            //gr?.didMovePiece(piece: self, by: translation)
-        }
+        let delta = moveDelta(by: translation)
+        let action = SKAction.moveBy(x: delta.x, y: delta.y, duration: 0.15)
+        //+++++++://gr?.didMovePiece(piece: self, by: translation)//
+        
         run(action) {
             self.isMoving = false
             self.item.snapToNearestGridCell()
@@ -305,6 +307,11 @@ class SKPiece: SKSpriteNode, PieceItemOut {
     func move(by: CGPoint) {
         isMoving = true
         position = CGPoint(x: position.x + by.x, y: position.y - by.y)
+    }
+    
+    private func moveDelta(by: CGPoint) -> CGPoint {
+        let newP = CGPoint(x: position.x + by.x, y: position.y - by.y)
+        return CGPoint(x: newP.x - position.x, y: newP.y - position.y)
     }
     
     func snapToGrid(_ dispatch: Bool = true, group: Bool = false) {

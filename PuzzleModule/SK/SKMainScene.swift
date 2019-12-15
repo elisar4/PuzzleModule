@@ -26,6 +26,7 @@ class SKMainScene: SKScene {
         view.addGestureRecognizer(pan)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTap(_:)))
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     

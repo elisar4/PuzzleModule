@@ -78,7 +78,7 @@ extension PuzzleViewController: PuzzleInput {
         let img = image.resizedImage(scale: s)
         
         let dataSource = PuzzleDataSource(withPiecePaths: withPaths, frames: frames, difficulty: difficulty, scale: scale, originSize: originSize, boardSize: boardSize, puzzleImage: self.imgWithBorder(img))
-        lastDataSource = dataSource
+        self.dataSource = dataSource
         
         //boardController.setBoardSize(boardSize, originSize: originSize * scale)
         scene.board.setBoardSize(boardSize, originSize: originSize * scale)
@@ -138,7 +138,7 @@ extension PuzzleViewController: PuzzleInput {
         boardController.unsub()
         paletteController.unsub()
         
-        lastDataSource?.unsub()
+        dataSource?.unsub()
         
         lastImage = nil
         

@@ -14,12 +14,12 @@ protocol PaletteOutput: class {
 extension PuzzleViewController: PaletteOutput {
     
     func getProxy(fromItem: PieceItem) -> UIImageView {
-        return lastDataSource.getPieceItemImageViewProxy(pieceItem: fromItem)
+        return dataSource.getPieceItemImageViewProxy(pieceItem: fromItem)
     }
     
     func getProxyAsync(fromItem: PieceItem, completion: @escaping (UIImageView) -> ()) {
         DispatchQueue.main.async {
-            completion(self.lastDataSource.getPieceItemImageViewProxy(pieceItem: fromItem))
+            completion(self.dataSource.getPieceItemImageViewProxy(pieceItem: fromItem))
         }
     }
     
