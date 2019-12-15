@@ -21,30 +21,30 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		E96E3DCA23A56144001E9E4C /* SKBoardNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96E3DC923A56144001E9E4C /* SKBoardNode.swift */; };
-		E96E3DCC23A578E1001E9E4C /* SKPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96E3DCB23A578E0001E9E4C /* SKPiece.swift */; };
-		OBJ_49 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* BoardViewController.swift */; };
-		OBJ_50 /* CATransaction+Instant.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* CATransaction+Instant.swift */; };
-		OBJ_51 /* EAPuzzleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* EAPuzzleConfiguration.swift */; };
-		OBJ_52 /* PaletteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* PaletteCell.swift */; };
-		OBJ_53 /* PaletteOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* PaletteOutput.swift */; };
-		OBJ_54 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* PaletteViewController.swift */; };
-		OBJ_55 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Piece.swift */; };
-		OBJ_56 /* PieceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* PieceGroup.swift */; };
-		OBJ_57 /* PieceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* PieceItem.swift */; };
-		OBJ_58 /* PieceOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* PieceOutput.swift */; };
-		OBJ_59 /* PieceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* PieceProxy.swift */; };
-		OBJ_60 /* PuzzleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* PuzzleDataSource.swift */; };
-		OBJ_61 /* PuzzleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* PuzzleInput.swift */; };
-		OBJ_62 /* PuzzleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* PuzzleModule.swift */; };
-		OBJ_63 /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* PuzzleViewController.swift */; };
-		OBJ_64 /* SKMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* SKMainScene.swift */; };
-		OBJ_65 /* SKPaletteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* SKPaletteNode.swift */; };
-		OBJ_66 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Shuffle.swift */; };
-		OBJ_67 /* UIImage+ResizedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* UIImage+ResizedImage.swift */; };
-		OBJ_68 /* UIView+AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* UIView+AnchorPoint.swift */; };
-		OBJ_69 /* UIView+AutoLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* UIView+AutoLayoutHelper.swift */; };
-		OBJ_70 /* UIView+EAGeom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* UIView+EAGeom.swift */; };
+		E9B7333223A69105007A6771 /* SKPaletteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331623A69105007A6771 /* SKPaletteNode.swift */; };
+		E9B7333323A69105007A6771 /* SKPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331723A69105007A6771 /* SKPiece.swift */; };
+		E9B7333423A69105007A6771 /* SKMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331823A69105007A6771 /* SKMainScene.swift */; };
+		E9B7333523A69105007A6771 /* SKBoardNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331923A69105007A6771 /* SKBoardNode.swift */; };
+		E9B7333623A69105007A6771 /* PaletteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331A23A69105007A6771 /* PaletteCell.swift */; };
+		E9B7333723A69105007A6771 /* EAPuzzleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331B23A69105007A6771 /* EAPuzzleConfiguration.swift */; };
+		E9B7333823A69105007A6771 /* PaletteOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331C23A69105007A6771 /* PaletteOutput.swift */; };
+		E9B7333923A69105007A6771 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331D23A69105007A6771 /* BoardViewController.swift */; };
+		E9B7333A23A69105007A6771 /* UIView+EAGeom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331F23A69105007A6771 /* UIView+EAGeom.swift */; };
+		E9B7333B23A69105007A6771 /* CATransaction+Instant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332023A69105007A6771 /* CATransaction+Instant.swift */; };
+		E9B7333C23A69105007A6771 /* UIView+AutoLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332123A69105007A6771 /* UIView+AutoLayoutHelper.swift */; };
+		E9B7333D23A69105007A6771 /* UIView+AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332223A69105007A6771 /* UIView+AnchorPoint.swift */; };
+		E9B7333E23A69105007A6771 /* Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332323A69105007A6771 /* Shuffle.swift */; };
+		E9B7333F23A69105007A6771 /* UIImage+ResizedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332423A69105007A6771 /* UIImage+ResizedImage.swift */; };
+		E9B7334023A69105007A6771 /* PuzzleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332523A69105007A6771 /* PuzzleDataSource.swift */; };
+		E9B7334123A69105007A6771 /* PuzzleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332623A69105007A6771 /* PuzzleInput.swift */; };
+		E9B7334223A69105007A6771 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332723A69105007A6771 /* PaletteViewController.swift */; };
+		E9B7334323A69105007A6771 /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332823A69105007A6771 /* PuzzleViewController.swift */; };
+		E9B7334423A69105007A6771 /* PuzzleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332923A69105007A6771 /* PuzzleModule.swift */; };
+		E9B7334523A69105007A6771 /* PieceOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332C23A69105007A6771 /* PieceOutput.swift */; };
+		E9B7334623A69105007A6771 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332D23A69105007A6771 /* Piece.swift */; };
+		E9B7334723A69105007A6771 /* PieceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332E23A69105007A6771 /* PieceProxy.swift */; };
+		E9B7334823A69105007A6771 /* PieceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7332F23A69105007A6771 /* PieceGroup.swift */; };
+		E9B7334923A69105007A6771 /* PieceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7333023A69105007A6771 /* PieceItem.swift */; };
 		OBJ_77 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_88 /* PuzzleModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* PuzzleModuleTests.swift */; };
 		OBJ_89 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* XCTestManifests.swift */; };
@@ -69,37 +69,39 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E96E3DC923A56144001E9E4C /* SKBoardNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKBoardNode.swift; sourceTree = "<group>"; };
-		E96E3DCB23A578E0001E9E4C /* SKPiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPiece.swift; sourceTree = "<group>"; };
+		E9B7331623A69105007A6771 /* SKPaletteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPaletteNode.swift; sourceTree = "<group>"; };
+		E9B7331723A69105007A6771 /* SKPiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPiece.swift; sourceTree = "<group>"; };
+		E9B7331823A69105007A6771 /* SKMainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKMainScene.swift; sourceTree = "<group>"; };
+		E9B7331923A69105007A6771 /* SKBoardNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKBoardNode.swift; sourceTree = "<group>"; };
+		E9B7331A23A69105007A6771 /* PaletteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteCell.swift; sourceTree = "<group>"; };
+		E9B7331B23A69105007A6771 /* EAPuzzleConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAPuzzleConfiguration.swift; sourceTree = "<group>"; };
+		E9B7331C23A69105007A6771 /* PaletteOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteOutput.swift; sourceTree = "<group>"; };
+		E9B7331D23A69105007A6771 /* BoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
+		E9B7331F23A69105007A6771 /* UIView+EAGeom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+EAGeom.swift"; sourceTree = "<group>"; };
+		E9B7332023A69105007A6771 /* CATransaction+Instant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CATransaction+Instant.swift"; sourceTree = "<group>"; };
+		E9B7332123A69105007A6771 /* UIView+AutoLayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutHelper.swift"; sourceTree = "<group>"; };
+		E9B7332223A69105007A6771 /* UIView+AnchorPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorPoint.swift"; sourceTree = "<group>"; };
+		E9B7332323A69105007A6771 /* Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
+		E9B7332423A69105007A6771 /* UIImage+ResizedImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+ResizedImage.swift"; sourceTree = "<group>"; };
+		E9B7332523A69105007A6771 /* PuzzleDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleDataSource.swift; sourceTree = "<group>"; };
+		E9B7332623A69105007A6771 /* PuzzleInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleInput.swift; sourceTree = "<group>"; };
+		E9B7332723A69105007A6771 /* PaletteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
+		E9B7332823A69105007A6771 /* PuzzleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
+		E9B7332923A69105007A6771 /* PuzzleModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleModule.swift; sourceTree = "<group>"; };
+		E9B7332A23A69105007A6771 /* PuzzleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PuzzleModule.h; sourceTree = "<group>"; };
+		E9B7332C23A69105007A6771 /* PieceOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceOutput.swift; sourceTree = "<group>"; };
+		E9B7332D23A69105007A6771 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
+		E9B7332E23A69105007A6771 /* PieceProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceProxy.swift; sourceTree = "<group>"; };
+		E9B7332F23A69105007A6771 /* PieceGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceGroup.swift; sourceTree = "<group>"; };
+		E9B7333023A69105007A6771 /* PieceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieceItem.swift; sourceTree = "<group>"; };
+		E9B7333123A69105007A6771 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		OBJ_12 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		OBJ_14 /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
-		OBJ_15 /* CATransaction+Instant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CATransaction+Instant.swift"; sourceTree = "<group>"; };
-		OBJ_16 /* EAPuzzleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAPuzzleConfiguration.swift; sourceTree = "<group>"; };
-		OBJ_17 /* PaletteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteCell.swift; sourceTree = "<group>"; };
-		OBJ_18 /* PaletteOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteOutput.swift; sourceTree = "<group>"; };
-		OBJ_19 /* PaletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
-		OBJ_20 /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
-		OBJ_21 /* PieceGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceGroup.swift; sourceTree = "<group>"; };
-		OBJ_22 /* PieceItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceItem.swift; sourceTree = "<group>"; };
-		OBJ_23 /* PieceOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceOutput.swift; sourceTree = "<group>"; };
-		OBJ_24 /* PieceProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceProxy.swift; sourceTree = "<group>"; };
-		OBJ_25 /* PuzzleDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleDataSource.swift; sourceTree = "<group>"; };
-		OBJ_26 /* PuzzleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleInput.swift; sourceTree = "<group>"; };
-		OBJ_27 /* PuzzleModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleModule.swift; sourceTree = "<group>"; };
-		OBJ_28 /* PuzzleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewController.swift; sourceTree = "<group>"; };
-		OBJ_29 /* SKMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMainScene.swift; sourceTree = "<group>"; };
-		OBJ_30 /* SKPaletteNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPaletteNode.swift; sourceTree = "<group>"; };
-		OBJ_31 /* Shuffle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuffle.swift; sourceTree = "<group>"; };
-		OBJ_32 /* UIImage+ResizedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ResizedImage.swift"; sourceTree = "<group>"; };
-		OBJ_33 /* UIView+AnchorPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorPoint.swift"; sourceTree = "<group>"; };
-		OBJ_34 /* UIView+AutoLayoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutHelper.swift"; sourceTree = "<group>"; };
-		OBJ_35 /* UIView+EAGeom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+EAGeom.swift"; sourceTree = "<group>"; };
 		OBJ_38 /* PuzzleModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleModuleTests.swift; sourceTree = "<group>"; };
 		OBJ_39 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		OBJ_43 /* PuzzleModule */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PuzzleModule; sourceTree = SOURCE_ROOT; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		"PuzzleModule::PuzzleModule::Product" /* PuzzleModule.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PuzzleModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"PuzzleModule::PuzzleModuleTests::Product" /* PuzzleModuleTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = PuzzleModuleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"PuzzleModule::PuzzleModuleTests::Product" /* PuzzleModuleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = PuzzleModuleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,35 +123,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		OBJ_13 /* PuzzleModule */ = {
+		E9B7331423A69105007A6771 /* PuzzleModule */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_14 /* BoardViewController.swift */,
-				OBJ_15 /* CATransaction+Instant.swift */,
-				OBJ_16 /* EAPuzzleConfiguration.swift */,
-				OBJ_17 /* PaletteCell.swift */,
-				OBJ_18 /* PaletteOutput.swift */,
-				OBJ_19 /* PaletteViewController.swift */,
-				OBJ_20 /* Piece.swift */,
-				OBJ_21 /* PieceGroup.swift */,
-				OBJ_22 /* PieceItem.swift */,
-				OBJ_23 /* PieceOutput.swift */,
-				OBJ_24 /* PieceProxy.swift */,
-				OBJ_25 /* PuzzleDataSource.swift */,
-				OBJ_26 /* PuzzleInput.swift */,
-				OBJ_27 /* PuzzleModule.swift */,
-				OBJ_28 /* PuzzleViewController.swift */,
-				E96E3DC923A56144001E9E4C /* SKBoardNode.swift */,
-				OBJ_29 /* SKMainScene.swift */,
-				OBJ_30 /* SKPaletteNode.swift */,
-				E96E3DCB23A578E0001E9E4C /* SKPiece.swift */,
-				OBJ_31 /* Shuffle.swift */,
-				OBJ_32 /* UIImage+ResizedImage.swift */,
-				OBJ_33 /* UIView+AnchorPoint.swift */,
-				OBJ_34 /* UIView+AutoLayoutHelper.swift */,
-				OBJ_35 /* UIView+EAGeom.swift */,
+				E9B7331E23A69105007A6771 /* Extensions */,
+				E9B7332B23A69105007A6771 /* Piece */,
+				E9B7331523A69105007A6771 /* SK */,
+				E9B7331A23A69105007A6771 /* PaletteCell.swift */,
+				E9B7331B23A69105007A6771 /* EAPuzzleConfiguration.swift */,
+				E9B7331C23A69105007A6771 /* PaletteOutput.swift */,
+				E9B7331D23A69105007A6771 /* BoardViewController.swift */,
+				E9B7332523A69105007A6771 /* PuzzleDataSource.swift */,
+				E9B7332623A69105007A6771 /* PuzzleInput.swift */,
+				E9B7332723A69105007A6771 /* PaletteViewController.swift */,
+				E9B7332823A69105007A6771 /* PuzzleViewController.swift */,
+				E9B7332923A69105007A6771 /* PuzzleModule.swift */,
+				E9B7332A23A69105007A6771 /* PuzzleModule.h */,
+				E9B7333123A69105007A6771 /* Info.plist */,
 			);
 			path = PuzzleModule;
+			sourceTree = "<group>";
+		};
+		E9B7331523A69105007A6771 /* SK */ = {
+			isa = PBXGroup;
+			children = (
+				E9B7331623A69105007A6771 /* SKPaletteNode.swift */,
+				E9B7331723A69105007A6771 /* SKPiece.swift */,
+				E9B7331823A69105007A6771 /* SKMainScene.swift */,
+				E9B7331923A69105007A6771 /* SKBoardNode.swift */,
+			);
+			path = SK;
+			sourceTree = "<group>";
+		};
+		E9B7331E23A69105007A6771 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E9B7331F23A69105007A6771 /* UIView+EAGeom.swift */,
+				E9B7332023A69105007A6771 /* CATransaction+Instant.swift */,
+				E9B7332123A69105007A6771 /* UIView+AutoLayoutHelper.swift */,
+				E9B7332223A69105007A6771 /* UIView+AnchorPoint.swift */,
+				E9B7332323A69105007A6771 /* Shuffle.swift */,
+				E9B7332423A69105007A6771 /* UIImage+ResizedImage.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E9B7332B23A69105007A6771 /* Piece */ = {
+			isa = PBXGroup;
+			children = (
+				E9B7332C23A69105007A6771 /* PieceOutput.swift */,
+				E9B7332D23A69105007A6771 /* Piece.swift */,
+				E9B7332E23A69105007A6771 /* PieceProxy.swift */,
+				E9B7332F23A69105007A6771 /* PieceGroup.swift */,
+				E9B7333023A69105007A6771 /* PieceItem.swift */,
+			);
+			path = Piece;
 			sourceTree = "<group>";
 		};
 		OBJ_36 /* Tests */ = {
@@ -183,29 +211,13 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
-				OBJ_7 /* Sources */,
+				OBJ_12 /* README.md */,
+				E9B7331423A69105007A6771 /* PuzzleModule */,
 				OBJ_36 /* Tests */,
 				OBJ_40 /* Products */,
 				OBJ_43 /* PuzzleModule */,
 			);
 			sourceTree = "<group>";
-		};
-		OBJ_7 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_8 /* PuzzleModule */,
-			);
-			name = Sources;
-			sourceTree = SOURCE_ROOT;
-		};
-		OBJ_8 /* PuzzleModule */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_12 /* README.md */,
-				OBJ_13 /* PuzzleModule */,
-			);
-			name = PuzzleModule;
-			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -291,30 +303,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_49 /* BoardViewController.swift in Sources */,
-				E96E3DCA23A56144001E9E4C /* SKBoardNode.swift in Sources */,
-				OBJ_50 /* CATransaction+Instant.swift in Sources */,
-				OBJ_51 /* EAPuzzleConfiguration.swift in Sources */,
-				OBJ_52 /* PaletteCell.swift in Sources */,
-				OBJ_53 /* PaletteOutput.swift in Sources */,
-				OBJ_54 /* PaletteViewController.swift in Sources */,
-				OBJ_55 /* Piece.swift in Sources */,
-				OBJ_56 /* PieceGroup.swift in Sources */,
-				OBJ_57 /* PieceItem.swift in Sources */,
-				OBJ_58 /* PieceOutput.swift in Sources */,
-				OBJ_59 /* PieceProxy.swift in Sources */,
-				OBJ_60 /* PuzzleDataSource.swift in Sources */,
-				OBJ_61 /* PuzzleInput.swift in Sources */,
-				OBJ_62 /* PuzzleModule.swift in Sources */,
-				OBJ_63 /* PuzzleViewController.swift in Sources */,
-				OBJ_64 /* SKMainScene.swift in Sources */,
-				OBJ_65 /* SKPaletteNode.swift in Sources */,
-				OBJ_66 /* Shuffle.swift in Sources */,
-				OBJ_67 /* UIImage+ResizedImage.swift in Sources */,
-				E96E3DCC23A578E1001E9E4C /* SKPiece.swift in Sources */,
-				OBJ_68 /* UIView+AnchorPoint.swift in Sources */,
-				OBJ_69 /* UIView+AutoLayoutHelper.swift in Sources */,
-				OBJ_70 /* UIView+EAGeom.swift in Sources */,
+				E9B7333523A69105007A6771 /* SKBoardNode.swift in Sources */,
+				E9B7333E23A69105007A6771 /* Shuffle.swift in Sources */,
+				E9B7333C23A69105007A6771 /* UIView+AutoLayoutHelper.swift in Sources */,
+				E9B7333A23A69105007A6771 /* UIView+EAGeom.swift in Sources */,
+				E9B7333323A69105007A6771 /* SKPiece.swift in Sources */,
+				E9B7333D23A69105007A6771 /* UIView+AnchorPoint.swift in Sources */,
+				E9B7334123A69105007A6771 /* PuzzleInput.swift in Sources */,
+				E9B7333723A69105007A6771 /* EAPuzzleConfiguration.swift in Sources */,
+				E9B7334623A69105007A6771 /* Piece.swift in Sources */,
+				E9B7333923A69105007A6771 /* BoardViewController.swift in Sources */,
+				E9B7333423A69105007A6771 /* SKMainScene.swift in Sources */,
+				E9B7334723A69105007A6771 /* PieceProxy.swift in Sources */,
+				E9B7334323A69105007A6771 /* PuzzleViewController.swift in Sources */,
+				E9B7333B23A69105007A6771 /* CATransaction+Instant.swift in Sources */,
+				E9B7334823A69105007A6771 /* PieceGroup.swift in Sources */,
+				E9B7334223A69105007A6771 /* PaletteViewController.swift in Sources */,
+				E9B7333223A69105007A6771 /* SKPaletteNode.swift in Sources */,
+				E9B7333623A69105007A6771 /* PaletteCell.swift in Sources */,
+				E9B7334023A69105007A6771 /* PuzzleDataSource.swift in Sources */,
+				E9B7334423A69105007A6771 /* PuzzleModule.swift in Sources */,
+				E9B7333F23A69105007A6771 /* UIImage+ResizedImage.swift in Sources */,
+				E9B7333823A69105007A6771 /* PaletteOutput.swift in Sources */,
+				E9B7334523A69105007A6771 /* PieceOutput.swift in Sources */,
+				E9B7334923A69105007A6771 /* PieceItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +503,7 @@
 		OBJ_85 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -516,6 +529,7 @@
 		OBJ_86 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (

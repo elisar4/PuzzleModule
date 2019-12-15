@@ -275,31 +275,31 @@ class Piece: UIView, PieceItemOut {
     }
     
     private func endPan() {
-        output?.dropSingleEvent()
-        if group == nil {
-            if output?.didDropSinglePiece(self) ?? false {
-                return
-            }
-        }
-        
-        let LGX = item.gridX
-        let LGY = item.gridY
-        let gr = group
-        
-        let translation = output?.correctedSnapPoint(forPiece: self) ?? item.deltaXY(x: item.nearestGX, y: item.nearestGY)
-        UIView.animate(withDuration: 0.15, animations: {
-            self.move(by: translation)
-            gr?.didMovePiece(piece: self, by: translation)
-        }, completion: { (finished) in
-            if finished {
-                self.isMoving = false
-                self.item.snapToNearestGridCell()
-                let dx = self.item.gridX - LGX
-                let dy = self.item.gridY - LGY
-                gr?.snapToGrid(piece: self.item.uid, dx: dx, dy: dy)
-                self.dispatchSnap()
-            }
-        })
+//        output?.dropSingleEvent()
+//        if group == nil {
+//            if output?.didDropSinglePiece(self) ?? false {
+//                return
+//            }
+//        }
+//        
+//        let LGX = item.gridX
+//        let LGY = item.gridY
+//        let gr = group
+//        
+//        let translation = output?.correctedSnapPoint(forPiece: self) ?? item.deltaXY(x: item.nearestGX, y: item.nearestGY)
+//        UIView.animate(withDuration: 0.15, animations: {
+//            self.move(by: translation)
+//            gr?.didMovePiece(piece: self, by: translation)
+//        }, completion: { (finished) in
+//            if finished {
+//                self.isMoving = false
+//                self.item.snapToNearestGridCell()
+//                let dx = self.item.gridX - LGX
+//                let dy = self.item.gridY - LGY
+//                gr?.snapToGrid(piece: self.item.uid, dx: dx, dy: dy)
+//                self.dispatchSnap()
+//            }
+//        })
     }
     
     func showLockedEffect() {

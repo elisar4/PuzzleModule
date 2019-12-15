@@ -16,7 +16,10 @@ class SKPiece: SKSpriteNode, PieceItemOut {
     
     var point: CGPoint {
         get {
-            return position
+            if let container = parent {
+                return CGPoint(x: position.x, y: container.frame.size.height - position.y)
+            }
+            return CGPoint(x: position.x, y: -position.y)
         }
         set {
             if let container = parent {
@@ -28,9 +31,6 @@ class SKPiece: SKSpriteNode, PieceItemOut {
     }
     
     public func unsub() {
-//            gestureRecognizers?.forEach({ (gr) in
-//                self.removeGestureRecognizer(gr)
-//            })
         item.output = nil
         group = nil
         removeFromParent()
@@ -53,7 +53,10 @@ class SKPiece: SKSpriteNode, PieceItemOut {
     
     var rotation: PieceRotation = .origin {
         didSet {
-            self.item.rotation = self.rotation
+            if item.rotation.angle < 0 && rotation.angle > 0 {
+                zRotation = CGFloat.pi - zRotation
+            }
+            item.rotation = rotation
         }
     }
     
@@ -86,17 +89,13 @@ class SKPiece: SKSpriteNode, PieceItemOut {
     }
     
     func rotate(to: PieceRotation, animated: Bool = true) {
-        if animated {
-            UIView.animate(withDuration: 0.15, animations: {
-                self.rotation = to
-            }) { (finish) in
-                //self.output?.didRotate(piece: self)
-                self.isRotating = false
-            }
-        } else {
-            rotation = to
-            //output?.didRotate(piece: self)
-            isRotating = false
+        let dur = animated ? 0.15 : 0.0
+        rotation = to
+        isRotating = false
+        let action = SKAction.rotate(toAngle: rotation.angle, duration: dur)
+        run(action) {
+            //self.output?.didRotate(piece: self)
+            self.isRotating = false
         }
     }
     
@@ -154,9 +153,9 @@ class SKPiece: SKSpriteNode, PieceItemOut {
             return false
         }
         
-//            if piece.group?.containsPiece(self) ?? false {
-//                return false
-//            }
+//        if piece.group?.containsPiece(self) ?? false {
+//            return false
+//        }
         return item.canGroup(withItem: piece.item, atRotation: rotation)
     }
     
@@ -185,64 +184,49 @@ class SKPiece: SKSpriteNode, PieceItemOut {
         item.snapToOriginGridCell()
         
         updateLastAction()
-        
-        isUserInteractionEnabled = true
-        if !item.fixed {
-//                let tap = UITapGestureRecognizer(target: self, action: #selector(Piece.tap(_:)))
-//                addGestureRecognizer(tap)
-        }
     }
     
-//        @objc func tap(_ sender: UITapGestureRecognizer) {
-//            if group?.isLocked ?? false {
-//                return
-//            }
-//            if isRotating || isMoving {
-//                return
-//            }
-//            isRotating = true
-//            updateLastAction()
-//
-//            if let gr = group {
-//                gr.didRotatePiece(piece: self, to: rotation.nextSide)
-//            } else {
-//                rotate(to: rotation.nextSide)
-//            }
-//        }
+    func tap() {
+        if item.fixed {
+            //return
+        }
+        if group?.isLocked ?? false {
+            return
+        }
+        if isRotating || isMoving {
+            return
+        }
+        isRotating = true
+        updateLastAction()
+
+        if let gr = group {
+            print(gr)
+            //gr.didRotatePiece(piece: self, to: rotation.nextSide)
+        } else {
+            rotate(to: rotation.nextSide)
+        }
+    }
     
     func updateLastAction() {
         lastAction = Piece.getNextLastAction()
     }
     
-    @objc func pan(_ sender: UIPanGestureRecognizer) {
-        if group?.isLocked ?? false {
-            if sender.state == .began {
-                UIView.animate(withDuration: 0.2,
-                               animations: {
-                    self.group?.showLockedEffect()
-                })
-            } else if sender.state == .ended {
-                UIView.animate(withDuration: 0.2,
-                               animations: {
-                    self.group?.hideLockedEffect()
-                })
-            }
-            return
-        }
-        if isRotating {
-            return
-        }
-        switch sender.state {
-        case .began: beginPan()
-        case .changed: movePan(sender)
-        case .ended, .cancelled, .failed: endPan()
-        default: break
-        }
+    var isGroupLocked: Bool {
+        return group?.isLocked ?? false
+    }
+    
+    var canPan: Bool {
+        return !isRotating
     }
 
-
-    
-    private func beginPan() {
+    func beginPan() {
+        if isGroupLocked {
+            UIView.animate(withDuration: 0.2,
+                           animations: {
+                self.group?.showLockedEffect()
+            })
+            return
+        }
         output?.pickSingleEvent()
         updateLastAction()
         zPosition = 1500000.0
@@ -250,50 +234,56 @@ class SKPiece: SKSpriteNode, PieceItemOut {
             p.layer.zPosition = 1500000.0
         })
         if group == nil {
-//                output?.didPickSinglePiece(self)
+//            output?.didPickSinglePiece(self)
         }
     }
     
-    private func movePan(_ sender: UIPanGestureRecognizer) {
-//            let translation = sender.translation(in: self.superview)
-//
-//            self.move(by: translation)
-//
-//            self.group?.didMovePiece(piece: self, by: translation)
-//
-//            sender.setTranslation(CGPoint.zero, in: self)
-//
-//            if self.group == nil {
-//                self.output?.didMoveSinglePiece(self)
-//            }
+    func movePan(_ translation: CGPoint) {
+        if isGroupLocked {
+            return
+        }
+
+        self.move(by: translation)
+
+        //self.group?.didMovePiece(piece: self, by: translation)
+
+        if self.group == nil {
+            //self.output?.didMoveSinglePiece(self)
+        }
     }
     
-    private func endPan() {
-//            output?.dropSingleEvent()
-//            if group == nil {
-//                if output?.didDropSinglePiece(self) ?? false {
-//                    return
-//                }
+    func endPan() {
+        if isGroupLocked {
+            UIView.animate(withDuration: 0.2,
+                           animations: {
+                self.group?.hideLockedEffect()
+            })
+            return
+        }
+        output?.dropSingleEvent()
+        if group == nil {
+//            if output?.didDropSinglePiece(self) ?? false {
+//                return
 //            }
-//
-//            let LGX = item.gridX
-//            let LGY = item.gridY
-//            let gr = group
-//
-//            let translation = output?.correctedSnapPoint(forPiece: self) ?? item.deltaXY(x: item.nearestGX, y: item.nearestGY)
-//            UIView.animate(withDuration: 0.15, animations: {
-//                self.move(by: translation)
-//                gr?.didMovePiece(piece: self, by: translation)
-//            }, completion: { (finished) in
-//                if finished {
-//                    self.isMoving = false
-//                    self.item.snapToNearestGridCell()
-//                    let dx = self.item.gridX - LGX
-//                    let dy = self.item.gridY - LGY
-//                    gr?.snapToGrid(piece: self.item.uid, dx: dx, dy: dy)
-//                    self.dispatchSnap()
-//                }
-//            })
+        }
+
+        let LGX = item.gridX
+        let LGY = item.gridY
+        let gr = group
+
+        let translation = output?.correctedSnapPoint(forPiece: self) ?? item.deltaXY(x: item.nearestGX, y: item.nearestGY)
+        let action = SKAction.run {
+            self.move(by: translation)
+            //gr?.didMovePiece(piece: self, by: translation)
+        }
+        run(action) {
+            self.isMoving = false
+            self.item.snapToNearestGridCell()
+            let dx = self.item.gridX - LGX
+            let dy = self.item.gridY - LGY
+            gr?.snapToGrid(piece: self.item.uid, dx: dx, dy: dy)
+            self.dispatchSnap()
+        }
     }
     
     func showLockedEffect() {
@@ -314,8 +304,7 @@ class SKPiece: SKSpriteNode, PieceItemOut {
     
     func move(by: CGPoint) {
         isMoving = true
-        position = CGPoint(x: position.x + by.x, y: position.y + by.y)
-//            frame = frame.offsetBy(dx: by.x, dy: by.y)
+        position = CGPoint(x: position.x + by.x, y: position.y - by.y)
     }
     
     func snapToGrid(_ dispatch: Bool = true, group: Bool = false) {

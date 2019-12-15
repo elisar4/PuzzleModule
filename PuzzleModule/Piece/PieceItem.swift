@@ -39,8 +39,7 @@ class PieceItem {
     var gridX: Int = 0 {
         didSet {
             if let out = output {
-                out.point = CGPoint(x: size * CGFloat(dx) + ox * scale, y: out.point.y)
-                //out.frame = out.frame.rect(withX: size * CGFloat(dx) + ox * scale)
+                out.point = CGPoint(x: size * CGFloat(dx) + ox * scale + ax, y: out.point.y)
             }
         }
     }
@@ -48,8 +47,7 @@ class PieceItem {
     var gridY: Int = 0 {
         didSet {
             if let out = output {
-                out.point = CGPoint(x: out.point.x, y: size * CGFloat(dy) + oy * scale)
-                //out.frame = out.frame.rect(withY: size * CGFloat(dy) + oy * scale)
+                out.point = CGPoint(x: out.point.x, y: size * CGFloat(dy) + oy * scale + ay)
             }
         }
     }
@@ -88,14 +86,14 @@ class PieceItem {
 //    let ngy = (gyf < 0) ? Int(gyf - 0.5) : Int(gyf + 0.5)
     var nearestGX: Int {
         if let out = output {
-            return Int((out.point.x + ax) / size)
+            return Int(out.point.x / size)
         }
         return 0
     }
     
     var nearestGY: Int {
         if let out = output {
-            return Int((out.point.y + ay) / size)
+            return Int(out.point.y / size)
         }
         return 0
     }

@@ -12,7 +12,7 @@ protocol PieceOutput {
     func didSnap(piece: Piece)
     func didSnap(piece: SKPiece, initialLoad: Bool)
     func didRotate(piece: Piece)
-    func correctedSnapPoint(forPiece: Piece) -> CGPoint
+    func correctedSnapPoint(forPiece: SKPiece) -> CGPoint
 }
 
 extension PuzzleViewController: PieceOutput {
@@ -183,9 +183,9 @@ extension PuzzleViewController: PieceOutput {
         updateZIndexes()
     }
     
-    func correctedSnapPoint(forPiece piece: Piece) -> CGPoint {
-        let corr = boardController.corrected(col: piece.item.nearestGX,
-                                             row: piece.item.nearestGY)
+    func correctedSnapPoint(forPiece piece: SKPiece) -> CGPoint {
+        let corr = scene.board.corrected(col: piece.item.nearestGX,
+                                         row: piece.item.nearestGY)
         return piece.item.deltaXY(x: corr.0, y: corr.1)
     }
 }

@@ -202,11 +202,17 @@ public class PuzzleViewController: UIViewController {
         let cl = (lastDataSource.boardSize.verticalSize.width * (col+1)) >= lastDataSource.difficulty.width
         let rw = (lastDataSource.boardSize.verticalSize.height * (row+1)) >= lastDataSource.difficulty.height
         
-        boardController.setBoardPosition(col: col, row: row,
-                                         isColLast: cl, isRowLast: rw,
-                                         puzzleW: lastDataSource.difficulty.width,
-                                         puzzleH: lastDataSource.difficulty.height,
-                                         animated: false)
+//        boardController.setBoardPosition(col: col, row: row,
+//                                         isColLast: cl, isRowLast: rw,
+//                                         puzzleW: lastDataSource.difficulty.width,
+//                                         puzzleH: lastDataSource.difficulty.height,
+//                                         animated: false)
+
+        scene.board.setBoardPosition(col: col, row: row,
+                                     isColLast: cl, isRowLast: rw,
+                                     puzzleW: lastDataSource.difficulty.width,
+                                     puzzleH: lastDataSource.difficulty.height,
+                                     animated: false)
         
         pcs.forEach({ (p) in
             self.didSnap(piece: p, initialLoad: true)
@@ -235,7 +241,7 @@ public class PuzzleViewController: UIViewController {
             pcs.append(p)
             p.setPosition(col: item.col, row: item.row, rotation: PieceRotation.origin.rawValue)
             p.output = self
-            self.didSnap(piece: p, initialLoad: true)
+            didSnap(piece: p, initialLoad: true)
         }
     }
     
@@ -257,25 +263,29 @@ public class PuzzleViewController: UIViewController {
             let cl = (self.lastDataSource.boardSize.verticalSize.width * (col+1)) >= self.lastDataSource.difficulty.width
             let rw = (self.lastDataSource.boardSize.verticalSize.height * (row+1)) >= self.lastDataSource.difficulty.height
             
-            self.boardController.setBoardPosition(col: col, row: row,
-                                                  isColLast: cl, isRowLast: rw,
-                                                  puzzleW: self.lastDataSource.difficulty.width,
-                                                  puzzleH: self.lastDataSource.difficulty.height,
-                                                  animated: dur>0,
-                                                  completion: { () in
-                                                  self.sectionTransition = false
-            })
+            self.scene.board.setBoardPosition(col: col, row: row,
+                                              isColLast: cl, isRowLast: rw,
+                                              puzzleW: self.lastDataSource.difficulty.width,
+                                              puzzleH: self.lastDataSource.difficulty.height,
+                                              animated: dur>0) {
+                self.sectionTransition = false
+            }
+            
+//            self.boardController.setBoardPosition(col: col, row: row,
+//                                                  isColLast: cl, isRowLast: rw,
+//                                                  puzzleW: self.lastDataSource.difficulty.width,
+//                                                  puzzleH: self.lastDataSource.difficulty.height,
+//                                                  animated: dur>0,
+//                                                  completion: { () in
+//                                                  self.sectionTransition = false
+//            })
         })
     }
     
     func hasUncompletedPieces(atCol: Int, row: Int) -> Bool {
         let items = lastDataSource.getPieceItems(forBoardColumn: atCol, boardRow: row)
-        return hasUncompletedPieces(items)
-    }
-    
-    func hasUncompletedPieces(_ pieceItems: [PieceItem]) -> Bool {
-        if pieceItems.count > 0 {
-            let pss = pieceItems.filter({ (pi) -> Bool in
+        if items.count > 0 {
+            let pss = items.filter({ (pi) -> Bool in
                 return pi.isUncompleted
             })
             return pss.count > 0
