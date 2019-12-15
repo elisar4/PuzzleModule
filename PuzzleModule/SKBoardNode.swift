@@ -37,8 +37,8 @@ class SKBoardNode: SKSpriteNode {
         self.maxCol = withMaxCols
         self.maxRow = maxRows
         
-        let mx = CGFloat(withMaxCols) * originSize
-        let my = CGFloat(maxRows) * originSize
+        let mx = width
+        let my = height
         
         bgNode.size = CGSize(width: mx, height: my)
         bgNode.texture = SKTexture(image: image)
@@ -46,11 +46,20 @@ class SKBoardNode: SKSpriteNode {
         container.size = CGSize(width: mx, height: my)
         
         border.path = UIBezierPath(rect: CGRect(x: 4, y: 4, width: mx - 8, height: my - 8)).cgPath
-        border.position = CGPoint(x: 0, y: -my)
+        
+        base.position = CGPoint(x: 0, y: -my + size.height)
+    }
+    
+    var width: CGFloat {
+        return CGFloat(maxCol) * originSize
+    }
+    
+    var height: CGFloat {
+        return CGFloat(maxRow) * originSize
     }
     
     func didUpdateSize() {
-        base.position = CGPoint(x: 0, y: size.height)
+        base.position = CGPoint(x: 0, y: -height + size.height)
         
     }
     
@@ -71,7 +80,7 @@ class SKBoardNode: SKSpriteNode {
         border.zPosition = 500
         border.lineJoin = .miter
         
-        bgNode.anchorPoint = CGPoint(x: 0, y: 1)
+        bgNode.anchorPoint = CGPoint(x: 0, y: 0)
         bgNode.alpha = 0.15
         
         //backgroundColor = UIColor(white: 80.0/255.0, alpha: 1.0)
@@ -82,11 +91,14 @@ class SKBoardNode: SKSpriteNode {
         
         anchorPoint = .zero
         
-        container.anchorPoint = CGPoint(x: 0, y: 1)
+        container.anchorPoint = CGPoint(x: 0, y: 0)
         base.addChild(container)
         container.position = .zero
         
-        container.addChild(border)
+        base.addChild(border)
+        
+        bgNode.isUserInteractionEnabled = false
+        border.isUserInteractionEnabled = false
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -220,14 +220,14 @@ class PieceItem {
         self.oframe = originFrame
         let _ox = originFrame.origin.x * scale
         let _oy = originFrame.origin.y * scale
-        let ofs = CGRect(x: originFrame.origin.x * scale,
-                         y: originFrame.origin.y * scale,
+        let ofs = CGRect(x: _ox,
+                         y: _oy,
                          width: originFrame.width * scale,
                          height: originFrame.height * scale)
-        self.ofDelta = CGPoint(x: ofs.minX-CGFloat(Int(originFrame.origin.x * scale)),
-                               y: ofs.minY-CGFloat(Int(originFrame.origin.y * scale)))
-        let _ow = Int((originFrame.width * scale + 0.5).rounded()) + Int(ofDelta.x.rounded(.up))
-        let _oh = Int((originFrame.height * scale + 0.5).rounded()) + Int(ofDelta.y.rounded(.up))
+        self.ofDelta = CGPoint(x: ofs.minX-CGFloat(Int(_ox)),
+                               y: ofs.minY-CGFloat(Int(_oy)))
+        let _ow = Int((originFrame.width * scale + 0.5).rounded())// + Int(ofDelta.x.rounded(.up))
+        let _oh = Int((originFrame.height * scale + 0.5).rounded())// + Int(ofDelta.y.rounded(.up))
         self.oframeScaled = CGRect(x: Int(originFrame.origin.x * scale),
                                    y: Int(originFrame.origin.y * scale),
                                    width: _ow + 1,
