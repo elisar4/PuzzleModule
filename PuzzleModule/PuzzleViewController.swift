@@ -254,7 +254,7 @@ public class PuzzleViewController: UIViewController {
             paletteController.setDataItems(items)//no shuffle
         }
         
-        setInPlace(items: Array(items.prefix(upTo: 27)))
+        setInPlace(items: Array(items.prefix(upTo: 290)))
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
             
