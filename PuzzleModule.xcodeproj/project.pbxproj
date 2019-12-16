@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		E90D4F2123A8392900757413 /* TestShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90D4F1F23A8392900757413 /* TestShader.swift */; };
+		E90D4F2223A8392900757413 /* EmbossShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90D4F2023A8392900757413 /* EmbossShader.swift */; };
 		E9B7333223A69105007A6771 /* SKPaletteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331623A69105007A6771 /* SKPaletteNode.swift */; };
 		E9B7333323A69105007A6771 /* SKPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331723A69105007A6771 /* SKPiece.swift */; };
 		E9B7333423A69105007A6771 /* SKMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B7331823A69105007A6771 /* SKMainScene.swift */; };
@@ -69,6 +71,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E90D4F1F23A8392900757413 /* TestShader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestShader.swift; sourceTree = "<group>"; };
+		E90D4F2023A8392900757413 /* EmbossShader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbossShader.swift; sourceTree = "<group>"; };
 		E9B7331623A69105007A6771 /* SKPaletteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPaletteNode.swift; sourceTree = "<group>"; };
 		E9B7331723A69105007A6771 /* SKPiece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPiece.swift; sourceTree = "<group>"; };
 		E9B7331823A69105007A6771 /* SKMainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKMainScene.swift; sourceTree = "<group>"; };
@@ -123,6 +127,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E90D4F1E23A8392900757413 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				E90D4F1F23A8392900757413 /* TestShader.swift */,
+				E90D4F2023A8392900757413 /* EmbossShader.swift */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
 		E9B7331423A69105007A6771 /* PuzzleModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +160,7 @@
 		E9B7331523A69105007A6771 /* SK */ = {
 			isa = PBXGroup;
 			children = (
+				E90D4F1E23A8392900757413 /* Shaders */,
 				E9B7331623A69105007A6771 /* SKPaletteNode.swift */,
 				E9B7331723A69105007A6771 /* SKPiece.swift */,
 				E9B7331823A69105007A6771 /* SKMainScene.swift */,
@@ -306,6 +320,7 @@
 				E9B7333523A69105007A6771 /* SKBoardNode.swift in Sources */,
 				E9B7333E23A69105007A6771 /* Shuffle.swift in Sources */,
 				E9B7333C23A69105007A6771 /* UIView+AutoLayoutHelper.swift in Sources */,
+				E90D4F2223A8392900757413 /* EmbossShader.swift in Sources */,
 				E9B7333A23A69105007A6771 /* UIView+EAGeom.swift in Sources */,
 				E9B7333323A69105007A6771 /* SKPiece.swift in Sources */,
 				E9B7333D23A69105007A6771 /* UIView+AnchorPoint.swift in Sources */,
@@ -314,6 +329,7 @@
 				E9B7334623A69105007A6771 /* Piece.swift in Sources */,
 				E9B7333923A69105007A6771 /* BoardViewController.swift in Sources */,
 				E9B7333423A69105007A6771 /* SKMainScene.swift in Sources */,
+				E90D4F2123A8392900757413 /* TestShader.swift in Sources */,
 				E9B7334723A69105007A6771 /* PieceProxy.swift in Sources */,
 				E9B7334323A69105007A6771 /* PuzzleViewController.swift in Sources */,
 				E9B7333B23A69105007A6771 /* CATransaction+Instant.swift in Sources */,
