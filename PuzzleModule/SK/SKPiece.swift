@@ -3,6 +3,8 @@
 
 import SpriteKit
 
+//class Emboss
+
 class SKPiece: SKSpriteNode, PieceItemOut {
     
     var psize: CGSize {
@@ -174,6 +176,65 @@ class SKPiece: SKSpriteNode, PieceItemOut {
         let s = item.oframeScaled.size
         
         super.init(texture: SKTexture(image: image), color: .clear, size: s)
+        let sh2 = """
+void main() {
+    vec4 current_color = SKDefaultShading();
+    if (current_color.a > 0.0) {
+        // Normalized pixel coordinates (from 0 to 1)
+        vec2 uv = gl_FragCoord.xy/a_size;
+
+        // Time varying pixel color
+        vec3 col = 0.5 + 0.5*cos(u_time+uv.xyx+vec3(0,2,4));
+
+        // Output to screen
+        gl_FragColor = vec4(col,1.0);
+    } else {
+       // use the current (transparent) color
+       gl_FragColor = current_color;
+   }
+}
+"""
+        let sh = """
+void main() {
+    // find the current pixel color
+    vec4 current_color = SKDefaultShading();
+
+    // if it's not transparent
+    if (current_color.a > 0.0) {
+        // find the size of one pixel by reading the input size
+        vec2 pixel_size = 0.7 / a_size;
+
+        // copy our current color so we can modify it
+        vec4 new_color = current_color;
+
+        // move up one pixel diagonally and read the current color, multiply it by the input strength, then add it to our pixel color
+        new_color += texture2D(u_texture, v_tex_coord - pixel_size) * u_strength;
+
+        // move down one pixel diagonally and read the current color, multiply it by the input strength, then subtract it to our pixel color
+        new_color -= texture2D(u_texture, v_tex_coord + pixel_size) * u_strength;
+
+        // use that new color, with an alpha of 1, for our pixel color, multiplying by this pixel's alpha
+        // (to avoid a hard edge) and also multiplying by the alpha for this node
+        gl_FragColor = vec4(new_color.rgb, 1) * current_color.a * v_color_mix.a;
+    } else {
+        // use the current (transparent) color
+        gl_FragColor = current_color;
+    }
+}
+"""
+        
+        let shadow = SKShader(source: sh2, uniforms: [
+            SKUniform(name: "u_strength", float: 0.35)
+        ])
+        if #available(iOS 9.0, *) {
+            shadow.attributes = [SKAttribute(name: "a_size", type: .vectorFloat2)]
+        }
+        shader = shadow
+
+        let spriteSize = vector_float2(Float(s.width), Float(s.height))
+        if #available(iOS 10.0, *) {
+            setValue(SKAttributeValue(vectorFloat2: spriteSize), forAttribute: "a_size")
+        }
         
         anchorPoint = CGPoint(x: 0 + item.ax / s.width, y: 1 - item.ay / s.height)
         

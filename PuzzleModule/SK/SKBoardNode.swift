@@ -44,6 +44,7 @@ class SKBoardNode: SKSpriteNode {
         bgNode.texture = SKTexture(image: image)
         
         container.size = CGSize(width: mx, height: my)
+//        container.isHidden = true
         
         border.path = UIBezierPath(rect: CGRect(x: 4, y: 4, width: mx - 8, height: my - 8)).cgPath
         

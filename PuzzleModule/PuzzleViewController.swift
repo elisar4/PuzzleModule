@@ -96,6 +96,7 @@ public class PuzzleViewController: UIViewController {
         view.addSubview(skView)
         skView.showsFPS = true
         skView.showsNodeCount = true
+        skView.showsDrawCount = true
         skView.ignoresSiblingOrder = true
         skView.presentScene(scene)
     }
@@ -254,7 +255,7 @@ public class PuzzleViewController: UIViewController {
             paletteController.setDataItems(items)//no shuffle
         }
         
-        setInPlace(items: Array(items.prefix(upTo: 290)))
+        setInPlace(items: Array(items.prefix(upTo: 29)))
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
             
