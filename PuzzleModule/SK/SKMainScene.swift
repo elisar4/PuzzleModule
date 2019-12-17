@@ -21,14 +21,6 @@ class SKMainScene: SKScene {
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
-        
-//        view.addGestureRecognizer(pan)
-        
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(onTap(_:)))
-//        tap.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tap)
     }
     
     override func didChangeSize(_ oldSize: CGSize) {
@@ -38,7 +30,9 @@ class SKMainScene: SKScene {
         board.didUpdateSize()
     }
     
+    var isMove = false
     var lastPoint: CGPoint = .zero
+    var targetPiece: SKPiece?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if let touch = touches.first {
@@ -46,6 +40,7 @@ class SKMainScene: SKScene {
            let ll = CGPoint(x: loc.x, y: size.height - loc.y)
            let l = convert(ll, to: board.container)
             if let p = board.piece(at: l), p.canPan {
+                isMove = false
                 lastPoint = loc
                 print("pan began", l, p)
                 p.beginPan()
@@ -57,6 +52,7 @@ class SKMainScene: SKScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         if let p = targetPiece, let touch = touches.first {
+            isMove = true
             let loc = touch.location(in: view)
             let delta = CGPoint(x: loc.x - lastPoint.x, y: loc.y - lastPoint.y)
             print(delta)
@@ -67,51 +63,14 @@ class SKMainScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        targetPiece?.endPan()
+        targetPiece?.endPan(isMove: isMove)
         targetPiece = nil
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesCancelled(touches, with: event)
-        targetPiece?.endPan()
+        targetPiece?.endPan(isMove: isMove)
         targetPiece = nil
-    }
-    
-    var targetPiece: SKPiece?
-    @objc private func onPan(_ sender: UIPanGestureRecognizer) {
-        
-        switch sender.state {
-        case .began:
-            let loc = sender.location(in: view)
-            let ll = CGPoint(x: loc.x, y: size.height - loc.y)
-            let l = convert(ll, to: board.container)
-            if let p = board.piece(at: l), p.canPan {
-                
-                print("pan began", l, p)
-                p.beginPan()
-                targetPiece = p
-            }
-            
-        case .changed:
-            let translation = sender.translation(in: view)
-            sender.setTranslation(CGPoint.zero, in: view)
-            targetPiece?.movePan(translation)
-            
-        case .cancelled, .ended, .failed:
-            targetPiece?.endPan()
-            
-        default:
-            break
-        }
-    }
-    
-    @objc private func onTap(_ sender: UITapGestureRecognizer) {
-        let loc = sender.location(in: view)
-        let ll = CGPoint(x: loc.x, y: size.height - loc.y)
-        let l = convert(ll, to: board.container)
-        if let p = board.piece(at: l) {
-            p.tap()
-        }
     }
     
     private func defaultInit() {
